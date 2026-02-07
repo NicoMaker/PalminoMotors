@@ -17,8 +17,14 @@
         {
           "title": "Sito Ufficiale",
           "description": "Portale principale Palmino Motors",
-          "url": "https://www.palminomotors.com/moto-admin",
+          "url": "https://www.palminomotors.com",
           "icon": "🌐"
+        },
+        {
+          "title": "Gestione WordPress",
+          "description": "Pannello amministrativo Palmino Motors",
+          "url": "https://www.palminomotors.com/moto-admin",
+          "icon": "⚙️"
         }
       ]
     },
