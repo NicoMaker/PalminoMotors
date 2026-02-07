@@ -1,0 +1,58 @@
+{
+  "company": {
+    "fullName": "Palmino Motors S.r.l.",
+    "address": "Viale Venezia, 161",
+    "city": "Codroipo",
+    "cap": "33033",
+    "province": "UD",
+    "piva": "01234567890",
+    "email": "info@palminomotors.com",
+    "phone": "+39 349 002 8627"
+  },
+  "appLinks": [
+    {
+      "title": "Sito Ufficiale",
+      "description": "Portale principale Palmino Motors",
+      "url": "https://www.palminomotors.com",
+      "icon": "🌐"
+    },
+    {
+      "title": "Gestionale Moto.it",
+      "description": "Area riservata caricamento annunci",
+      "url": "https://dealer.moto.it/palmino",
+      "icon": "🏍️"
+    },
+    {
+      "title": "Vetrina Subito.it",
+      "description": "Gestione shop Subito",
+      "url": "https://impresapiu.subito.it/shops/52322-palmino-motors",
+      "icon": "🛒"
+    },
+    {
+        "title": "Vetrina Facebook",
+        "description": "Gestione shop Facebook",
+        "url": "https://www.facebook.com/profile.php?id=100091247677157",
+        "icon": "📘"
+    },
+    {
+        "title": "Vetrina Instagram",
+        "description": "Gestione shop Instagram",
+        "url": "https://www.instagram.com/palminomotors/",
+        "icon": "📸"
+    },
+    {
+        "title": "Gestione Magazzino",
+        "description": "Software per gestione magazzino e fatturazione",
+        "url": "https://www.palminomotorsmagazzino.it/",
+        "icon": "📦"
+    }
+  ],
+  "brands": [
+    { "name": "Keeway", "url": "https://italy.keeway.com/" },
+    { "name": "Morbidelli", "url": "https://www.morbidelli.com/it/" },
+    { "name": "Benda", "url": "https://www.bendamotorcycles.it/" },
+    { "name": "Cyclone", "url": "https://www.cyclonemoto.it/" },
+    { "name": "SWM", "url": "https://www.swm-motorcycles.it/" },
+    { "name": "Brixton", "url": "https://www.brixton-motorcycles.com/it/" }
+  ]
+}
