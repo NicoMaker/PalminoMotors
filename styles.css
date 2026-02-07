@@ -24,6 +24,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    padding-top: 0;
 }
 
 /* ===== ANIMATED BACKGROUND ===== */
@@ -128,7 +129,7 @@ body {
 }
 
 .main-logo {
-    width: 140px;
+    width: 220px;
     height: auto;
     margin-bottom: 5px;
     filter: drop-shadow(0 0 20px var(--primary-glow));
@@ -183,10 +184,10 @@ body {
 }
 
 .main-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 3rem;
-    font-weight: 900;
-    letter-spacing: 8px;
+    font-family: 'Lobster', cursive;
+    font-size: 3.5rem;
+    font-weight: 400;
+    letter-spacing: 2px;
     margin-bottom: 2px;
     display: flex;
     flex-direction: column;
@@ -196,7 +197,6 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
-    font-style: italic;
 }
 
 .title-word {
@@ -670,8 +670,8 @@ body {
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .main-title {
-        font-size: 2.2rem;
-        letter-spacing: 4px;
+        font-size: 2.5rem;
+        letter-spacing: 2px;
     }
     
     .logo-circle {
@@ -681,7 +681,7 @@ body {
     }
     
     .main-logo {
-        width: 90px;
+        width: 150px;
     }
     
     .header-stats {
@@ -725,8 +725,8 @@ body {
 
 @media (max-width: 480px) {
     .main-title {
-        font-size: 1.8rem;
-        letter-spacing: 3px;
+        font-size: 2rem;
+        letter-spacing: 1px;
     }
     
     .subtitle {
