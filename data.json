@@ -49,6 +49,12 @@
           "icon": "🛍️"
         },
         {
+          "tirle": "Vetrina Moto.it",
+          "description": "Gestione shop Moto.it",
+          "url": "https://www.moto.it/palmino-motors",
+          "icon": "🛒"
+        },
+        {
           "title": "Vetrina Facebook",
           "description": "Gestione shop Facebook",
           "url": "https://www.facebook.com/profile.php?id=100091247677157",
@@ -59,6 +65,34 @@
           "description": "Gestione shop Instagram",
           "url": "https://www.instagram.com/palminomotors/",
           "icon": "📸"
+        }
+      ]
+    },
+    {
+      "name": "Servizi Cloud & Hosting",
+      "links": [
+        {
+          "title": "Aruba Cloud Console",
+          "description": "Area VPS e server Aruba Cloud",
+          "url": "https://admin.services.cloud.it/Login.aspx",
+          "icon": "☁️"
+        },
+        {
+          "title": "Servizi Aruba",
+          "description": "Console domini, PEC e servizi Aruba",
+          "url": "https://customerarea.aruba.it/start/Login",
+          "icon": "🔧"
+        }
+      ]
+    },
+    {
+      "name": "Pianificazione & Calendario",
+      "links": [
+        {
+          "title": "Google Calendar",
+          "description": "Calendario appuntamenti Palmino Motors",
+          "url": "https://calendar.google.com/calendar/u/0/r",
+          "icon": "📅"
         }
       ]
     }
