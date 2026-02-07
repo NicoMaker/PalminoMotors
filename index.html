@@ -1,95 +1,122 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Palmino Motors - Hub Operativo</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="img/Logo2.png">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="img/Logo2.png" />
+  </head>
+  <body>
     <!-- Animated Background -->
     <div class="background-scene">
-        <div class="grid-overlay"></div>
-        <div class="glow-orb glow-1"></div>
-        <div class="glow-orb glow-2"></div>
-        <div class="glow-orb glow-3"></div>
+      <div class="grid-overlay"></div>
+      <div class="glow-orb glow-1"></div>
+      <div class="glow-orb glow-2"></div>
+      <div class="glow-orb glow-3"></div>
     </div>
-    
+
     <div class="main-wrapper">
-        <header class="hub-header">
-            <div class="logo-area">
-                <div class="logo-circle">PM</div>
-                <h1 class="main-title">
-                    <span class="title-word">PALMINO</span>
-                    <span class="title-word">MOTORS</span>
-                </h1>
-                <p class="subtitle">Hub Collegamenti Rapidi</p>
-            </div>
-            <div class="header-stats">
-                <div class="stat-item">
-                    <span class="stat-number">6</span>
-                    <span class="stat-label">Brand Ufficiali</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-number">∞</span>
-                    <span class="stat-label">Passione</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-number">24/7</span>
-                    <span class="stat-label">Assistenza</span>
-                </div>
-            </div>
-            <div class="header-divider"></div>
-        </header>
+      <header class="hub-header">
+        <div class="logo-area">
+          <div class="logo-circle">PM</div>
+          <h1 class="main-title">
+            <span class="title-word">PALMINO</span>
+            <span class="title-word">MOTORS</span>
+          </h1>
+          <p class="subtitle">Hub Collegamenti Rapidi</p>
+        </div>
+        <div class="header-stats">
+          <div class="stat-item">
+            <span class="stat-number">6</span>
+            <span class="stat-label">Brand Ufficiali</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">∞</span>
+            <span class="stat-label">Passione</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">24/7</span>
+            <span class="stat-label">Assistenza</span>
+          </div>
+        </div>
+        <div class="header-divider"></div>
+      </header>
 
-        <!-- Main Content -->
-        <main id="linksContainer" class="links-main">
-        </main>
+      <!-- Main Content -->
+      <main id="linksContainer" class="links-main"></main>
 
-        <!-- Brands Section -->
-        <section class="brand-section">
-            <h3 class="brand-section-title">
-                <span class="title-line"></span>
-                <span>Brand Ufficiali</span>
-                <span class="title-line"></span>
-            </h3>
-            <div class="brand-links" id="brandContainer"></div>
-        </section>
+      <!-- Brands Section -->
+      <section class="brand-section">
+        <h3 class="brand-section-title">
+          <span class="title-line"></span>
+          <span>Brand Ufficiali</span>
+          <span class="title-line"></span>
+        </h3>
+        <div class="brand-links" id="brandContainer"></div>
+      </section>
     </div>
 
     <!-- Footer -->
     <footer class="site-footer">
-        <div class="footer-background"></div>
-        <div class="footer-overlay"></div>
-        <div class="footer-content">
-            <div class="footer-logo-section" id="footerCompanyCol">
-                <h2 class="footer-company-name" id="companyName">PALMINO MOTORS S.R.L.</h2>
-                <p class="footer-address">
-                    <a href="#" id="fullAddress" class="footer-link" target="_blank">Caricamento...</a>
-                </p>
-            </div>
-            <div class="footer-grid">
-                <div class="footer-col footer-col-contacts">
-                    <h4>CONTATTI</h4>
-                    <p><a href="tel:+393490028627" class="footer-link" id="footerPhone"></a></p>
-                    <p><a href="mailto:info@palminomotors.com" class="footer-link" id="footerEmail"></a></p>
-                    <p><a href="#" class="footer-link" id="footerWhatsApp" target="_blank"></a></p>
-                </div>
-                <div class="footer-col footer-col-legal">
-                    <h4>DATI LEGALI</h4>
-                    <p id="footerPiva"></p>
-                    <p class="footer-copyright">&copy; <span id="year"></span> - Tutti i diritti riservati</p>
-                </div>
-            </div>
+      <div class="footer-background"></div>
+      <div class="footer-overlay"></div>
+      <div class="footer-content">
+        <div class="footer-logo-section" id="footerCompanyCol">
+          <h2 class="footer-company-name" id="companyName">
+            PALMINO MOTORS S.R.L.
+          </h2>
+          <p class="footer-address">
+            <a href="#" id="fullAddress" class="footer-link" target="_blank"
+              >Caricamento...</a
+            >
+          </p>
         </div>
+        <div class="footer-grid">
+          <div class="footer-col footer-col-contacts">
+            <h4>CONTATTI</h4>
+            <p>
+              <a
+                href="tel:+393490028627"
+                class="footer-link"
+                id="footerPhone"
+              ></a>
+            </p>
+            <p>
+              <a
+                href="mailto:info@palminomotors.com"
+                class="footer-link"
+                id="footerEmail"
+              ></a>
+            </p>
+            <p>
+              <a
+                href="#"
+                class="footer-link"
+                id="footerWhatsApp"
+                target="_blank"
+              ></a>
+            </p>
+          </div>
+          <div class="footer-col footer-col-legal">
+            <h4>DATI LEGALI</h4>
+            <p id="footerPiva"></p>
+            <p class="footer-copyright">
+              &copy; <span id="year"></span> - Tutti i diritti riservati
+            </p>
+          </div>
+        </div>
+      </div>
     </footer>
 
     <script src="app.js"></script>
-</body>
+  </body>
 </html>

@@ -13,7 +13,7 @@ async function loadData() {
     renderBrands(data.brands);
     populateFooter(data.company);
     handleLogos(data.company.logo);
-    
+
     // Trigger staggered animations after content loads
     setTimeout(() => {
       animateCards();
@@ -96,42 +96,43 @@ function renderBrands(brands) {
 }
 
 function populateFooter(company) {
-  document.getElementById("companyName").textContent = company.fullName.toUpperCase();
-  
+  document.getElementById("companyName").textContent =
+    company.fullName.toUpperCase();
+
   // Set clickable address with Google Maps link
   const addressLink = document.getElementById("fullAddress");
   const fullAddress = `${company.address}, ${company.cap} ${company.city} (${company.province})`;
   addressLink.textContent = fullAddress;
   addressLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
-  
+
   // Set clickable phone link
   const phoneLink = document.getElementById("footerPhone");
   phoneLink.href = `tel:${company.phone}`;
   phoneLink.textContent = `Tel: ${company.phone}`;
-  
+
   // Set clickable email link
   const emailLink = document.getElementById("footerEmail");
   emailLink.href = `mailto:${company.email}`;
   emailLink.textContent = `Email: ${company.email}`;
-  
+
   // Set clickable WhatsApp link
   const whatsappLink = document.getElementById("footerWhatsApp");
-  const phoneNumber = company.phone.replace(/\+/g, '').replace(/\s/g, '');
+  const phoneNumber = company.phone.replace(/\+/g, "").replace(/\s/g, "");
   whatsappLink.href = `https://wa.me/${phoneNumber}`;
   whatsappLink.textContent = `WhatsApp: ${company.phone}`;
-  
+
   document.getElementById("footerPiva").textContent = `P.IVA: ${company.piva}`;
 }
 
 // Animation functions
 function initAnimations() {
   // Parallax effect on scroll
-  window.addEventListener('scroll', () => {
+  window.addEventListener("scroll", () => {
     const scrolled = window.pageYOffset;
-    const orbs = document.querySelectorAll('.glow-orb');
-    
+    const orbs = document.querySelectorAll(".glow-orb");
+
     orbs.forEach((orb, index) => {
-      const speed = 0.5 + (index * 0.2);
+      const speed = 0.5 + index * 0.2;
       orb.style.transform = `translateY(${scrolled * speed}px)`;
     });
   });
@@ -139,54 +140,59 @@ function initAnimations() {
   // Intersection Observer for scroll animations
   const observerOptions = {
     threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    rootMargin: "0px 0px -50px 0px",
   };
 
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0) translateX(0)';
+        entry.target.style.opacity = "1";
+        entry.target.style.transform = "translateY(0) translateX(0)";
       }
     });
   }, observerOptions);
 
   // Observe all cards and sections
-  document.querySelectorAll('.link-card, .category-section, .brand-item').forEach(el => {
-    observer.observe(el);
-  });
+  document
+    .querySelectorAll(".link-card, .category-section, .brand-item")
+    .forEach((el) => {
+      observer.observe(el);
+    });
 }
 
 function animateCards() {
   // Staggered animation for link cards
-  const cards = document.querySelectorAll('.link-card');
+  const cards = document.querySelectorAll(".link-card");
   cards.forEach((card, index) => {
     setTimeout(() => {
-      card.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-      card.style.opacity = '1';
-      card.style.transform = 'translateX(0)';
+      card.style.transition = "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+      card.style.opacity = "1";
+      card.style.transform = "translateX(0)";
     }, index * 100);
   });
 
   // Staggered animation for brand items
-  const brands = document.querySelectorAll('.brand-item');
+  const brands = document.querySelectorAll(".brand-item");
   brands.forEach((brand, index) => {
-    setTimeout(() => {
-      brand.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-      brand.style.opacity = '1';
-      brand.style.transform = 'translateY(0)';
-    }, (cards.length * 100) + (index * 80));
+    setTimeout(
+      () => {
+        brand.style.transition = "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
+        brand.style.opacity = "1";
+        brand.style.transform = "translateY(0)";
+      },
+      cards.length * 100 + index * 80,
+    );
   });
 }
 
 // Add interactive card hover sound effect (visual feedback)
-document.addEventListener('DOMContentLoaded', () => {
-  const cards = document.querySelectorAll('.link-card');
-  
-  cards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = document.querySelectorAll(".link-card");
+
+  cards.forEach((card) => {
+    card.addEventListener("mouseenter", function () {
       // Create ripple effect
-      const ripple = document.createElement('div');
+      const ripple = document.createElement("div");
       ripple.style.cssText = `
         position: absolute;
         width: 10px;
@@ -199,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
         top: 50%;
         transform: translateY(-50%);
       `;
-      
+
       this.appendChild(ripple);
       setTimeout(() => ripple.remove(), 600);
     });
@@ -207,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Add CSS for ripple animation
-const style = document.createElement('style');
+const style = document.createElement("style");
 style.textContent = `
   @keyframes ripple {
     to {
