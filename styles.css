@@ -121,7 +121,7 @@ body {
 /* ===== HEADER ===== */
 .hub-header {
     text-align: center;
-    margin-bottom: 70px;
+    margin-bottom: 50px;
     animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 
@@ -190,7 +190,7 @@ body {
     font-size: 3rem;
     font-weight: 900;
     letter-spacing: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -226,7 +226,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 3px;
     font-weight: 400;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .header-stats {
@@ -234,7 +234,7 @@ body {
     justify-content: center;
     align-items: center;
     gap: 30px;
-    margin-top: 35px;
+    margin-top: 20px;
     padding: 25px 35px;
     background: rgba(15, 20, 25, 0.6);
     border: 1px solid var(--card-border);
@@ -351,6 +351,7 @@ body {
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.1), transparent);
     transition: left 0.6s ease;
+    pointer-events: none;
 }
 
 .link-card:hover::before {
@@ -367,6 +368,7 @@ body {
     background: linear-gradient(90deg, var(--primary), var(--secondary));
     opacity: 0.1;
     transition: width 0.4s ease;
+    pointer-events: none;
 }
 
 .link-card:hover::after {
@@ -671,24 +673,9 @@ body {
     display: inline-block;
 }
 
-.footer-link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    transition: width 0.3s ease;
-}
-
 .footer-link:hover {
     color: var(--secondary);
     text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
-}
-
-.footer-link:hover::after {
-    width: 100%;
 }
 
 .footer-copyright {

@@ -97,8 +97,12 @@ function renderBrands(brands) {
 
 function populateFooter(company) {
   document.getElementById("companyName").textContent = company.fullName.toUpperCase();
-  document.getElementById("fullAddress").textContent =
-    `${company.address}, ${company.cap} ${company.city} (${company.province})`;
+  
+  // Set clickable address with Google Maps link
+  const addressLink = document.getElementById("fullAddress");
+  const fullAddress = `${company.address}, ${company.cap} ${company.city} (${company.province})`;
+  addressLink.textContent = fullAddress;
+  addressLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
   
   // Set clickable phone link
   const phoneLink = document.getElementById("footerPhone");
@@ -109,6 +113,12 @@ function populateFooter(company) {
   const emailLink = document.getElementById("footerEmail");
   emailLink.href = `mailto:${company.email}`;
   emailLink.textContent = `Email: ${company.email}`;
+  
+  // Set clickable WhatsApp link
+  const whatsappLink = document.getElementById("footerWhatsApp");
+  const phoneNumber = company.phone.replace(/\+/g, '').replace(/\s/g, '');
+  whatsappLink.href = `https://wa.me/${phoneNumber}`;
+  whatsappLink.textContent = `WhatsApp: ${company.phone}`;
   
   document.getElementById("footerPiva").textContent = `P.IVA: ${company.piva}`;
 }
@@ -168,36 +178,6 @@ function animateCards() {
     }, (cards.length * 100) + (index * 80));
   });
 }
-
-// Add cursor glow effect
-document.addEventListener('mousemove', (e) => {
-  const glow = document.createElement('div');
-  glow.className = 'cursor-glow';
-  glow.style.cssText = `
-    position: fixed;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 245, 255, 0.1) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 9999;
-    left: ${e.clientX - 100}px;
-    top: ${e.clientY - 100}px;
-    transition: opacity 0.3s ease;
-    opacity: 0;
-  `;
-  
-  document.body.appendChild(glow);
-  
-  setTimeout(() => {
-    glow.style.opacity = '1';
-  }, 10);
-  
-  setTimeout(() => {
-    glow.style.opacity = '0';
-    setTimeout(() => glow.remove(), 300);
-  }, 500);
-});
 
 // Add interactive card hover sound effect (visual feedback)
 document.addEventListener('DOMContentLoaded', () => {
