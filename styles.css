@@ -826,3 +826,15 @@ body {
         transition-duration: 0.01ms !important;
     }
 }
+
+.title-word{
+    color: white !important;
+}
+
+.title-word {
+    color: white !important;
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: white !important;
+    background-clip: initial !important;
+}
