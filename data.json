@@ -31,6 +31,17 @@
       ]
     },
     {
+      "name": "Portali Assistenza",
+      "links": [
+        {
+          "title": "Portale Assistenza SWM",
+          "description": "Area riservata assistenza e ricambi SWM",
+          "url": "https://kwmportal.com/user/login.html?v=1770645197053 ",
+          "icon": "🛠️"
+        }
+      ]
+    },
+    {
       "name": "Gestionali e Operativi",
       "links": [
         {
@@ -103,10 +114,10 @@
           "icon": "📁"
         },
         {
-          "title":"Canva",
-          "description":"Strumento grafico per creazione contenuti social e promozionali",
-          "url":"https://www.canva.com/folder/FAF-MCLkJGY",
-          "icon":"🎨"
+          "title": "Canva",
+          "description": "Strumento grafico per creazione contenuti social e promozionali",
+          "url": "https://www.canva.com/folder/FAF-MCLkJGY",
+          "icon": "🎨"
         }
       ]
     }
