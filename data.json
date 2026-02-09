@@ -27,6 +27,12 @@
           "description": "Pannello amministrativo Palmino Motors",
           "url": "https://www.palminomotors.com/moto-admin",
           "icon": "⚙️"
+        },
+        {
+          "title":"Creazione QR Code",
+          "description":"Strumento per generazione QR Code personalizzati",
+          "url":"http://palminomotorsmagazzino.it/qr.html",
+          "icon":"📱"
         }
       ]
     },
@@ -53,13 +59,13 @@
         {
           "title": "Gestione Magazzino",
           "description": "Software per gestione magazzino",
-          "url": "https://www.magazzino.palminomotorsmagazzino.it/",
+          "url": "https://magazzino.palminomotorsmagazzino.it/",
           "icon": "📦"
         },
         {
           "title":"Gestione Preventivi",
           "description":"Pannello per creazione e gestione preventivi",
-          "url":"https://www.preventivi.palminomotorspreventivi.it/",
+          "url":"https://preventivi.palminomotorsmagazzino.it",
           "icon":"🧾"
         }
       ]
