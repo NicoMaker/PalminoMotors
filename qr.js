@@ -1,12 +1,27 @@
 class PalminoQRGenerator {
   constructor() {
+    // ✅ DATI AZIENDALI HARDCODED - NESSUN JSON!
+    this.companyData = {
+      fullName: "Palmino Motors",
+      address: "Viale Venezia, 161",
+      city: "Codroipo",
+      cap: "33033",
+      province: "UD",
+      piva: "0314133030",
+      email: "info@palminomotors.com",
+      phone: "+393490028627",
+      logo: "img/Logo.png",
+      logo_qr: "img/Logo3.png",
+      website: "www.palminomotors.com"
+    };
+
     this.initializeElements();
     this.bindEvents();
     this.currentQR = null;
     this.logoImage = null;
-    this.companyData = null;
     this.generateTimeout = null;
-    this.loadCompanyData();
+    this.updateFooter();
+    this.loadLogo();
     this.setCurrentYear();
   }
 
@@ -71,24 +86,6 @@ class PalminoQRGenerator {
     }
   }
 
-  async loadCompanyData() {
-    try {
-      const response = await fetch("data.json");
-      const data = await response.json();
-      this.companyData = data.company;
-      
-      this.updateFooter();
-      this.loadLogo();
-      
-      console.log("✅ Dati aziendali caricati con successo da data.json");
-    } catch (error) {
-      console.error("❌ Errore caricamento data.json:", error);
-      this.companyData = {};
-      this.updateFooter();
-      this.loadLogo();
-    }
-  }
-
   updateFooter() {
     if (!this.companyData) return;
 
@@ -137,7 +134,7 @@ class PalminoQRGenerator {
   }
 
   loadLogo() {
-    if (!this.companyData) return;
+    if (!this.companyData?.logo_qr) return;
     
     const img = new Image();
     img.crossOrigin = "anonymous";
@@ -266,7 +263,7 @@ class PalminoQRGenerator {
     }
 
     if (!this.companyData) {
-      this.showToast("Caricamento dati aziendali in corso...", "error");
+      this.showToast("Dati aziendali non disponibili", "error");
       return;
     }
 
