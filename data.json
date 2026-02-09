@@ -93,6 +93,18 @@
           "description": "Calendario appuntamenti Palmino Motors",
           "url": "https://calendar.google.com/calendar/u/0/r",
           "icon": "📅"
+        },
+        {
+          "title": "Google Drive",
+          "description": "Archivio documenti, preventivi e file condivisi",
+          "url": "https://drive.google.com/drive/folders/1ymEXYv6FR51FSQmQ3syr8fWwDvecg9nJ?usp=drive_link",
+          "icon": "📁"
+        },
+        {
+          "title":"Canva",
+          "description":"Strumento grafico per creazione contenuti social e promozionali",
+          "url":"https://www.canva.com/folder/FAF-MCLkJGY",
+          "icon":"🎨"
         }
       ]
     }
