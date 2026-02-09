@@ -783,3 +783,7 @@ input:checked + .slider:before {
 .output-section {
   animation-delay: 0.2s;
 }
+
+#generate-btn{
+  display: none;
+}
