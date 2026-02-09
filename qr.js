@@ -229,148 +229,149 @@ class PalminoQRGenerator {
     }
   }
 
-  async generateQR() {
-    const data = this.getQRData();
-    const size = parseInt(this.sizeSelect.value, 10);
+async generateQR() {
+  const data = this.getQRData();
+  const size = parseInt(this.sizeSelect.value, 10);
 
-    if (!data) {
-      this.showToast("Inserisci i dati richiesti", "error");
-      return;
-    }
-
-    if (!this.companyData) {
-      this.showToast("Caricamento dati aziendali in corso...", "error");
-      return;
-    }
-
-    try {
-      // Create base QR code
-      const tempCanvas = document.createElement("canvas");
-      const qr = new QRious({
-        element: tempCanvas,
-        value: data,
-        size: size,
-        foreground: "#000000",
-        background: "#ffffff",
-        level: "H"
-      });
-
-      // NEW LAYOUT: Logo sopra + QR + Info sotto
-      const finalCanvas = document.createElement("canvas");
-      const headerHeight = Math.max(100, size * 0.2); // Spazio per logo grande sopra
-      const footerHeight = Math.max(100, size * 0.2); // Spazio per info sotto
-      finalCanvas.width = size;
-      finalCanvas.height = headerHeight + size + footerHeight;
-      
-      const ctx = finalCanvas.getContext("2d");
-
-      // Draw white background
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
-
-      // 1. LOGO GRANDE SOPRA AL QR
-      if (this.logoImage) {
-        const maxLogoSize = Math.max(80, size * 0.16);
-        const logoAspectRatio = this.logoImage.width / this.logoImage.height;
-        
-        let logoWidth, logoHeight;
-        if (logoAspectRatio > 1) {
-          logoWidth = maxLogoSize;
-          logoHeight = maxLogoSize / logoAspectRatio;
-        } else {
-          logoHeight = maxLogoSize;
-          logoWidth = maxLogoSize * logoAspectRatio;
-        }
-        
-        const logoX = (finalCanvas.width - logoWidth) / 2;
-        const logoY = (headerHeight - logoHeight) / 2;
-        
-        ctx.drawImage(this.logoImage, logoX, logoY, logoWidth, logoHeight);
-      }
-
-      // Bordo sotto il logo
-      ctx.strokeStyle = "#00f5ff";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(0, headerHeight);
-      ctx.lineTo(finalCanvas.width, headerHeight);
-      ctx.stroke();
-
-      // 2. QR CODE AL CENTRO
-      ctx.drawImage(tempCanvas, 0, headerHeight);
-
-      // 3. INFO FOOTER SOTTO AL QR
-      const footerY = headerHeight + size;
-      
-      // Bordo sopra il footer
-      ctx.strokeStyle = "#00f5ff";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(0, footerY);
-      ctx.lineTo(finalCanvas.width, footerY);
-      ctx.stroke();
-
-      // Background footer con gradient
-      const gradient = ctx.createLinearGradient(0, footerY, 0, footerY + footerHeight);
-      gradient.addColorStop(0, "#ffffff");
-      gradient.addColorStop(1, "#f8f9fa");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, footerY, finalCanvas.width, footerHeight);
-
-      // PALMINO MOTORS in corsivo (simula font corsivo con italic)
-      ctx.fillStyle = "#0a0e27";
-      const titleFontSize = Math.max(14, size * 0.035);
-      ctx.font = `italic bold ${titleFontSize}px Georgia, serif`; // Corsivo elegante
-      ctx.textAlign = "center";
-      ctx.fillText("Palmino Motors", finalCanvas.width / 2, footerY + footerHeight * 0.25);
-
-      // Resto del testo in Calibri
-      const textFontSize = Math.max(10, size * 0.022);
-      ctx.font = `${textFontSize}px Calibri, Arial, sans-serif`;
-      ctx.fillStyle = "#495057";
-      
-      // Indirizzo
-      const fullAddress = `${this.companyData.address}, ${this.companyData.cap} ${this.companyData.city} (${this.companyData.province})`;
-      ctx.fillText(fullAddress, finalCanvas.width / 2, footerY + footerHeight * 0.45);
-
-      // Tel e Email
-      const smallTextSize = Math.max(9, size * 0.020);
-      ctx.font = `${smallTextSize}px Calibri, Arial, sans-serif`;
-      ctx.fillText(`Tel: ${this.companyData.phone}`, finalCanvas.width / 2, footerY + footerHeight * 0.65);
-      ctx.fillText(this.companyData.email, finalCanvas.width / 2, footerY + footerHeight * 0.80);
-
-      // P.IVA
-      const pivaSize = Math.max(8, size * 0.018);
-      ctx.font = `${pivaSize}px Calibri, Arial, sans-serif`;
-      ctx.fillStyle = "#6c757d";
-      ctx.fillText(`P.IVA: ${this.companyData.piva}`, finalCanvas.width / 2, footerY + footerHeight * 0.93);
-
-      // Display QR code
-      this.qrContainer.innerHTML = "";
-      finalCanvas.id = "qrCanvas";
-      this.qrContainer.appendChild(finalCanvas);
-      this.qrContainer.classList.add("has-qr");
-      
-      // Show download buttons
-      this.downloadSection.classList.remove("hidden");
-
-      this.currentQR = { 
-        canvas: finalCanvas, 
-        data, 
-        size, 
-        type: this.typeSelect.value
-      };
-      
-      // Update info section
-      this.updateInfoSection();
-      
-      // Show success toast
-
-    } catch (error) {
-      console.error("Errore generazione QR:", error);
-      this.showToast("Errore nella generazione del QR Code", "error");
-    }
+  if (!data) {
+    this.showToast("Inserisci i dati richiesti", "error");
+    return;
   }
+
+  if (!this.companyData) {
+    this.showToast("Caricamento dati aziendali in corso...", "error");
+    return;
+  }
+
+  try {
+    // Create base QR code
+    const tempCanvas = document.createElement("canvas");
+    const qr = new QRious({
+      element: tempCanvas,
+      value: data,
+      size: size,
+      foreground: "#000000",
+      background: "#ffffff",
+      level: "H"
+    });
+
+    // LAYOUT: Logo sopra + QR + Info sotto
+    const finalCanvas = document.createElement("canvas");
+    const headerHeight = Math.max(100, size * 0.2);
+    const footerHeight = Math.max(120, size * 0.25); // Aumentato per sito
+    finalCanvas.width = size;
+    finalCanvas.height = headerHeight + size + footerHeight;
+    
+    const ctx = finalCanvas.getContext("2d");
+
+    // Background bianco
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+
+    // 1. LOGO SOPRA
+    if (this.logoImage) {
+      const maxLogoSize = Math.max(80, size * 0.16);
+      const logoAspectRatio = this.logoImage.width / this.logoImage.height;
+      
+      let logoWidth, logoHeight;
+      if (logoAspectRatio > 1) {
+        logoWidth = maxLogoSize;
+        logoHeight = maxLogoSize / logoAspectRatio;
+      } else {
+        logoHeight = maxLogoSize;
+        logoWidth = maxLogoSize * logoAspectRatio;
+      }
+      
+      const logoX = (finalCanvas.width - logoWidth) / 2;
+      const logoY = (headerHeight - logoHeight) / 2;
+      
+      ctx.drawImage(this.logoImage, logoX, logoY, logoWidth, logoHeight);
+    }
+
+    // Bordo logo
+    ctx.strokeStyle = "#00f5ff";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, headerHeight);
+    ctx.lineTo(finalCanvas.width, headerHeight);
+    ctx.stroke();
+
+    // 2. QR AL CENTRO
+    ctx.drawImage(tempCanvas, 0, headerHeight);
+
+    // 3. FOOTER INFO
+    const footerY = headerHeight + size;
+    
+    // Bordo footer
+    ctx.strokeStyle = "#00f5ff";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, footerY);
+    ctx.lineTo(finalCanvas.width, footerY);
+    ctx.stroke();
+
+    // Gradient footer
+    const gradient = ctx.createLinearGradient(0, footerY, 0, footerY + footerHeight);
+    gradient.addColorStop(0, "#ffffff");
+    gradient.addColorStop(1, "#f8f9fa");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, footerY, finalCanvas.width, footerHeight);
+
+    // Titolo "Palmino Motors"
+    ctx.fillStyle = "#0a0e27";
+    const titleFontSize = Math.max(14, size * 0.035);
+    ctx.font = `italic bold ${titleFontSize}px Georgia, serif`;
+    ctx.textAlign = "center";
+    ctx.fillText("Palmino Motors", finalCanvas.width / 2, footerY + footerHeight * 0.20);
+
+    // Testi normali
+    const textFontSize = Math.max(10, size * 0.022);
+    ctx.font = `${textFontSize}px Calibri, Arial, sans-serif`;
+    ctx.fillStyle = "#495057";
+    
+    // Indirizzo
+    const fullAddress = `${this.companyData.address}, ${this.companyData.cap} ${this.companyData.city} (${this.companyData.province})`;
+    ctx.fillText(fullAddress, finalCanvas.width / 2, footerY + footerHeight * 0.36);
+
+    // Tel
+    const smallTextSize = Math.max(9, size * 0.020);
+    ctx.font = `${smallTextSize}px Calibri, Arial, sans-serif`;
+    ctx.fillText(`Tel: ${this.companyData.phone}`, finalCanvas.width / 2, footerY + footerHeight * 0.52);
+
+    // Email
+    ctx.fillStyle = "#495057";
+    ctx.fillText(this.companyData.email, finalCanvas.width / 2, footerY + footerHeight * 0.67);
+
+    // SITO WEB (nuovo)
+const website = this.companyData.website || "www.palminomotors.com";
+const websiteSize = Math.max(9, size * 0.020);
+ctx.font = `${websiteSize}px Calibri, Arial, sans-serif`;
+ctx.fillStyle = "#495057"; // Grigio scuro
+ctx.textAlign = "center";
+ctx.fillText(website, finalCanvas.width / 2, footerY + footerHeight * 0.82);
+
+    // P.IVA
+    const pivaSize = Math.max(8, size * 0.018);
+    ctx.font = `${pivaSize}px Calibri, Arial, sans-serif`;
+    ctx.fillStyle = "#6c757d";
+    ctx.fillText(`P.IVA: ${this.companyData.piva}`, finalCanvas.width / 2, footerY + footerHeight * 0.97);
+
+    // Display
+    this.qrContainer.innerHTML = "";
+    finalCanvas.id = "qrCanvas";
+    this.qrContainer.appendChild(finalCanvas);
+    this.qrContainer.classList.add("has-qr");
+    this.downloadSection.classList.remove("hidden");
+
+    this.currentQR = { canvas: finalCanvas, data, size, type: this.typeSelect.value };
+    this.updateInfoSection();
+
+  } catch (error) {
+    console.error("Errore QR:", error);
+    this.showToast("Errore generazione QR", "error");
+  }
+}
+
 
   downloadQR() {
     if (!this.currentQR) return;
