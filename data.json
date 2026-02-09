@@ -53,8 +53,14 @@
         {
           "title": "Gestione Magazzino",
           "description": "Software per gestione magazzino e fatturazione",
-          "url": "https://www.palminomotorsmagazzino.it/",
+          "url": "https://www.magazzino.palminomotorsmagazzino.it/",
           "icon": "📦"
+        },
+        {
+          "title":"Gestione Preventivi",
+          "description":"Pannello per creazione e gestione preventivi",
+          "url":"https://www.preventivi.palminomotorspreventivi.it/",
+          "icon":"🧾"
         }
       ]
     },
