@@ -147,7 +147,7 @@ class PalminoQRGenerator {
     img.onerror = () => {
       console.warn("Logo non trovato, QR verrà generato senza logo");
     };
-    img.src = this.companyData.logo_qr || "../img/logo_qr.png";
+    img.src = this.companyData.logo_qr || "img/logo_qr.png";
   }
 
   handleTypeChange() {
