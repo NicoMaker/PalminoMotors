@@ -73,7 +73,7 @@ class PalminoQRGenerator {
 
   async loadCompanyData() {
     try {
-      const response = await fetch("../data.json");
+      const response = await fetch("data.json");
       const data = await response.json();
       this.companyData = data.company;
       
