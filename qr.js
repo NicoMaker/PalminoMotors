@@ -149,7 +149,7 @@ class PalminoQRGenerator {
       console.error("❌ Errore caricamento logo:", img.src, e);
       this.logoImage = null;
     };
-    img.src = this.companyData.logo_qr || "img/logo_qr.png";
+    img.src = this.companyData.logo || "img/logo_qr.png";
   }
 
   handleTypeChange() {
