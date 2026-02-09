@@ -365,7 +365,6 @@ class PalminoQRGenerator {
       this.updateInfoSection();
       
       // Show success toast
-      this.showToast("QR Code generato con successo!", "success");
 
     } catch (error) {
       console.error("Errore generazione QR:", error);
