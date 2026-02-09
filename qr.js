@@ -18,7 +18,6 @@ class PalminoQRGenerator {
     this.downloadSection = document.getElementById("download-section");
     this.toast = document.getElementById("toast");
     this.toastMessage = document.getElementById("toast-message");
-    // Logo checkbox removed - logo only in footer
 
     this.infoType = document.getElementById("info-type");
     this.infoSize = document.getElementById("info-size");
@@ -77,18 +76,13 @@ class PalminoQRGenerator {
       const data = await response.json();
       this.companyData = data.company;
       
-      // Update footer with company data
       this.updateFooter();
-      
-      // Load logo after company data is loaded
       this.loadLogo();
       
       console.log("Dati aziendali caricati con successo da data.json");
     } catch (error) {
       console.error("Errore caricamento data.json:", error);
-      // Fallback to default data
-      this.companyData = {
-      };
+      this.companyData = {};
       this.updateFooter();
       this.loadLogo();
     }
@@ -97,13 +91,11 @@ class PalminoQRGenerator {
   updateFooter() {
     if (!this.companyData) return;
 
-    // Update footer company name
     const companyName = document.getElementById("companyName");
     if (companyName) {
       companyName.textContent = this.companyData.fullName.toUpperCase();
     }
 
-    // Update footer address
     const fullAddress = document.getElementById("fullAddress");
     if (fullAddress) {
       const addressText = `${this.companyData.address}, ${this.companyData.cap} ${this.companyData.city} (${this.companyData.province})`;
@@ -111,21 +103,18 @@ class PalminoQRGenerator {
       fullAddress.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addressText)}`;
     }
 
-    // Update footer phone
     const footerPhone = document.getElementById("footerPhone");
     if (footerPhone) {
       footerPhone.href = `tel:${this.companyData.phone}`;
       footerPhone.textContent = `Tel: ${this.companyData.phone}`;
     }
 
-    // Update footer email
     const footerEmail = document.getElementById("footerEmail");
     if (footerEmail) {
       footerEmail.href = `mailto:${this.companyData.email}`;
       footerEmail.textContent = `Email: ${this.companyData.email}`;
     }
 
-    // Update footer WhatsApp
     const footerWhatsApp = document.getElementById("footerWhatsApp");
     if (footerWhatsApp) {
       const phoneNumber = this.companyData.phone.replace(/\+/g, "").replace(/\s/g, "");
@@ -133,13 +122,11 @@ class PalminoQRGenerator {
       footerWhatsApp.textContent = `WhatsApp: ${this.companyData.phone}`;
     }
 
-    // Update footer P.IVA
     const footerPiva = document.getElementById("footerPiva");
     if (footerPiva) {
       footerPiva.textContent = `P.IVA: ${this.companyData.piva}`;
     }
 
-    // Update logos in header and footer
     const headerLogo = document.getElementById("headerLogo");
     const footerLogo = document.getElementById("footerLogo");
     if (this.companyData.logo) {
@@ -228,18 +215,14 @@ class PalminoQRGenerator {
         const waNumber = this.inputs.whatsapp.value.trim().replace(/\D/g, '');
         const waMessage = this.inputs.whatsappMessage.value.trim();
         let waUrl = `https://wa.me/${waNumber}`;
-        if (waMessage) {
-          waUrl += `?text=${encodeURIComponent(waMessage)}`;
-        }
+        if (waMessage) waUrl += `?text=${encodeURIComponent(waMessage)}`;
         return waUrl;
       
       case "wifi":
         const ssid = this.inputs.wifiSsid.value.trim();
         const password = this.inputs.wifiPassword.value.trim();
         const security = this.inputs.wifiSecurity.value;
-        return security === "nopass"
-          ? `WIFI:T:nopass;S:${ssid};;`
-          : `WIFI:T:${security};S:${ssid};P:${password};;`;
+        return `WIFI:T:${security};S:${ssid};P:${password};;`;
       
       default:
         return "";
@@ -249,7 +232,6 @@ class PalminoQRGenerator {
   async generateQR() {
     const data = this.getQRData();
     const size = parseInt(this.sizeSelect.value, 10);
-    // Logo always in footer, never in center
 
     if (!data) {
       this.showToast("Inserisci i dati richiesti", "error");
@@ -270,13 +252,13 @@ class PalminoQRGenerator {
         size: size,
         foreground: "#000000",
         background: "#ffffff",
-        level: "H" // High error correction for logo overlay
+        level: "H"
       });
 
-      // Create final canvas with branding (header + QR + footer)
+      // NEW LAYOUT: Logo sopra + QR + Info sotto
       const finalCanvas = document.createElement("canvas");
-      const headerHeight = Math.max(70, size * 0.14); // Header area
-      const footerHeight = Math.max(90, size * 0.18); // Footer area
+      const headerHeight = Math.max(100, size * 0.2); // Spazio per logo grande sopra
+      const footerHeight = Math.max(100, size * 0.2); // Spazio per info sotto
       finalCanvas.width = size;
       finalCanvas.height = headerHeight + size + footerHeight;
       
@@ -286,107 +268,82 @@ class PalminoQRGenerator {
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
 
-      // Draw header section
-      const headerGradient = ctx.createLinearGradient(0, 0, 0, headerHeight);
-      headerGradient.addColorStop(0, "#f8f9fa");
-      headerGradient.addColorStop(1, "#ffffff");
-      ctx.fillStyle = headerGradient;
-      ctx.fillRect(0, 0, finalCanvas.width, headerHeight);
-
-      // Header logo
+      // 1. LOGO GRANDE SOPRA AL QR
       if (this.logoImage) {
-        const maxHeaderLogoSize = Math.max(40, size * 0.13);
-        const headerLogoAspectRatio = this.logoImage.width / this.logoImage.height;
+        const maxLogoSize = Math.max(80, size * 0.16);
+        const logoAspectRatio = this.logoImage.width / this.logoImage.height;
         
-        let headerLogoWidth, headerLogoHeight;
-        if (headerLogoAspectRatio > 1) {
-          headerLogoWidth = maxHeaderLogoSize;
-          headerLogoHeight = maxHeaderLogoSize / headerLogoAspectRatio;
+        let logoWidth, logoHeight;
+        if (logoAspectRatio > 1) {
+          logoWidth = maxLogoSize;
+          logoHeight = maxLogoSize / logoAspectRatio;
         } else {
-          headerLogoHeight = maxHeaderLogoSize;
-          headerLogoWidth = maxHeaderLogoSize * headerLogoAspectRatio;
+          logoHeight = maxLogoSize;
+          logoWidth = maxLogoSize * logoAspectRatio;
         }
         
-        const headerLogoX = (finalCanvas.width - headerLogoWidth) / 2;
-        const headerLogoY = (headerHeight - headerLogoHeight) / 2;
+        const logoX = (finalCanvas.width - logoWidth) / 2;
+        const logoY = (headerHeight - logoHeight) / 2;
         
-        ctx.drawImage(this.logoImage, headerLogoX, headerLogoY, headerLogoWidth, headerLogoHeight);
+        ctx.drawImage(this.logoImage, logoX, logoY, logoWidth, logoHeight);
       }
 
-      // Header bottom border
+      // Bordo sotto il logo
       ctx.strokeStyle = "#00f5ff";
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, headerHeight);
       ctx.lineTo(finalCanvas.width, headerHeight);
       ctx.stroke();
 
-      // Draw QR code
+      // 2. QR CODE AL CENTRO
       ctx.drawImage(tempCanvas, 0, headerHeight);
 
-      // Draw footer section
+      // 3. INFO FOOTER SOTTO AL QR
       const footerY = headerHeight + size;
       
-      // Footer background with gradient
-      const gradient = ctx.createLinearGradient(0, footerY, 0, footerY + footerHeight);
-      gradient.addColorStop(0, "#f8f9fa");
-      gradient.addColorStop(1, "#e9ecef");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, footerY, finalCanvas.width, footerHeight);
-
-      // Footer border
+      // Bordo sopra il footer
       ctx.strokeStyle = "#00f5ff";
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, footerY);
       ctx.lineTo(finalCanvas.width, footerY);
       ctx.stroke();
 
-      // Add logo in footer if available
-      if (this.logoImage) {
-        const maxFooterLogoSize = Math.max(35, size * 0.11);
-        const footerLogoAspectRatio = this.logoImage.width / this.logoImage.height;
-        
-        let footerLogoWidth, footerLogoHeight;
-        if (footerLogoAspectRatio > 1) {
-          footerLogoWidth = maxFooterLogoSize;
-          footerLogoHeight = maxFooterLogoSize / footerLogoAspectRatio;
-        } else {
-          footerLogoHeight = maxFooterLogoSize;
-          footerLogoWidth = maxFooterLogoSize * footerLogoAspectRatio;
-        }
-        
-        const footerLogoX = 20;
-        const footerLogoY = footerY + 15 + (maxFooterLogoSize - footerLogoHeight) / 2;
-        
-        ctx.drawImage(this.logoImage, footerLogoX, footerLogoY, footerLogoWidth, footerLogoHeight);
-      }
+      // Background footer con gradient
+      const gradient = ctx.createLinearGradient(0, footerY, 0, footerY + footerHeight);
+      gradient.addColorStop(0, "#ffffff");
+      gradient.addColorStop(1, "#f8f9fa");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, footerY, finalCanvas.width, footerHeight);
 
-      // Company name (scaled based on QR size)
+      // PALMINO MOTORS in corsivo (simula font corsivo con italic)
       ctx.fillStyle = "#0a0e27";
-      const fontSize = Math.max(11, size * 0.028);
-      ctx.font = `bold ${fontSize}px 'Orbitron', sans-serif`;
+      const titleFontSize = Math.max(14, size * 0.035);
+      ctx.font = `italic bold ${titleFontSize}px Georgia, serif`; // Corsivo elegante
       ctx.textAlign = "center";
-      ctx.fillText(this.companyData.fullName.toUpperCase(), finalCanvas.width / 2, footerY + footerHeight * 0.28);
+      ctx.fillText("Palmino Motors", finalCanvas.width / 2, footerY + footerHeight * 0.25);
 
-      // Address
-      const addressFontSize = Math.max(8, size * 0.020);
-      ctx.font = `${addressFontSize}px 'Space Mono', monospace`;
+      // Resto del testo in Calibri
+      const textFontSize = Math.max(10, size * 0.022);
+      ctx.font = `${textFontSize}px Calibri, Arial, sans-serif`;
       ctx.fillStyle = "#495057";
+      
+      // Indirizzo
       const fullAddress = `${this.companyData.address}, ${this.companyData.cap} ${this.companyData.city} (${this.companyData.province})`;
-      ctx.fillText(fullAddress, finalCanvas.width / 2, footerY + footerHeight * 0.48);
+      ctx.fillText(fullAddress, finalCanvas.width / 2, footerY + footerHeight * 0.45);
 
-      // Contact info
-      const contactFontSize = Math.max(7, size * 0.018);
-      ctx.font = `${contactFontSize}px 'Space Mono', monospace`;
+      // Tel e Email
+      const smallTextSize = Math.max(9, size * 0.020);
+      ctx.font = `${smallTextSize}px Calibri, Arial, sans-serif`;
       ctx.fillText(`Tel: ${this.companyData.phone}`, finalCanvas.width / 2, footerY + footerHeight * 0.65);
       ctx.fillText(this.companyData.email, finalCanvas.width / 2, footerY + footerHeight * 0.80);
 
       // P.IVA
-      const pivaFontSize = Math.max(6, size * 0.016);
-      ctx.font = `${pivaFontSize}px 'Space Mono', monospace`;
+      const pivaSize = Math.max(8, size * 0.018);
+      ctx.font = `${pivaSize}px Calibri, Arial, sans-serif`;
       ctx.fillStyle = "#6c757d";
-      ctx.fillText(`P.IVA: ${this.companyData.piva}`, finalCanvas.width / 2, footerY + footerHeight * 0.9);
+      ctx.fillText(`P.IVA: ${this.companyData.piva}`, finalCanvas.width / 2, footerY + footerHeight * 0.93);
 
       // Display QR code
       this.qrContainer.innerHTML = "";
@@ -464,7 +421,6 @@ class PalminoQRGenerator {
     this.infoType.textContent = "-";
     this.infoSize.textContent = "-";
     this.infoContent.textContent = "-";
-    this.infoLogo.textContent = "-";
   }
 
   updateInfoSection() {
@@ -481,7 +437,7 @@ class PalminoQRGenerator {
     
     this.infoType.textContent = typeMap[this.currentQR.type] || this.currentQR.type;
     this.infoSize.textContent = `${this.currentQR.size}px`;
-    this.infoLogo.textContent = "Footer";
+    this.infoLogo.textContent = "Logo + Info";
     
     const contentText = this.currentQR.data.length > 60
       ? this.currentQR.data.slice(0, 60) + "..."
