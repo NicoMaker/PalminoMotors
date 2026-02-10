@@ -817,4 +817,6 @@ body {
     -webkit-background-clip: initial !important;
     -webkit-text-fill-color: white !important;
     background-clip: initial !important;
+
+    font-family: 'Orbitron', sans-serif !important;
 }
