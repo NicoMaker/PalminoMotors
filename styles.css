@@ -950,3 +950,24 @@ body {
   gap: 6px;
   margin-left: auto;
 }
+
+.title-word {
+  display: inline-block;
+  font-family: "Orbitron", sans-serif; /* AGGIUNTO */
+}
+
+.main-title {
+  font-size: 2.5rem; /* RIDOTTO da 3.5rem */
+  font-weight: 400;
+  letter-spacing: 2px;
+  margin-bottom: 2px;
+  display: flex;
+  flex-direction: row; /* CAMBIATO da column a row */
+  gap: 15px; /* AUMENTATO da 5px per spaziare le parole */
+  background: linear-gradient(135deg, #fff 0%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
+  justify-content: center; /* AGGIUNTO per centrare */
+}
