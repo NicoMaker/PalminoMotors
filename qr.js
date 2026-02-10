@@ -76,10 +76,10 @@ class PalminoQRGenerator {
       const response = await fetch("data.json");
       const data = await response.json();
       this.companyData = data.company;
-      
+
       this.updateFooter();
       this.loadLogo();
-      
+
       console.log("✅ Dati aziendali caricati con successo da data.json");
     } catch (error) {
       console.error("❌ Errore caricamento data.json:", error);
@@ -118,7 +118,9 @@ class PalminoQRGenerator {
 
     const footerWhatsApp = document.getElementById("footerWhatsApp");
     if (footerWhatsApp) {
-      const phoneNumber = this.companyData.phone.replace(/\+/g, "").replace(/\s/g, "");
+      const phoneNumber = this.companyData.phone
+        .replace(/\+/g, "")
+        .replace(/\s/g, "");
       footerWhatsApp.href = `https://wa.me/${phoneNumber}`;
       footerWhatsApp.textContent = `WhatsApp: ${this.companyData.phone}`;
     }
@@ -138,7 +140,7 @@ class PalminoQRGenerator {
 
   loadLogo() {
     if (!this.companyData) return;
-    
+
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => {
@@ -172,13 +174,13 @@ class PalminoQRGenerator {
 
   hasValidInput() {
     const type = this.typeSelect.value;
-    
-    switch(type) {
-      case 'email':
+
+    switch (type) {
+      case "email":
         return this.inputs.email?.value?.trim();
-      case 'whatsapp':
+      case "whatsapp":
         return this.inputs.whatsapp?.value?.trim();
-      case 'wifi':
+      case "wifi":
         return this.inputs.wifiSsid?.value?.trim();
       default:
         return this.inputs[type]?.value?.trim();
@@ -187,18 +189,18 @@ class PalminoQRGenerator {
 
   getQRData() {
     const type = this.typeSelect.value;
-    
+
     switch (type) {
       case "text":
         return this.inputs.text.value.trim();
-       
+
       case "url":
         let url = this.inputs.url.value.trim();
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
           url = "https://" + url;
         }
         return url;
-       
+
       case "email":
         const email = this.inputs.email.value.trim();
         const subject = this.inputs.emailSubject.value.trim();
@@ -209,23 +211,23 @@ class PalminoQRGenerator {
         if (body) params.push(`body=${encodeURIComponent(body)}`);
         if (params.length) emailUrl += "?" + params.join("&");
         return emailUrl;
-       
+
       case "phone":
         return `tel:${this.inputs.phone.value.trim()}`;
-       
+
       case "whatsapp":
-        const waNumber = this.inputs.whatsapp.value.trim().replace(/\D/g, '');
+        const waNumber = this.inputs.whatsapp.value.trim().replace(/\D/g, "");
         const waMessage = this.inputs.whatsappMessage.value.trim();
         let waUrl = `https://wa.me/${waNumber}`;
         if (waMessage) waUrl += `?text=${encodeURIComponent(waMessage)}`;
         return waUrl;
-       
+
       case "wifi":
         const ssid = this.inputs.wifiSsid.value.trim();
         const password = this.inputs.wifiPassword.value.trim();
         const security = this.inputs.wifiSecurity.value;
         return `WIFI:T:${security};S:${ssid};P:${password};;`;
-       
+
       default:
         return "";
     }
@@ -234,15 +236,23 @@ class PalminoQRGenerator {
   // 🔧 METODO PER ASPETTARE IL LOGO
   waitForLogo(maxWait = 5000) {
     return new Promise((resolve) => {
-      if (this.logoImage && this.logoImage.complete && this.logoImage.naturalWidth > 0) {
+      if (
+        this.logoImage &&
+        this.logoImage.complete &&
+        this.logoImage.naturalWidth > 0
+      ) {
         console.log("✅ Logo già pronto");
         resolve(true);
         return;
       }
-      
+
       const start = Date.now();
       const checkLogo = () => {
-        if (this.logoImage && this.logoImage.complete && this.logoImage.naturalWidth > 0) {
+        if (
+          this.logoImage &&
+          this.logoImage.complete &&
+          this.logoImage.naturalWidth > 0
+        ) {
           console.log("✅ Logo diventato pronto");
           resolve(true);
         } else if (Date.now() - start > maxWait) {
@@ -288,7 +298,7 @@ class PalminoQRGenerator {
         size: size,
         foreground: "#000000",
         background: "#ffffff",
-        level: "H"
+        level: "H",
       });
 
       // LAYOUT: Logo sopra + QR + Info sotto
@@ -297,7 +307,7 @@ class PalminoQRGenerator {
       const footerHeight = Math.max(120, size * 0.25);
       finalCanvas.width = size;
       finalCanvas.height = headerHeight + size + footerHeight;
-      
+
       const ctx = finalCanvas.getContext("2d");
 
       // Background bianco
@@ -305,12 +315,16 @@ class PalminoQRGenerator {
       ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
 
       // 1. LOGO SOPRA - ✅ CONTROLLO COMPLETO
-      if (this.logoImage && this.logoImage.complete && this.logoImage.naturalWidth > 0) {
+      if (
+        this.logoImage &&
+        this.logoImage.complete &&
+        this.logoImage.naturalWidth > 0
+      ) {
         console.log("✅ Logo OK - disegno logo");
-        
-        const maxLogoSize = Math.max(80, size * 0.16);
+
+        const maxLogoSize = Math.max(80, size * 0.3);
         const logoAspectRatio = this.logoImage.width / this.logoImage.height;
-        
+
         let logoWidth, logoHeight;
         if (logoAspectRatio > 1) {
           logoWidth = maxLogoSize;
@@ -319,10 +333,10 @@ class PalminoQRGenerator {
           logoHeight = maxLogoSize;
           logoWidth = maxLogoSize * logoAspectRatio;
         }
-        
+
         const logoX = (finalCanvas.width - logoWidth) / 2;
         const logoY = (headerHeight - logoHeight) / 2;
-        
+
         ctx.drawImage(this.logoImage, logoX, logoY, logoWidth, logoHeight);
       } else {
         console.warn("⚠️ Logo NON disponibile, testo placeholder");
@@ -333,7 +347,7 @@ class PalminoQRGenerator {
         ctx.font = `bold ${Math.max(18, size * 0.045)}px Arial, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        
+
         const logoText = "PALMINO";
         ctx.strokeText(logoText, finalCanvas.width / 2, headerHeight / 2);
         ctx.fillText(logoText, finalCanvas.width / 2, headerHeight / 2);
@@ -352,7 +366,7 @@ class PalminoQRGenerator {
 
       // 3. FOOTER INFO
       const footerY = headerHeight + size;
-      
+
       // Bordo footer
       ctx.strokeStyle = "#00f5ff";
       ctx.lineWidth = 2;
@@ -362,7 +376,12 @@ class PalminoQRGenerator {
       ctx.stroke();
 
       // Gradient footer
-      const gradient = ctx.createLinearGradient(0, footerY, 0, footerY + footerHeight);
+      const gradient = ctx.createLinearGradient(
+        0,
+        footerY,
+        0,
+        footerY + footerHeight,
+      );
       gradient.addColorStop(0, "#ffffff");
       gradient.addColorStop(1, "#f8f9fa");
       ctx.fillStyle = gradient;
@@ -374,39 +393,63 @@ class PalminoQRGenerator {
       ctx.font = `italic bold ${titleFontSize}px Georgia, serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("Palmino Motors", finalCanvas.width / 2, footerY + footerHeight * 0.20);
+      ctx.fillText(
+        "Palmino Motors",
+        finalCanvas.width / 2,
+        footerY + footerHeight * 0.2,
+      );
 
       // Testi normali
       const textFontSize = Math.max(10, size * 0.022);
       ctx.font = `${textFontSize}px Calibri, Arial, sans-serif`;
       ctx.fillStyle = "#495057";
       ctx.textBaseline = "middle";
-      
+
       // Indirizzo
       const fullAddress = `${this.companyData.address}, ${this.companyData.cap} ${this.companyData.city} (${this.companyData.province})`;
-      ctx.fillText(fullAddress, finalCanvas.width / 2, footerY + footerHeight * 0.36);
+      ctx.fillText(
+        fullAddress,
+        finalCanvas.width / 2,
+        footerY + footerHeight * 0.36,
+      );
 
       // Tel
-      const smallTextSize = Math.max(9, size * 0.020);
+      const smallTextSize = Math.max(9, size * 0.02);
       ctx.font = `${smallTextSize}px Calibri, Arial, sans-serif`;
-      ctx.fillText(`Tel: ${this.companyData.phone}`, finalCanvas.width / 2, footerY + footerHeight * 0.52);
+      ctx.fillText(
+        `Tel: ${this.companyData.phone}`,
+        finalCanvas.width / 2,
+        footerY + footerHeight * 0.52,
+      );
 
       // Email
       ctx.fillStyle = "#495057";
-      ctx.fillText(this.companyData.email, finalCanvas.width / 2, footerY + footerHeight * 0.67);
+      ctx.fillText(
+        this.companyData.email,
+        finalCanvas.width / 2,
+        footerY + footerHeight * 0.67,
+      );
 
       // SITO WEB
       const website = this.companyData.website || "www.palminomotors.com";
-      const websiteSize = Math.max(9, size * 0.020);
+      const websiteSize = Math.max(9, size * 0.02);
       ctx.font = `${websiteSize}px Calibri, Arial, sans-serif`;
       ctx.fillStyle = "#495057";
-      ctx.fillText(website, finalCanvas.width / 2, footerY + footerHeight * 0.82);
+      ctx.fillText(
+        website,
+        finalCanvas.width / 2,
+        footerY + footerHeight * 0.82,
+      );
 
       // P.IVA
       const pivaSize = Math.max(8, size * 0.018);
       ctx.font = `${pivaSize}px Calibri, Arial, sans-serif`;
       ctx.fillStyle = "#6c757d";
-      ctx.fillText(`P.IVA: ${this.companyData.piva}`, finalCanvas.width / 2, footerY + footerHeight * 0.97);
+      ctx.fillText(
+        `P.IVA: ${this.companyData.piva}`,
+        finalCanvas.width / 2,
+        footerY + footerHeight * 0.97,
+      );
 
       // Display
       this.qrContainer.innerHTML = "";
@@ -415,11 +458,15 @@ class PalminoQRGenerator {
       this.qrContainer.classList.add("has-qr");
       this.downloadSection.classList.remove("hidden");
 
-      this.currentQR = { canvas: finalCanvas, data, size, type: this.typeSelect.value };
+      this.currentQR = {
+        canvas: finalCanvas,
+        data,
+        size,
+        type: this.typeSelect.value,
+      };
       this.updateInfoSection();
 
       console.log("✅ QR generato con successo");
-
     } catch (error) {
       console.error("❌ Errore QR:", error);
       this.showToast("Errore generazione QR", "error");
@@ -428,14 +475,18 @@ class PalminoQRGenerator {
 
   downloadQR() {
     if (!this.currentQR) return;
-    
+
     const link = document.createElement("a");
     link.href = this.currentQR.canvas.toDataURL("image/png");
-    
+
     const now = new Date();
-    const timestamp = now.toISOString().slice(0, 19).replace(/:/g, "-").replace("T", "_");
+    const timestamp = now
+      .toISOString()
+      .slice(0, 19)
+      .replace(/:/g, "-")
+      .replace("T", "_");
     const fileName = `PalminoMotors_QR_${this.currentQR.type}_${timestamp}.png`;
-    
+
     link.download = fileName;
     link.click();
   }
@@ -444,14 +495,14 @@ class PalminoQRGenerator {
     if (!this.currentQR) return;
 
     try {
-      const blob = await new Promise(resolve => 
-        this.currentQR.canvas.toBlob(resolve, "image/png")
+      const blob = await new Promise((resolve) =>
+        this.currentQR.canvas.toBlob(resolve, "image/png"),
       );
-      
+
       await navigator.clipboard.write([
-        new ClipboardItem({ "image/png": blob })
+        new ClipboardItem({ "image/png": blob }),
       ]);
-      
+
       this.showToast("QR Code copiato negli appunti!", "success");
     } catch (error) {
       console.error("❌ Errore copia negli appunti:", error);
@@ -476,7 +527,7 @@ class PalminoQRGenerator {
 
   updateInfoSection() {
     if (!this.currentQR) return;
-    
+
     const typeMap = {
       text: "Testo",
       url: "URL/Link",
@@ -485,29 +536,33 @@ class PalminoQRGenerator {
       whatsapp: "WhatsApp",
       wifi: "WiFi",
     };
-    
-    this.infoType.textContent = typeMap[this.currentQR.type] || this.currentQR.type;
+
+    this.infoType.textContent =
+      typeMap[this.currentQR.type] || this.currentQR.type;
     this.infoSize.textContent = `${this.currentQR.size}px`;
     this.infoLogo.textContent = "Logo + Info";
-    
-    const contentText = this.currentQR.data.length > 60
-      ? this.currentQR.data.slice(0, 60) + "..."
-      : this.currentQR.data;
+
+    const contentText =
+      this.currentQR.data.length > 60
+        ? this.currentQR.data.slice(0, 60) + "..."
+        : this.currentQR.data;
     this.infoContent.textContent = contentText;
   }
 
   showToast(msg, type = "success") {
     this.toastMessage.textContent = msg;
-    
+
     const icon = this.toast.querySelector("i");
     if (type === "error") {
-      this.toast.style.background = "linear-gradient(135deg, #ff006e 0%, #ff4d4d 100%)";
+      this.toast.style.background =
+        "linear-gradient(135deg, #ff006e 0%, #ff4d4d 100%)";
       icon.className = "fas fa-exclamation-circle";
     } else {
-      this.toast.style.background = "linear-gradient(135deg, #00ff88 0%, #00f5ff 100%)";
+      this.toast.style.background =
+        "linear-gradient(135deg, #00ff88 0%, #00f5ff 100%)";
       icon.className = "fas fa-check-circle";
     }
-    
+
     this.toast.classList.add("show");
     setTimeout(() => this.toast.classList.remove("show"), 3000);
   }
@@ -516,14 +571,14 @@ class PalminoQRGenerator {
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
   new PalminoQRGenerator();
-  
+
   // Add smooth scroll behavior
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
       e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
+      const target = document.querySelector(this.getAttribute("href"));
       if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
+        target.scrollIntoView({ behavior: "smooth" });
       }
     });
   });
@@ -532,7 +587,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", () => {
     const scrolled = window.pageYOffset;
     const orbs = document.querySelectorAll(".glow-orb");
-    
+
     orbs.forEach((orb, index) => {
       const speed = 0.3 + index * 0.1;
       orb.style.transform = `translateY(${scrolled * speed}px)`;
