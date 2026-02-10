@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadData();
   document.getElementById("year").textContent = new Date().getFullYear();
   initAnimations();
+  initRippleEffect(); // Spostato qui per evitare doppio listener
 });
 
 async function loadData() {
@@ -29,12 +30,14 @@ function handleLogos(logoPath) {
   const oldCircle = document.querySelector(".logo-circle");
   if (oldCircle) oldCircle.remove();
 
+  // Header logo
   const headerImg = document.createElement("img");
   headerImg.src = logoPath;
   headerImg.className = "main-logo";
   headerImg.alt = "Palmino Motors Logo";
   logoArea.prepend(headerImg);
 
+  // Footer logo
   const footerCol = document.getElementById("footerCompanyCol");
   const footerImg = document.createElement("img");
   footerImg.src = logoPath;
@@ -54,10 +57,11 @@ function renderCategories(categories) {
           <div class="links-grid">
             ${cat.links
               .map(
-                (link, linkIndex) => `
+                (linkIndex) => `
                   <a 
                     href="${link.url}" 
-                    target="_blank" 
+                    target="_blank"
+                    rel="noopener noreferrer"
                     class="link-card" 
                     data-card="${catIndex}-${linkIndex}"
                     style="opacity: 0; transform: translateX(-20px);"
@@ -81,9 +85,8 @@ function renderCategories(categories) {
 function renderBrands(brands) {
   const container = document.getElementById("brandContainer");
 
-  // Controllo se ci sono marchi da visualizzare
   if (!brands || brands.length === 0) {
-    container.innerHTML = "<p>Nessun marchio disponibile.</p>";
+    container.innerHTML = '<p style="text-align: center; color: var(--text-dim);">Nessun marchio disponibile.</p>';
     return;
   }
 
@@ -93,9 +96,9 @@ function renderBrands(brands) {
         <div class="brand-item" data-brand="${index}" style="opacity: 0; transform: translateY(20px);">
           <span class="brand-name">${brand.name}</span>
           <div class="brand-socials">
-            ${brand.url ? `<a href="${brand.url}" target="_blank" class="brand-pill brand-site" aria-label="Sito ufficiale ${brand.name}">🌐</a>` : ""}
-            ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" class="brand-pill brand-facebook" aria-label="Facebook ${brand.name}">f</a>` : ""}
-            ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" class="brand-pill brand-instagram" aria-label="Instagram ${brand.name}">⌾</a>` : ""}
+            ${brand.url ? `<a href="${brand.url}" target="_blank" rel="noopener noreferrer" class="brand-pill brand-site" aria-label="Sito ufficiale ${brand.name}">🌐</a>` : ""}
+            ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" rel="noopener noreferrer" class="brand-pill brand-facebook" aria-label="Facebook ${brand.name}">f</a>` : ""}
+            ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill brand-instagram" aria-label="Instagram ${brand.name}">⌾</a>` : ""}
           </div>
         </div>
       `,
@@ -104,43 +107,60 @@ function renderBrands(brands) {
 }
 
 function populateFooter(company) {
-  document.getElementById("companyName").textContent =
-    company.fullName.toUpperCase();
+  // Company name
+  document.getElementById("companyName").textContent = company.fullName.toUpperCase();
 
+  // Address con link a Google Maps
   const addressLink = document.getElementById("fullAddress");
   const fullAddress = `${company.address}, ${company.cap} ${company.city} (${company.province})`;
   addressLink.textContent = fullAddress;
-  addressLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    fullAddress,
-  )}`;
+  addressLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
+  addressLink.target = "_blank";
+  addressLink.rel = "noopener noreferrer";
 
+  // Phone
   const phoneLink = document.getElementById("footerPhone");
   phoneLink.href = `tel:${company.phone}`;
-  phoneLink.textContent = `Tel: ${company.phone}`;
+  phoneLink.textContent = company.phone;
 
+  // Email
   const emailLink = document.getElementById("footerEmail");
   emailLink.href = `mailto:${company.email}`;
-  emailLink.textContent = `Email: ${company.email}`;
+  emailLink.textContent = company.email;
 
+  // WhatsApp
   const whatsappLink = document.getElementById("footerWhatsApp");
-  const phoneNumber = company.phone.replace(/\+/g, "").replace(/\s/g, "");
+  const phoneNumber = company.phone.replace(/[\s\+]/g, "");
   whatsappLink.href = `https://wa.me/${phoneNumber}`;
-  whatsappLink.textContent = `WhatsApp: ${company.phone}`;
+  whatsappLink.textContent = company.phone;
+  whatsappLink.target = "_blank";
+  whatsappLink.rel = "noopener noreferrer";
 
+  // P.IVA
   document.getElementById("footerPiva").textContent = `P.IVA: ${company.piva}`;
 }
 
 function initAnimations() {
+  // Parallax effect per gli orbs
+  let ticking = false;
   window.addEventListener("scroll", () => {
-    const scrolled = window.pageYOffset;
-    const orbs = document.querySelectorAll(".glow-orb");
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const scrolled = window.pageYOffset;
+        const orbs = document.querySelectorAll(".glow-orb");
 
-    orbs.forEach((orb, index) => {
-      const speed = 0.5 + index * 0.2;
-      orb.style.transform = `translateY(${scrolled * speed}px)`;
-    });
+        orbs.forEach((orb, index) => {
+          const speed = 0.5 + index * 0.2;
+          orb.style.transform = `translateY(${scrolled * speed}px)`;
+        });
+
+        ticking = false;
+      });
+      ticking = true;
+    }
   });
 
+  // Intersection Observer per animazioni scroll
   const observerOptions = {
     threshold: 0.1,
     rootMargin: "0px 0px -50px 0px",
@@ -157,9 +177,7 @@ function initAnimations() {
 
   document
     .querySelectorAll(".link-card, .category-section, .brand-item")
-    .forEach((el) => {
-      observer.observe(el);
-    });
+    .forEach((el) => observer.observe(el));
 }
 
 function animateCards() {
@@ -185,10 +203,25 @@ function animateCards() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const cards = document.querySelectorAll(".link-card");
-  cards.forEach((card) => {
-    card.addEventListener("mouseenter", function () {
+// Effetto ripple sulle card - UNIFICATO
+function initRippleEffect() {
+  // Aggiungi lo stile per l'animazione
+  const style = document.createElement("style");
+  style.textContent = `
+    @keyframes ripple {
+      to {
+        width: 100px;
+        height: 100px;
+        opacity: 0;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Delega gli eventi alle card future
+  document.addEventListener("mouseenter", (e) => {
+    if (e.target.closest(".link-card")) {
+      const card = e.target.closest(".link-card");
       const ripple = document.createElement("div");
       ripple.style.cssText = `
         position: absolute;
@@ -202,20 +235,8 @@ document.addEventListener("DOMContentLoaded", () => {
         top: 50%;
         transform: translateY(-50%);
       `;
-      this.appendChild(ripple);
+      card.appendChild(ripple);
       setTimeout(() => ripple.remove(), 600);
-    });
-  });
-
-  const style = document.createElement("style");
-  style.textContent = `
-    @keyframes ripple {
-      to {
-        width: 100px;
-        height: 100px;
-        opacity: 0;
-      }
     }
-  `;
-  document.head.appendChild(style);
-});
+  }, true);
+}
