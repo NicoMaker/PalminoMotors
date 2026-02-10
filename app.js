@@ -2,6 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   loadData();
   document.getElementById("year").textContent = new Date().getFullYear();
   initAnimations();
+
+  // Aggiungo classe loaded per transizioni fluide
+  window.addEventListener("load", () => {
+    document.body.classList.add("loaded");
+  });
 });
 
 async function loadData() {
@@ -47,17 +52,23 @@ function renderCategories(categories) {
   const container = document.getElementById("linksContainer");
 
   container.innerHTML = categories
-    .map(
-      (cat, catIndex) => `
+    .map((cat, catIndex) => {
+      // Ordino i link alfabeticamente per titolo
+      const sortedLinks = [...cat.links].sort((a, b) =>
+        a.title.localeCompare(b.title, "it", { sensitivity: "base" }),
+      );
+
+      return `
         <section class="category-section" data-category="${catIndex}">
           <h2 class="category-title">${cat.name}</h2>
           <div class="links-grid">
-            ${cat.links
+            ${sortedLinks
               .map(
                 (link, linkIndex) => `
                   <a 
                     href="${link.url}" 
                     target="_blank" 
+                    rel="noopener noreferrer"
                     class="link-card" 
                     data-card="${catIndex}-${linkIndex}"
                     style="opacity: 0; transform: translateX(-20px);"
@@ -73,8 +84,8 @@ function renderCategories(categories) {
               .join("")}
           </div>
         </section>
-      `,
-    )
+      `;
+    })
     .join("");
 }
 
@@ -87,15 +98,20 @@ function renderBrands(brands) {
     return;
   }
 
-  container.innerHTML = brands
+  // Ordino i brand alfabeticamente per nome
+  const sortedBrands = [...brands].sort((a, b) =>
+    a.name.localeCompare(b.name, "it", { sensitivity: "base" }),
+  );
+
+  container.innerHTML = sortedBrands
     .map(
       (brand, index) => `
         <div class="brand-item" data-brand="${index}" style="opacity: 0; transform: translateY(20px);">
           <span class="brand-name">${brand.name}</span>
           <div class="brand-socials">
-            ${brand.url ? `<a href="${brand.url}" target="_blank" class="brand-pill brand-site" aria-label="Sito ufficiale ${brand.name}">🌐</a>` : ""}
-            ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" class="brand-pill brand-facebook" aria-label="Facebook ${brand.name}">f</a>` : ""}
-            ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" class="brand-pill brand-instagram" aria-label="Instagram ${brand.name}">⌾</a>` : ""}
+            ${brand.url ? `<a href="${brand.url}" target="_blank" rel="noopener noreferrer" class="brand-pill brand-site" aria-label="Sito ufficiale ${brand.name}">🌐</a>` : ""}
+            ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" rel="noopener noreferrer" class="brand-pill brand-facebook" aria-label="Facebook ${brand.name}">f</a>` : ""}
+            ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill brand-instagram" aria-label="Instagram ${brand.name}">⌾</a>` : ""}
           </div>
         </div>
       `,
@@ -166,9 +182,11 @@ function animateCards() {
   const cards = document.querySelectorAll(".link-card");
   cards.forEach((card, index) => {
     setTimeout(() => {
-      card.style.transition = "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
-      card.style.opacity = "1";
-      card.style.transform = "translateX(0)";
+      requestAnimationFrame(() => {
+        card.style.transition = "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+        card.style.opacity = "1";
+        card.style.transform = "translateX(0)";
+      });
     }, index * 100);
   });
 
@@ -176,9 +194,11 @@ function animateCards() {
   brands.forEach((brand, index) => {
     setTimeout(
       () => {
-        brand.style.transition = "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
-        brand.style.opacity = "1";
-        brand.style.transform = "translateY(0)";
+        requestAnimationFrame(() => {
+          brand.style.transition = "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)";
+          brand.style.opacity = "1";
+          brand.style.transform = "translateY(0)";
+        });
       },
       cards.length * 100 + index * 80,
     );
