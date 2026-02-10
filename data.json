@@ -29,10 +29,10 @@
           "icon": "⚙️"
         },
         {
-          "title":"Creazione QR Code",
-          "description":"Strumento per generazione QR Code personalizzati",
-          "url":"http://palminomotorsmagazzino.it/qr.html",
-          "icon":"📱"
+          "title": "Creazione QR Code",
+          "description": "Strumento per generazione QR Code personalizzati",
+          "url": "http://palminomotorsmagazzino.it/qr.html",
+          "icon": "📱"
         },
         {
           "title": "Calcolatore Sconto e Aumento Prezzo",
@@ -48,7 +48,7 @@
         {
           "title": "Portale Assistenza MBP",
           "description": "Area riservata assistenza e ricambi SWM",
-          "url": "https://kwmportal.com/user/login.html?v=1770645197053 ",
+          "url": "https://kwmportal.com/user/login.html?v=1770645197053",
           "icon": "🛠️"
         }
       ]
@@ -69,10 +69,10 @@
           "icon": "📦"
         },
         {
-          "title":"Gestione Preventivi",
-          "description":"Pannello per creazione e gestione preventivi",
-          "url":"https://preventivi.palminomotorsmagazzino.it",
-          "icon":"🧾"
+          "title": "Gestione Preventivi",
+          "description": "Pannello per creazione e gestione preventivi",
+          "url": "https://preventivi.palminomotorsmagazzino.it",
+          "icon": "🧾"
         }
       ]
     },
@@ -136,6 +136,23 @@
           "description": "Strumento grafico per creazione contenuti social e promozionali",
           "url": "https://www.canva.com/folder/FAF-MCLkJGY",
           "icon": "🎨"
+        }
+      ]
+    },
+    {
+      "name": "Email & Comunicazioni",
+      "links": [
+        {
+          "title": "Gmail",
+          "description": "Casella email principale Palmino Motors",
+          "url": "https://mail.google.com",
+          "icon": "📧"
+        },
+        {
+          "title": "Outlook",
+          "description": "Client email alternativo",
+          "url": "https://outlook.live.com/mail/",
+          "icon": "📨"
         }
       ]
     }
