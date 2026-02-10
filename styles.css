@@ -909,3 +909,44 @@ body {
     font-family: "Orbitron", sans-serif !important;
   }
 }
+
+
+.brand-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* CARD BRAND tutte uguali */
+.brand-item {
+  width: 260px;              /* stessa larghezza per tutti */
+  height: 70px;              /* stessa altezza per tutti */
+  padding: 12px 18px;
+  background: var(--dark-card);
+  border: 1px solid var(--card-border);
+  border-radius: 30px;
+  font-size: 0.85rem;
+  color: white;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: "Orbitron", sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.brand-name {
+  flex: 1;                /* prende lo spazio centrale */
+  min-width: 0;
+}
+
+.brand-socials {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
