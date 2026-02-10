@@ -852,3 +852,23 @@ input:checked + .slider:before {
 #generate-btn {
   display: none;
 }
+
+.title-word {
+  display: inline-block;
+  font-family: "Orbitron", sans-serif;
+}
+
+.main-title {
+  font-size: 2.5rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  margin-bottom: 2px;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  background: linear-gradient(135deg, #fff 0%, #00f5ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  justify-content: center;
+}
