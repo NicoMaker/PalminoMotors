@@ -81,21 +81,21 @@ function renderCategories(categories) {
 function renderBrands(brands) {
   const container = document.getElementById("brandContainer");
 
+  // Controllo se ci sono marchi da visualizzare
+  if (!brands || brands.length === 0) {
+    container.innerHTML = "<p>Nessun marchio disponibile.</p>";
+    return;
+  }
+
   container.innerHTML = brands
     .map(
       (brand, index) => `
         <div class="brand-item" data-brand="${index}" style="opacity: 0; transform: translateY(20px);">
           <span class="brand-name">${brand.name}</span>
           <div class="brand-socials">
-            <a href="${brand.url}" target="_blank" class="brand-pill brand-site" aria-label="Sito ufficiale ${brand.name}">
-              🌐
-            </a>
-            <a href="${brand.facebook}" target="_blank" class="brand-pill brand-facebook" aria-label="Facebook ${brand.name}">
-              f
-            </a>
-            <a href="${brand.instagram}" target="_blank" class="brand-pill brand-instagram" aria-label="Instagram ${brand.name}">
-              ⌾
-            </a>
+            ${brand.url ? `<a href="${brand.url}" target="_blank" class="brand-pill brand-site" aria-label="Sito ufficiale ${brand.name}">🌐</a>` : ""}
+            ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" class="brand-pill brand-facebook" aria-label="Facebook ${brand.name}">f</a>` : ""}
+            ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" class="brand-pill brand-instagram" aria-label="Instagram ${brand.name}">⌾</a>` : ""}
           </div>
         </div>
       `,
