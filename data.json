@@ -33,6 +33,12 @@
           "description":"Strumento per generazione QR Code personalizzati",
           "url":"http://palminomotorsmagazzino.it/qr.html",
           "icon":"📱"
+        },
+        {
+          "title": "Calcolatore Sconto e Aumento Prezzo",
+          "description": "Strumento per calcolo sconto e aumento prezzo",
+          "url": "https://paginageneralesiti.netlify.app/site/utilities/calcolatore_sconto_aumento/",
+          "icon": "🧮"
         }
       ]
     },
@@ -40,7 +46,7 @@
       "name": "Portali Assistenza",
       "links": [
         {
-          "title": "Portale Assistenza SWM",
+          "title": "Portale Assistenza MBP",
           "description": "Area riservata assistenza e ricambi SWM",
           "url": "https://kwmportal.com/user/login.html?v=1770645197053 ",
           "icon": "🛠️"

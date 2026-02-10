@@ -787,8 +787,3 @@ input:checked + .slider:before {
 #generate-btn{
   display: none;
 }
-
-.title-word
-{
-    font-family: 'Lobster', cursive;
-}
