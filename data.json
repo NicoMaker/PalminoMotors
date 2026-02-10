@@ -184,7 +184,7 @@
           "icon": "🧮"
         },
         {
-          "title": "PAlminoMotors",
+          "title": "PalminoMotors",
           "description": "Repository principale Palmino Motors",
           "url": "https://github.com/NicoMaker/PalminoMotors",
           "icon": "📦"
@@ -193,11 +193,41 @@
     }
   ],
   "brands": [
-    { "name": "Keeway", "url": "https://italy.keeway.com/" },
-    { "name": "Morbidelli", "url": "https://www.morbidelli.com/it-it/" },
-    { "name": "Benda", "url": "https://www.bendakeeway.com/it-it" },
-    { "name": "Cyclone", "url": "https://www.cyclonemoto.it/" },
-    { "name": "SWM", "url": "https://www.swm-motorcycles.it/" },
-    { "name": "Brixton", "url": "https://www.brixton-motorcycles.com/it/" }
+    { 
+      "name": "Keeway", 
+      "url": "https://italy.keeway.com/",
+      "instagram": "https://www.instagram.com/keewayitalia/",
+      "facebook": "https://www.facebook.com/keewayitalia"
+    },
+    { 
+      "name": "Morbidelli", 
+      "url": "https://www.morbidelli.com/it-it/",
+      "instagram": "https://www.instagram.com/morbidelliit/",
+      "facebook": "https://www.facebook.com/morbidelliitalia"
+    },
+    { 
+      "name": "Benda", 
+      "url": "https://www.bendakeeway.com/it-it",
+      "instagram": "https://www.instagram.com/benda_global/",
+      "facebook": "https://www.facebook.com/bendaglobal"
+    },
+    { 
+      "name": "Cyclone", 
+      "url": "https://www.cyclonemoto.it/",
+      "instagram": "https://www.instagram.com/cyclonemotor_es/",
+      "facebook": "https://www.facebook.com/cyclonemotor"
+    },
+    { 
+      "name": "SWM", 
+      "url": "https://www.swm-motorcycles.it/",
+      "instagram": "https://www.instagram.com/swmmotorcyclesofficial/",
+      "facebook": "https://www.facebook.com/swmmotorcycles"
+    },
+    { 
+      "name": "Brixton", 
+      "url": "https://www.brixton-motorcycles.com/it/",
+      "instagram": "https://www.instagram.com/brixton_motorcycles/",
+      "facebook": "https://www.facebook.com/brixtonmotorcycles"
+    }
   ]
 }

@@ -45,8 +45,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image:
-    linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
+  background-image: linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
   background-size: 50px 50px;
   animation: gridPulse 4s ease-in-out infinite;
@@ -124,6 +123,7 @@ body {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -169,28 +169,20 @@ body {
   font-family: "Orbitron", sans-serif;
   font-weight: 900;
   font-size: 2rem;
-  box-shadow:
-    0 0 30px var(--primary-glow),
-    0 0 60px var(--primary-glow),
+  box-shadow: 0 0 30px var(--primary-glow), 0 0 60px var(--primary-glow),
     inset 0 0 20px rgba(255, 255, 255, 0.1);
   position: relative;
-  animation:
-    logoFloat 3s ease-in-out infinite,
-    logoPulse 2s ease-in-out infinite;
+  animation: logoFloat 3s ease-in-out infinite, logoPulse 2s ease-in-out infinite;
 }
 
 @keyframes logoPulse {
   0%,
   100% {
-    box-shadow:
-      0 0 30px var(--primary-glow),
-      0 0 60px var(--primary-glow),
+    box-shadow: 0 0 30px var(--primary-glow), 0 0 60px var(--primary-glow),
       inset 0 0 20px rgba(255, 255, 255, 0.1);
   }
   50% {
-    box-shadow:
-      0 0 50px var(--primary-glow),
-      0 0 100px var(--primary-glow),
+    box-shadow: 0 0 50px var(--primary-glow), 0 0 100px var(--primary-glow),
       inset 0 0 30px rgba(255, 255, 255, 0.2);
   }
 }
@@ -212,6 +204,7 @@ body {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -285,12 +278,7 @@ body {
 .stat-divider {
   width: 1px;
   height: 40px;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    var(--card-border),
-    transparent
-  );
+  background: linear-gradient(to bottom, transparent, var(--card-border), transparent);
 }
 
 .header-divider {
@@ -408,9 +396,7 @@ body {
   background: rgba(15, 20, 25, 0.95);
   transform: translateX(12px) scale(1.02);
   border-color: var(--secondary);
-  box-shadow:
-    0 8px 32px rgba(0, 245, 255, 0.3),
-    0 0 0 1px var(--secondary);
+  box-shadow: 0 8px 32px rgba(0, 245, 255, 0.3), 0 0 0 1px var(--secondary);
 }
 
 .link-icon {
@@ -481,12 +467,7 @@ body {
 .title-line {
   width: 60px;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--secondary),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, var(--secondary), transparent);
 }
 
 .brand-links {
@@ -502,7 +483,6 @@ body {
   border: 1px solid var(--card-border);
   border-radius: 30px;
   font-size: 0.85rem;
-  text-decoration: none;
   color: white;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: "Orbitron", sans-serif;
@@ -510,6 +490,9 @@ body {
   letter-spacing: 1px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .brand-item::before {
@@ -522,9 +505,7 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, var(--primary), var(--secondary));
   transform: translate(-50%, -50%);
-  transition:
-    width 0.4s ease,
-    height 0.4s ease;
+  transition: width 0.4s ease, height 0.4s ease;
   opacity: 0.2;
   z-index: 0;
 }
@@ -541,9 +522,52 @@ body {
   box-shadow: 0 8px 24px var(--primary-glow);
 }
 
-.brand-item span {
+.brand-name {
   position: relative;
   z-index: 1;
+  font-size: 0.9rem;
+}
+
+.brand-socials {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  z-index: 1;
+}
+
+.brand-pill {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  text-decoration: none;
+  color: var(--text);
+  border: 1px solid var(--card-border);
+  background: rgba(10, 14, 26, 0.8);
+  transition: all 0.25s ease;
+  box-shadow: 0 0 8px rgba(0, 245, 255, 0.25);
+}
+
+.brand-pill:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 0 14px rgba(0, 245, 255, 0.5);
+}
+
+.brand-site {
+  color: var(--secondary);
+}
+
+.brand-facebook {
+  color: #1773ea;
+  border-color: rgba(23, 115, 234, 0.6);
+}
+
+.brand-instagram {
+  color: #ff3e7f;
+  border-color: rgba(255, 62, 127, 0.6);
 }
 
 /* ===== FOOTER ===== */
@@ -564,13 +588,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background:
-    linear-gradient(
-      135deg,
-      rgba(10, 14, 26, 0.95) 0%,
-      rgba(15, 20, 25, 0.9) 100%
-    ),
-    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><defs><linearGradient id="bikeGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:%23E63946;stop-opacity:0.15"/><stop offset="50%" style="stop-color:%2300F5FF;stop-opacity:0.2"/><stop offset="100%" style="stop-color:%23E63946;stop-opacity:0.15"/></linearGradient></defs><path d="M200,200 Q250,150 300,180 T400,200 L420,210 L440,200 Q460,190 480,200 L500,210 M100,250 Q120,240 140,250 T180,250 M600,180 L650,160 L680,180 L650,200 Z M800,200 C820,180 840,180 860,200 L880,220 L900,200" stroke="url(%23bikeGrad)" stroke-width="3" fill="none" opacity="0.4"/><circle cx="350" cy="240" r="40" stroke="url(%23bikeGrad)" stroke-width="4" fill="none" opacity="0.3"/><circle cx="520" cy="240" r="40" stroke="url(%23bikeGrad)" stroke-width="4" fill="none" opacity="0.3"/><path d="M350,240 L380,200 L420,200 L450,240 M380,200 L400,180 L420,180 L440,200" stroke="url(%23bikeGrad)" stroke-width="3" fill="none" opacity="0.5"/></svg>');
+  background: linear-gradient(135deg, rgba(10, 14, 26, 0.95) 0%, rgba(15, 20, 25, 0.9) 100%),
+    url("data:image/svg+xml,");
   background-size: cover;
   background-position: center;
   z-index: 0;
@@ -598,6 +617,7 @@ body {
   0% {
     transform: translateY(0);
   }
+
   100% {
     transform: translateY(20px);
   }
@@ -621,6 +641,16 @@ body {
   background-size: 200% 100%;
   animation: borderFlow 4s linear infinite;
   z-index: 3;
+}
+
+@keyframes borderFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
 }
 
 .footer-content {
@@ -869,18 +899,13 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}
 
-.title-word {
-  color: white !important;
-}
-
-.title-word {
-  color: white !important;
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  -webkit-text-fill-color: white !important;
-  background-clip: initial !important;
-
-  font-family: "Orbitron", sans-serif !important;
+  .title-word {
+    color: white !important;
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: white !important;
+    background-clip: initial !important;
+    font-family: "Orbitron", sans-serif !important;
+  }
 }
