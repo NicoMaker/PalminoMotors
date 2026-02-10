@@ -50,6 +50,12 @@
           "description": "Area riservata assistenza e ricambi SWM",
           "url": "https://kwmportal.com/user/login.html?v=1770645197053",
           "icon": "🛠️"
+        },
+        {
+          "title": "Portale Assistenza SWM",
+          "description": "Area riservata assistenza e ricambi SWM",
+          "url": "https://swan-swm.softway.it/service/",
+          "icon": "🛠️"
         }
       ]
     },
