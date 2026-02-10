@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadData();
   document.getElementById("year").textContent = new Date().getFullYear();
   initAnimations();
-
+  
   // Aggiungo classe loaded per transizioni fluide
   window.addEventListener("load", () => {
     document.body.classList.add("loaded");
@@ -51,14 +51,20 @@ function handleLogos(logoPath) {
 function renderCategories(categories) {
   const container = document.getElementById("linksContainer");
 
-  container.innerHTML = categories
-    .map((cat, catIndex) => {
-      // Ordino i link alfabeticamente per titolo
-      const sortedLinks = [...cat.links].sort((a, b) =>
-        a.title.localeCompare(b.title, "it", { sensitivity: "base" }),
-      );
+  // Ordino le categorie alfabeticamente per nome
+  const sortedCategories = [...categories].sort((a, b) => 
+    a.name.localeCompare(b.name, 'it', { sensitivity: 'base' })
+  );
 
-      return `
+  container.innerHTML = sortedCategories
+    .map(
+      (cat, catIndex) => {
+        // Ordino i link alfabeticamente per titolo
+        const sortedLinks = [...cat.links].sort((a, b) => 
+          a.title.localeCompare(b.title, 'it', { sensitivity: 'base' })
+        );
+        
+        return `
         <section class="category-section" data-category="${catIndex}">
           <h2 class="category-title">${cat.name}</h2>
           <div class="links-grid">
@@ -85,7 +91,8 @@ function renderCategories(categories) {
           </div>
         </section>
       `;
-    })
+      },
+    )
     .join("");
 }
 
@@ -99,8 +106,8 @@ function renderBrands(brands) {
   }
 
   // Ordino i brand alfabeticamente per nome
-  const sortedBrands = [...brands].sort((a, b) =>
-    a.name.localeCompare(b.name, "it", { sensitivity: "base" }),
+  const sortedBrands = [...brands].sort((a, b) => 
+    a.name.localeCompare(b.name, 'it', { sensitivity: 'base' })
   );
 
   container.innerHTML = sortedBrands
