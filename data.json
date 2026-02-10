@@ -56,6 +56,12 @@
           "description": "Area riservata assistenza e ricambi SWM",
           "url": "https://swan-swm.softway.it/service/",
           "icon": "🛠️"
+        },
+        {
+          "title": "Multigestionale Motori",
+          "description": "Portale per gestione assistenza e ricambi Multigestionale Motori",
+          "url": "https://motori.multigestionale.com/",
+          "icon": "🛠️"
         }
       ]
     },
