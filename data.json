@@ -217,16 +217,16 @@
       "facebook": "https://www.facebook.com/KeewayEgypt"
     },
     {
-      "name": "Brixton",
-      "url": "https://www.brixton-motorcycles.com/it/",
-      "instagram": "https://www.instagram.com/brixton_motorcycles/",
-      "facebook": "https://www.facebook.com/brixtonmoto"
-    },
-    {
       "name": "SWM",
       "url": "https://www.swm-motorcycles.it/",
       "instagram": "https://www.instagram.com/swmmotorcyclesofficial/",
       "facebook": "https://www.facebook.com/swmmotode"
+    },
+    {
+      "name": "Brixton",
+      "url": "https://www.brixton-motorcycles.com/it/",
+      "instagram": "https://www.instagram.com/brixton_motorcycles/",
+      "facebook": "https://www.facebook.com/brixtonmoto"
     }
   ]
 }
