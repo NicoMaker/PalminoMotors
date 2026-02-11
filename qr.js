@@ -516,7 +516,10 @@ class PalminoQRGenerator {
     if (!this.currentQR) return;
 
     try {
-      // Create a new window for printing
+      // Get the canvas data URL
+      const imageUrl = this.currentQR.canvas.toDataURL("image/png");
+      
+      // Create print window (same for both mobile and desktop)
       const printWindow = window.open("", "_blank");
       
       if (!printWindow) {
@@ -524,20 +527,25 @@ class PalminoQRGenerator {
         return;
       }
 
-      // Get the canvas data URL
-      const imageUrl = this.currentQR.canvas.toDataURL("image/png");
-      
-      // Write HTML to the print window
+      // Write HTML to the print window - optimized for both mobile and desktop
       printWindow.document.write(`
         <!DOCTYPE html>
         <html>
           <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
             <title>Stampa QR Code - Palmino Motors</title>
             <style>
               * {
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+              }
+              html, body {
+                width: 100%;
+                height: 100%;
               }
               body {
                 display: flex;
@@ -550,23 +558,54 @@ class PalminoQRGenerator {
               .print-container {
                 text-align: center;
                 max-width: 100%;
+                width: 100%;
               }
               img {
                 max-width: 100%;
+                width: 100%;
                 height: auto;
                 display: block;
                 margin: 0 auto;
               }
-              @media print {
+              
+              /* Mobile optimization */
+              @media screen and (max-width: 768px) {
                 body {
+                  padding: 10px;
+                }
+                img {
+                  max-width: 100%;
+                }
+              }
+              
+              /* Print styles - same for all devices */
+              @media print {
+                html, body {
+                  width: 100%;
+                  height: 100%;
+                  margin: 0;
                   padding: 0;
+                }
+                body {
+                  background: white;
+                  padding: 0;
+                  display: block;
                 }
                 .print-container {
                   page-break-inside: avoid;
+                  width: 100%;
+                  max-width: 100%;
                 }
-              }
-              @page {
-                margin: 1cm;
+                img {
+                  max-width: 100%;
+                  width: 100%;
+                  height: auto;
+                  page-break-inside: avoid;
+                }
+                @page {
+                  margin: 1cm;
+                  size: auto;
+                }
               }
             </style>
           </head>
@@ -575,6 +614,7 @@ class PalminoQRGenerator {
               <img src="${imageUrl}" alt="QR Code - Palmino Motors" />
             </div>
             <script>
+              // Auto-print for both mobile and desktop
               window.onload = function() {
                 setTimeout(function() {
                   window.print();
@@ -584,14 +624,21 @@ class PalminoQRGenerator {
                   }, 100);
                 }, 250);
               };
+              
+              // Handle print dialog close on mobile
+              window.onafterprint = function() {
+                setTimeout(function() {
+                  window.close();
+                }, 100);
+              };
             </script>
           </body>
         </html>
       `);
       
       printWindow.document.close();
-      
       this.showToast("Finestra di stampa aperta", "success");
+      
     } catch (error) {
       console.error("❌ Errore stampa:", error);
       this.showToast("Errore durante la stampa", "error");
