@@ -77,13 +77,13 @@
         {
           "title": "Gestione Magazzino",
           "description": "Software per gestione magazzino",
-          "url": "https://magazzino.palminomotorsmagazzino.it/",
+          "url": "89.36.210.147:3000",
           "icon": "📦"
         },
         {
           "title": "Gestione Preventivi",
           "description": "Pannello per creazione e gestione preventivi",
-          "url": "https://preventivi.palminomotorsmagazzino.it",
+          "url": "89.36.210.147:3001",
           "icon": "🧾"
         }
       ]
