@@ -1008,3 +1008,8 @@ select.input-field option {
 #generate-btn {
   display: none;
 }
+
+.glass-panel,
+.glass-panel:hover{
+  border: 1px solid var(--secondary);
+}
