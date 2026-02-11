@@ -77,13 +77,13 @@
         {
           "title": "Gestione Magazzino",
           "description": "Software per gestione magazzino",
-          "url": "89.36.210.147:3000",
+          "url": "http://89.36.210.147:3000",
           "icon": "📦"
         },
         {
           "title": "Gestione Preventivi",
           "description": "Pannello per creazione e gestione preventivi",
-          "url": "89.36.210.147:3001",
+          "url": "http://89.36.210.147:3001",
           "icon": "🧾"
         }
       ]
