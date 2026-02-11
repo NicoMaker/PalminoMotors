@@ -546,6 +546,7 @@ class PalminoQRGenerator {
               html, body {
                 width: 100%;
                 height: 100%;
+                overflow: hidden;
               }
               body {
                 display: flex;
@@ -559,13 +560,20 @@ class PalminoQRGenerator {
                 text-align: center;
                 max-width: 100%;
                 width: 100%;
+                max-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
               }
               img {
-                max-width: 100%;
-                width: 100%;
+                max-width: 90%;
+                max-height: 90vh;
+                width: auto;
                 height: auto;
                 display: block;
                 margin: 0 auto;
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: crisp-edges;
               }
               
               /* Mobile optimization */
@@ -574,56 +582,83 @@ class PalminoQRGenerator {
                   padding: 10px;
                 }
                 img {
-                  max-width: 100%;
+                  max-width: 95%;
+                  max-height: 95vh;
                 }
               }
               
-              /* Print styles - same for all devices */
+              /* Print styles - SINGLE PAGE ONLY */
               @media print {
                 html, body {
                   width: 100%;
                   height: 100%;
                   margin: 0;
                   padding: 0;
+                  overflow: hidden;
                 }
                 body {
                   background: white;
                   padding: 0;
-                  display: block;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
                 }
                 .print-container {
                   page-break-inside: avoid;
+                  page-break-after: avoid;
+                  page-break-before: avoid;
                   width: 100%;
                   max-width: 100%;
+                  height: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
                 }
                 img {
-                  max-width: 100%;
-                  width: 100%;
+                  max-width: 85%;
+                  max-height: 85%;
+                  width: auto;
                   height: auto;
                   page-break-inside: avoid;
+                  page-break-after: avoid;
+                  page-break-before: avoid;
+                  image-rendering: -webkit-optimize-contrast;
+                  image-rendering: crisp-edges;
                 }
                 @page {
-                  margin: 1cm;
-                  size: auto;
+                  margin: 0.5cm;
+                  size: A4 portrait;
                 }
               }
             </style>
           </head>
           <body>
             <div class="print-container">
-              <img src="${imageUrl}" alt="QR Code - Palmino Motors" />
+              <img id="qrImage" alt="QR Code - Palmino Motors" />
             </div>
             <script>
-              // Auto-print for both mobile and desktop
-              window.onload = function() {
+              // Ensure image is fully loaded before printing (critical for mobile)
+              var img = document.getElementById('qrImage');
+              img.onload = function() {
+                console.log('Image loaded, ready to print');
+                // Wait a bit more for mobile browsers to process the image
                 setTimeout(function() {
                   window.print();
                   // Close window after printing (or canceling)
                   setTimeout(function() {
                     window.close();
-                  }, 100);
-                }, 250);
+                  }, 500);
+                }, 500);
               };
+              
+              img.onerror = function() {
+                console.error('Image failed to load');
+                alert('Errore nel caricamento dell\\'immagine');
+                window.close();
+              };
+              
+              // Set the image source AFTER setting up the onload handler
+              img.src = "${imageUrl}";
               
               // Handle print dialog close on mobile
               window.onafterprint = function() {
@@ -635,9 +670,7 @@ class PalminoQRGenerator {
           </body>
         </html>
       `);
-      
-      printWindow.document.close();
-      this.showToast("Finestra di stampa aperta", "success");
+    
       
     } catch (error) {
       console.error("❌ Errore stampa:", error);
