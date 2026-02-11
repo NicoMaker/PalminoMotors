@@ -544,7 +544,8 @@ select.input-field option {
 }
 
 .download-btn,
-.copy-btn {
+.copy-btn,
+.print-btn {
   flex: 1;
   padding: 16px 24px;
   border: none;
@@ -578,14 +579,26 @@ select.input-field option {
   border: 2px solid rgba(0, 245, 255, 0.3);
 }
 
+.print-btn {
+  background: rgba(15, 20, 25, 0.8);
+  color: var(--text);
+  border: 2px solid rgba(138, 92, 246, 0.3);
+}
+
 .download-btn:hover,
-.copy-btn:hover {
+.copy-btn:hover,
+.print-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 10px 30px rgba(0, 245, 255, 0.4);
 }
 
 .download-btn:hover {
   box-shadow: 0 10px 30px rgba(0, 255, 136, 0.5);
+}
+
+.print-btn:hover {
+  box-shadow: 0 10px 30px rgba(138, 92, 246, 0.5);
+  border-color: rgba(138, 92, 246, 0.6);
 }
 
 /* ===== INFO SECTION ===== */

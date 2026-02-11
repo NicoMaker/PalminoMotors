@@ -15,6 +15,7 @@ class PalminoQRGenerator {
     this.generateBtn = document.getElementById("generate-btn");
     this.downloadBtn = document.getElementById("download-btn");
     this.copyBtn = document.getElementById("copy-btn");
+    this.printBtn = document.getElementById("print-btn");
     this.qrContainer = document.getElementById("qr-container");
     this.downloadSection = document.getElementById("download-section");
     this.toast = document.getElementById("toast");
@@ -56,6 +57,7 @@ class PalminoQRGenerator {
     this.generateBtn.addEventListener("click", () => this.generateQR());
     this.downloadBtn.addEventListener("click", () => this.downloadQR());
     this.copyBtn.addEventListener("click", () => this.copyToClipboard());
+    this.printBtn.addEventListener("click", () => this.printQR());
 
     Object.values(this.inputs).forEach((input) => {
       if (input) input.addEventListener("input", () => this.debounceGenerate());
@@ -507,6 +509,92 @@ class PalminoQRGenerator {
     } catch (error) {
       console.error("❌ Errore copia negli appunti:", error);
       this.showToast("Impossibile copiare l'immagine", "error");
+    }
+  }
+
+  printQR() {
+    if (!this.currentQR) return;
+
+    try {
+      // Create a new window for printing
+      const printWindow = window.open("", "_blank");
+      
+      if (!printWindow) {
+        this.showToast("Abilita i popup per stampare", "error");
+        return;
+      }
+
+      // Get the canvas data URL
+      const imageUrl = this.currentQR.canvas.toDataURL("image/png");
+      
+      // Write HTML to the print window
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Stampa QR Code - Palmino Motors</title>
+            <style>
+              * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+              }
+              body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                background: white;
+                padding: 20px;
+              }
+              .print-container {
+                text-align: center;
+                max-width: 100%;
+              }
+              img {
+                max-width: 100%;
+                height: auto;
+                display: block;
+                margin: 0 auto;
+              }
+              @media print {
+                body {
+                  padding: 0;
+                }
+                .print-container {
+                  page-break-inside: avoid;
+                }
+              }
+              @page {
+                margin: 1cm;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="print-container">
+              <img src="${imageUrl}" alt="QR Code - Palmino Motors" />
+            </div>
+            <script>
+              window.onload = function() {
+                setTimeout(function() {
+                  window.print();
+                  // Close window after printing (or canceling)
+                  setTimeout(function() {
+                    window.close();
+                  }, 100);
+                }, 250);
+              };
+            </script>
+          </body>
+        </html>
+      `);
+      
+      printWindow.document.close();
+      
+      this.showToast("Finestra di stampa aperta", "success");
+    } catch (error) {
+      console.error("❌ Errore stampa:", error);
+      this.showToast("Errore durante la stampa", "error");
     }
   }
 
