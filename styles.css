@@ -45,7 +45,8 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
+  background-image:
+    linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
   background-size: 50px 50px;
   animation: gridPulse 4s ease-in-out infinite;
@@ -169,20 +170,28 @@ body {
   font-family: "Orbitron", sans-serif;
   font-weight: 900;
   font-size: 2rem;
-  box-shadow: 0 0 30px var(--primary-glow), 0 0 60px var(--primary-glow),
+  box-shadow:
+    0 0 30px var(--primary-glow),
+    0 0 60px var(--primary-glow),
     inset 0 0 20px rgba(255, 255, 255, 0.1);
   position: relative;
-  animation: logoFloat 3s ease-in-out infinite, logoPulse 2s ease-in-out infinite;
+  animation:
+    logoFloat 3s ease-in-out infinite,
+    logoPulse 2s ease-in-out infinite;
 }
 
 @keyframes logoPulse {
   0%,
   100% {
-    box-shadow: 0 0 30px var(--primary-glow), 0 0 60px var(--primary-glow),
+    box-shadow:
+      0 0 30px var(--primary-glow),
+      0 0 60px var(--primary-glow),
       inset 0 0 20px rgba(255, 255, 255, 0.1);
   }
   50% {
-    box-shadow: 0 0 50px var(--primary-glow), 0 0 100px var(--primary-glow),
+    box-shadow:
+      0 0 50px var(--primary-glow),
+      0 0 100px var(--primary-glow),
       inset 0 0 30px rgba(255, 255, 255, 0.2);
   }
 }
@@ -246,7 +255,6 @@ body {
   margin-top: 10px;
   padding: 20px 30px;
   background: rgba(15, 20, 25, 0.6);
-  border: 1px solid var(--secondary);
   border-radius: 50px;
   backdrop-filter: blur(10px);
 }
@@ -278,7 +286,12 @@ body {
 .stat-divider {
   width: 1px;
   height: 40px;
-  background: linear-gradient(to bottom, transparent, var(--card-border), transparent);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--card-border),
+    transparent
+  );
 }
 
 .header-divider {
@@ -396,7 +409,9 @@ body {
   background: rgba(15, 20, 25, 0.95);
   transform: translateX(12px) scale(1.02);
   border-color: var(--secondary);
-  box-shadow: 0 8px 32px rgba(0, 245, 255, 0.3), 0 0 0 1px var(--secondary);
+  box-shadow:
+    0 8px 32px rgba(0, 245, 255, 0.3),
+    0 0 0 1px var(--secondary);
 }
 
 .link-icon {
@@ -467,7 +482,12 @@ body {
 .title-line {
   width: 60px;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--secondary), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--secondary),
+    transparent
+  );
 }
 
 .brand-links {
@@ -505,7 +525,9 @@ body {
   border-radius: 50%;
   background: radial-gradient(circle, var(--primary), var(--secondary));
   transform: translate(-50%, -50%);
-  transition: width 0.4s ease, height 0.4s ease;
+  transition:
+    width 0.4s ease,
+    height 0.4s ease;
   opacity: 0.2;
   z-index: 0;
 }
@@ -588,8 +610,11 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, rgba(10, 14, 26, 0.95) 0%, rgba(15, 20, 25, 0.9) 100%),
-    url("data:image/svg+xml,");
+  background: linear-gradient(
+    135deg,
+    rgba(10, 14, 26, 0.95) 0%,
+    rgba(15, 20, 25, 0.9) 100%
+  );
   background-size: cover;
   background-position: center;
   z-index: 0;
@@ -910,7 +935,6 @@ body {
   }
 }
 
-
 .brand-links {
   display: flex;
   flex-wrap: wrap;
@@ -920,8 +944,8 @@ body {
 
 /* CARD BRAND tutte uguali */
 .brand-item {
-  width: 260px;              /* stessa larghezza per tutti */
-  height: 70px;              /* stessa altezza per tutti */
+  width: 260px; /* stessa larghezza per tutti */
+  height: 70px; /* stessa altezza per tutti */
   padding: 12px 18px;
   background: var(--dark-card);
   border: 1px solid var(--card-border);
@@ -941,7 +965,7 @@ body {
 }
 
 .brand-name {
-  flex: 1;                /* prende lo spazio centrale */
+  flex: 1; /* prende lo spazio centrale */
   min-width: 0;
 }
 
@@ -993,4 +1017,10 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
+}
+
+.link-card,
+.brand-item,
+.header-stats {
+  border: 1px solid var(--secondary);
 }
