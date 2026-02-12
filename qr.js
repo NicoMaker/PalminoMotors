@@ -1,4 +1,4 @@
-class PalminoQRGenerator {
+class QRGenerator {
   constructor() {
     this.initializeElements();
     this.bindEvents();
@@ -20,7 +20,6 @@ class PalminoQRGenerator {
     this.downloadSection = document.getElementById("download-section");
     this.toast = document.getElementById("toast");
     this.toastMessage = document.getElementById("toast-message");
-
     this.infoType = document.getElementById("info-type");
     this.infoSize = document.getElementById("info-size");
     this.infoContent = document.getElementById("info-content");
@@ -78,10 +77,8 @@ class PalminoQRGenerator {
       const response = await fetch("data.json");
       const data = await response.json();
       this.companyData = data.company;
-
       this.updateFooter();
       this.loadLogo();
-
       console.log("✅ Dati aziendali caricati con successo da data.json");
     } catch (error) {
       console.error("❌ Errore caricamento data.json:", error);
@@ -161,9 +158,11 @@ class PalminoQRGenerator {
     Object.values(this.inputContainers).forEach((container) =>
       container.classList.add("hidden"),
     );
+
     if (this.inputContainers[selectedType]) {
       this.inputContainers[selectedType].classList.remove("hidden");
     }
+
     this.clearQR();
   }
 
@@ -176,7 +175,6 @@ class PalminoQRGenerator {
 
   hasValidInput() {
     const type = this.typeSelect.value;
-
     switch (type) {
       case "email":
         return this.inputs.email?.value?.trim();
@@ -306,7 +304,7 @@ class PalminoQRGenerator {
       // LAYOUT: Logo sopra + QR + Info sotto
       const finalCanvas = document.createElement("canvas");
       const headerHeight = Math.max(100, size * 0.2);
-      const footerHeight = Math.max(120, size * 0.25);
+      const footerHeight = Math.max(160, size * 0.32); // ✅ AUMENTATO DA 0.25 A 0.32
       finalCanvas.width = size;
       finalCanvas.height = headerHeight + size + footerHeight;
 
@@ -323,11 +321,10 @@ class PalminoQRGenerator {
         this.logoImage.naturalWidth > 0
       ) {
         console.log("✅ Logo OK - disegno logo");
-
         const maxLogoSize = Math.max(80, size * 0.3);
         const logoAspectRatio = this.logoImage.width / this.logoImage.height;
-
         let logoWidth, logoHeight;
+
         if (logoAspectRatio > 1) {
           logoWidth = maxLogoSize;
           logoHeight = maxLogoSize / logoAspectRatio;
@@ -349,7 +346,6 @@ class PalminoQRGenerator {
         ctx.font = `bold ${Math.max(18, size * 0.045)}px Arial, sans-serif`;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-
         const logoText = "PALMINO";
         ctx.strokeText(logoText, finalCanvas.width / 2, headerHeight / 2);
         ctx.fillText(logoText, finalCanvas.width / 2, headerHeight / 2);
@@ -389,7 +385,7 @@ class PalminoQRGenerator {
       ctx.fillStyle = gradient;
       ctx.fillRect(0, footerY, finalCanvas.width, footerHeight);
 
-      // Titolo "Palmino Motors"
+      // ✅ SPAZIATURA MIGLIORATA - Titolo "Palmino Motors"
       ctx.fillStyle = "#0a0e27";
       const titleFontSize = Math.max(14, size * 0.035);
       ctx.font = `italic bold ${titleFontSize}px Georgia, serif`;
@@ -398,7 +394,7 @@ class PalminoQRGenerator {
       ctx.fillText(
         "Palmino Motors",
         finalCanvas.width / 2,
-        footerY + footerHeight * 0.2,
+        footerY + footerHeight * 0.12, // ✅ CAMBIATO DA 0.2 A 0.12
       );
 
       // Testi normali
@@ -407,32 +403,32 @@ class PalminoQRGenerator {
       ctx.fillStyle = "#495057";
       ctx.textBaseline = "middle";
 
-      // Indirizzo
+      // ✅ Indirizzo - SPAZIATO
       const fullAddress = `${this.companyData.address}, ${this.companyData.cap} ${this.companyData.city} (${this.companyData.province})`;
       ctx.fillText(
         fullAddress,
         finalCanvas.width / 2,
-        footerY + footerHeight * 0.36,
+        footerY + footerHeight * 0.28, // ✅ CAMBIATO DA 0.36 A 0.28
       );
 
-      // Tel
+      // ✅ Tel - SPAZIATO
       const smallTextSize = Math.max(9, size * 0.02);
       ctx.font = `${smallTextSize}px Calibri, Arial, sans-serif`;
       ctx.fillText(
         `Tel: ${this.companyData.phone}`,
         finalCanvas.width / 2,
-        footerY + footerHeight * 0.52,
+        footerY + footerHeight * 0.44, // ✅ CAMBIATO DA 0.52 A 0.44
       );
 
-      // Email
+      // ✅ Email - SPAZIATO
       ctx.fillStyle = "#495057";
       ctx.fillText(
         this.companyData.email,
         finalCanvas.width / 2,
-        footerY + footerHeight * 0.67,
+        footerY + footerHeight * 0.6, // ✅ CAMBIATO DA 0.67 A 0.60
       );
 
-      // SITO WEB
+      // ✅ SITO WEB - SPAZIATO
       const website = this.companyData.website || "www.palminomotors.com";
       const websiteSize = Math.max(9, size * 0.02);
       ctx.font = `${websiteSize}px Calibri, Arial, sans-serif`;
@@ -440,17 +436,17 @@ class PalminoQRGenerator {
       ctx.fillText(
         website,
         finalCanvas.width / 2,
-        footerY + footerHeight * 0.82,
+        footerY + footerHeight * 0.76, // ✅ CAMBIATO DA 0.82 A 0.76
       );
 
-      // P.IVA
+      // ✅ P.IVA - SPAZIATO DAL BORDO INFERIORE
       const pivaSize = Math.max(8, size * 0.018);
       ctx.font = `${pivaSize}px Calibri, Arial, sans-serif`;
       ctx.fillStyle = "#6c757d";
       ctx.fillText(
         `P.IVA: ${this.companyData.piva}`,
         finalCanvas.width / 2,
-        footerY + footerHeight * 0.92,
+        footerY + footerHeight * 0.9, // ✅ CAMBIATO DA 0.97 A 0.90 - PIÙ SPAZIO DAL BORDO
       );
 
       // Display
@@ -466,8 +462,8 @@ class PalminoQRGenerator {
         size,
         type: this.typeSelect.value,
       };
-      this.updateInfoSection();
 
+      this.updateInfoSection();
       console.log("✅ QR generato con successo");
     } catch (error) {
       console.error("❌ Errore QR:", error);
@@ -487,8 +483,8 @@ class PalminoQRGenerator {
       .slice(0, 19)
       .replace(/:/g, "-")
       .replace("T", "_");
-    const fileName = `PalminoMotors_QR_${this.currentQR.type}_${timestamp}.png`;
 
+    const fileName = `PalminoMotors_QR_${this.currentQR.type}_${timestamp}.png`;
     link.download = fileName;
     link.click();
   }
@@ -518,10 +514,10 @@ class PalminoQRGenerator {
     try {
       // Get the canvas data URL
       const imageUrl = this.currentQR.canvas.toDataURL("image/png");
-      
+
       // Create print window (same for both mobile and desktop)
       const printWindow = window.open("", "_blank");
-      
+
       if (!printWindow) {
         this.showToast("Abilita i popup per stampare", "error");
         return;
@@ -532,22 +528,14 @@ class PalminoQRGenerator {
         <!DOCTYPE html>
         <html>
           <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
             <title>Stampa QR Code - Palmino Motors</title>
             <style>
               * {
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
               }
-              html, body {
-                width: 100%;
-                height: 100%;
-                overflow: hidden;
-              }
+              
               body {
                 display: flex;
                 justify-content: center;
@@ -556,122 +544,30 @@ class PalminoQRGenerator {
                 background: white;
                 padding: 20px;
               }
-              .print-container {
-                text-align: center;
-                max-width: 100%;
-                width: 100%;
-                max-height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              }
+              
               img {
-                max-width: 90%;
-                max-height: 90vh;
-                width: auto;
+                max-width: 100%;
                 height: auto;
                 display: block;
-                margin: 0 auto;
-                image-rendering: -webkit-optimize-contrast;
-                image-rendering: crisp-edges;
               }
               
-              /* Mobile optimization */
-              @media screen and (max-width: 768px) {
-                body {
-                  padding: 10px;
-                }
-                img {
-                  max-width: 95%;
-                  max-height: 95vh;
-                }
-              }
-              
-              /* Print styles - SINGLE PAGE ONLY */
               @media print {
-                html, body {
-                  width: 100%;
-                  height: 100%;
-                  margin: 0;
-                  padding: 0;
-                  overflow: hidden;
-                }
                 body {
-                  background: white;
                   padding: 0;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
                 }
-                .print-container {
-                  page-break-inside: avoid;
-                  page-break-after: avoid;
-                  page-break-before: avoid;
-                  width: 100%;
-                  max-width: 100%;
-                  height: 100%;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                }
+                
                 img {
-                  max-width: 85%;
-                  max-height: 85%;
-                  width: auto;
-                  height: auto;
+                  max-width: 100%;
                   page-break-inside: avoid;
-                  page-break-after: avoid;
-                  page-break-before: avoid;
-                  image-rendering: -webkit-optimize-contrast;
-                  image-rendering: crisp-edges;
-                }
-                @page {
-                  margin: 0.5cm;
-                  size: A4 portrait;
                 }
               }
             </style>
           </head>
           <body>
-            <div class="print-container">
-              <img id="qrImage" alt="QR Code - Palmino Motors" />
-            </div>
-            <script>
-              // Ensure image is fully loaded before printing (critical for mobile)
-              var img = document.getElementById('qrImage');
-              img.onload = function() {
-                console.log('Image loaded, ready to print');
-                // Wait a bit more for mobile browsers to process the image
-                setTimeout(function() {
-                  window.print();
-                  // Close window after printing (or canceling)
-                  setTimeout(function() {
-                    window.close();
-                  }, 500);
-                }, 500);
-              };
-              
-              img.onerror = function() {
-                console.error('Image failed to load');
-                alert('Errore nel caricamento dell\\'immagine');
-                window.close();
-              };
-              
-              // Set the image source AFTER setting up the onload handler
-              img.src = "${imageUrl}";
-              
-              // Handle print dialog close on mobile
-              window.onafterprint = function() {
-                setTimeout(function() {
-                  window.close();
-                }, 100);
-              };
-            </script>
+            <img src="${imageUrl}" alt="QR Code Palmino Motors" onload="window.print(); setTimeout(() => window.close(), 100);" />
           </body>
         </html>
       `);
-    
-      
     } catch (error) {
       console.error("❌ Errore stampa:", error);
       this.showToast("Errore durante la stampa", "error");
@@ -684,10 +580,12 @@ class PalminoQRGenerator {
         <i class="fas fa-qrcode"></i>
         <p>Il tuo QR Code apparirà qui</p>
         <span class="hint">Compila i campi e premi Genera</span>
-      </div>`;
+      </div>
+    `;
     this.qrContainer.classList.remove("has-qr");
     this.downloadSection.classList.add("hidden");
     this.currentQR = null;
+
     this.infoType.textContent = "-";
     this.infoSize.textContent = "-";
     this.infoContent.textContent = "-";
@@ -719,8 +617,8 @@ class PalminoQRGenerator {
 
   showToast(msg, type = "success") {
     this.toastMessage.textContent = msg;
-
     const icon = this.toast.querySelector("i");
+
     if (type === "error") {
       this.toast.style.background =
         "linear-gradient(135deg, #ff006e 0%, #ff4d4d 100%)";
@@ -738,7 +636,7 @@ class PalminoQRGenerator {
 
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", () => {
-  new PalminoQRGenerator();
+  new QRGenerator();
 
   // Add smooth scroll behavior
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -755,7 +653,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", () => {
     const scrolled = window.pageYOffset;
     const orbs = document.querySelectorAll(".glow-orb");
-
     orbs.forEach((orb, index) => {
       const speed = 0.3 + index * 0.1;
       orb.style.transform = `translateY(${scrolled * speed}px)`;
