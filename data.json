@@ -198,10 +198,10 @@
       ]
     },
     {
-      "name": "Gestione Bancaria",
+      "name": "Rapporti Bancari",
       "links": [
         {
-          "title": "Gestione Deutsche Bank",
+          "title": "Deutsche Bank",
           "description": "Accesso aree riservate Deutsche Bank",
           "url": "https://www.dbeasy.it/accesso_clienti_aree_riservate/",
           "icon": "🏦"
