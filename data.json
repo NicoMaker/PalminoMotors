@@ -1,16 +1,16 @@
 {
   "company": {
     "fullName": "Palmino Motors",
-    "address": "Via Stradalta, 27",
-    "city": "Bertiolo",
-    "cap": "33032",
+    "address": "Viale Venezia, 161",
+    "city": "Codroipo",
+    "cap": "33033",
     "province": "UD",
-    "piva": "0314133030",
+    "piva": "01788600300",
     "email": "carlo.palminio@palminomotors.com",
     "phone": "+393490028627",
     "logo": "img/Logo.png",
     "logo_qr": "img/Logo2.png",
-    "website": "www.palminomotors.com"
+    "website": "https://www.palminomotors.com"
   },
   "categories": [
     {
@@ -193,7 +193,18 @@
           "title": "PalminoMotors",
           "description": "Repository principale Palmino Motors",
           "url": "https://github.com/NicoMaker/PalminoMotors",
-          "icon": "📦"
+          "icon": "🏍️"
+        }
+      ]
+    },
+    {
+      "name": "Gestione Bancaria",
+      "links": [
+        {
+          "title": "Gestione Deutsche Bank",
+          "description": "Accesso aree riservate Deutsche Bank",
+          "url": "https://www.dbeasy.it/accesso_clienti_aree_riservate/",
+          "icon": "🏦"
         }
       ]
     }
