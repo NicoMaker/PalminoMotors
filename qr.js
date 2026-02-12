@@ -450,7 +450,7 @@ class PalminoQRGenerator {
       ctx.fillText(
         `P.IVA: ${this.companyData.piva}`,
         finalCanvas.width / 2,
-        footerY + footerHeight * 0.97,
+        footerY + footerHeight * 0.92,
       );
 
       // Display
