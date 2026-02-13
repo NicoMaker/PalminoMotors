@@ -681,3 +681,7 @@ select.form-control option {
 #generate-btn{
   display: none;
 }
+
+a:hover{
+  color:#dc2626 !important;
+}
