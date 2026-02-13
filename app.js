@@ -9,6 +9,7 @@ async function loadData() {
     const response = await fetch("data.json");
     const data = await response.json();
 
+    renderCategoryFilters(data.categories);
     renderCategories(data.categories);
     renderBrands(data.brands);
     populateFooter(data.company);
@@ -41,6 +42,106 @@ function handleLogos(logoPath) {
   footerImg.className = "footer-logo";
   footerImg.alt = "Logo Footer";
   footerCol.prepend(footerImg);
+}
+
+function renderCategoryFilters(categories) {
+  const container = document.getElementById("categoryFilters");
+  
+  // Pulsante "Tutte"
+  const allButton = document.createElement("button");
+  allButton.className = "filter-btn active";
+  allButton.innerHTML = '<span>Tutte le Categorie</span>';
+  allButton.setAttribute("data-filter", "all");
+  container.appendChild(allButton);
+
+  // Pulsanti per ogni categoria
+  categories.forEach((cat, index) => {
+    const button = document.createElement("button");
+    button.className = "filter-btn";
+    button.innerHTML = `<span>${cat.name}</span>`;
+    button.setAttribute("data-filter", index);
+    container.appendChild(button);
+  });
+
+  // Event listener per i pulsanti
+  container.addEventListener("click", (e) => {
+    const button = e.target.closest(".filter-btn");
+    if (!button) return;
+
+    const filter = button.getAttribute("data-filter");
+    const allBtn = container.querySelector('[data-filter="all"]');
+    const categoryButtons = container.querySelectorAll('.filter-btn:not([data-filter="all"])');
+
+    if (filter === "all") {
+      // Cliccato "Tutte" - attiva tutte e disattiva le singole
+      allBtn.classList.add("active");
+      categoryButtons.forEach(btn => btn.classList.remove("active"));
+      filterCategories("all");
+    } else {
+      // Cliccato una categoria specifica
+      button.classList.toggle("active");
+      
+      // Controlla quante categorie sono selezionate
+      const activeCategories = Array.from(categoryButtons).filter(btn => 
+        btn.classList.contains("active")
+      );
+
+      if (activeCategories.length === 0) {
+        // Nessuna categoria selezionata - attiva "Tutte"
+        allBtn.classList.add("active");
+        filterCategories("all");
+      } else if (activeCategories.length === categoryButtons.length) {
+        // Tutte le categorie selezionate - attiva "Tutte" e disattiva le singole
+        allBtn.classList.add("active");
+        categoryButtons.forEach(btn => btn.classList.remove("active"));
+        filterCategories("all");
+      } else {
+        // Alcune categorie selezionate - disattiva "Tutte"
+        allBtn.classList.remove("active");
+        const selectedFilters = activeCategories.map(btn => btn.getAttribute("data-filter"));
+        filterCategories(selectedFilters);
+      }
+    }
+  });
+}
+
+function filterCategories(filter) {
+  const sections = document.querySelectorAll(".category-section");
+  
+  // Se filter è "all" o un array, gestiamo di conseguenza
+  const filters = filter === "all" ? "all" : (Array.isArray(filter) ? filter : [filter]);
+  
+  sections.forEach((section) => {
+    const categoryIndex = section.getAttribute("data-category");
+    
+    if (filters === "all" || filters.includes(categoryIndex)) {
+      section.classList.remove("hidden");
+      // Riapplica l'animazione
+      section.style.opacity = "0";
+      section.style.transform = "translateY(20px)";
+      setTimeout(() => {
+        section.style.transition = "all 0.6s ease";
+        section.style.opacity = "1";
+        section.style.transform = "translateY(0)";
+      }, 50);
+    } else {
+      section.classList.add("hidden");
+    }
+  });
+
+  // Rianima le card delle categorie visibili
+  setTimeout(() => {
+    const visibleCards = document.querySelectorAll(".category-section:not(.hidden) .link-card");
+    visibleCards.forEach((card, index) => {
+      card.style.opacity = "0";
+      card.style.transform = "translateX(-20px)";
+      setTimeout(() => {
+        card.style.transition = "all 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+        card.style.opacity = "1";
+        card.style.transform = "translateX(0)";
+      }, index * 80);
+    });
+  }, 100);
 }
 
 function renderCategories(categories) {
