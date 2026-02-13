@@ -169,35 +169,6 @@
       ]
     },
     {
-      "name": "Codici Applicativi & Repository Github",
-      "links": [
-        {
-          "title": "Gestione Magazzino",
-          "description": "Software per gestione magazzino",
-          "url": "https://github.com/NicoMaker/Gestione_Magazzino",
-          "icon": "📦"
-        },
-        {
-          "title": "Gestione Preventivi",
-          "description": "Pannello per creazione e gestione preventivi",
-          "url": "https://github.com/NicoMaker/Gestione_Preventivi",
-          "icon": "🧾"
-        },
-        {
-          "title": "Calcolatore Sconto e Aumento Prezzo",
-          "description": "Strumento per calcolo sconto e aumento prezzo",
-          "url": "https://github.com/NicoMaker/Pagina_Generale_Siti/tree/main/Site/Utilities/Calcolatore_Sconto_Aumento",
-          "icon": "🧮"
-        },
-        {
-          "title": "PalminoMotors",
-          "description": "Repository principale Palmino Motors",
-          "url": "https://github.com/NicoMaker/PalminoMotors",
-          "icon": "🏍️"
-        }
-      ]
-    },
-    {
       "name": "Gestione Bancaria",
       "links": [
         {
