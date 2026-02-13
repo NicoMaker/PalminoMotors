@@ -677,3 +677,7 @@ select.form-control option {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+#generate-btn{
+  display: none;
+}
