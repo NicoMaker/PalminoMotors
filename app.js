@@ -15,6 +15,9 @@ async function loadData() {
     populateFooter(data.company);
     handleLogos(data.company.logo);
 
+    // Ripristina le selezioni salvate
+    restoreSavedFilters(data.categories.length);
+
     setTimeout(() => {
       animateCards();
     }, 100);
@@ -77,6 +80,7 @@ function renderCategoryFilters(categories) {
       allBtn.classList.add("active");
       categoryButtons.forEach(btn => btn.classList.remove("active"));
       filterCategories("all");
+      saveFiltersToStorage("all");
     } else {
       // Cliccato una categoria specifica
       button.classList.toggle("active");
@@ -90,19 +94,86 @@ function renderCategoryFilters(categories) {
         // Nessuna categoria selezionata - attiva "Tutte"
         allBtn.classList.add("active");
         filterCategories("all");
+        saveFiltersToStorage("all");
       } else if (activeCategories.length === categoryButtons.length) {
         // Tutte le categorie selezionate - attiva "Tutte" e disattiva le singole
         allBtn.classList.add("active");
         categoryButtons.forEach(btn => btn.classList.remove("active"));
         filterCategories("all");
+        saveFiltersToStorage("all");
       } else {
         // Alcune categorie selezionate - disattiva "Tutte"
         allBtn.classList.remove("active");
         const selectedFilters = activeCategories.map(btn => btn.getAttribute("data-filter"));
         filterCategories(selectedFilters);
+        saveFiltersToStorage(selectedFilters);
       }
     }
   });
+}
+
+function saveFiltersToStorage(filters) {
+  try {
+    localStorage.setItem("palminoMotorsFilters", JSON.stringify(filters));
+  } catch (error) {
+    console.error("Errore salvataggio filtri:", error);
+  }
+}
+
+function restoreSavedFilters(totalCategories) {
+  try {
+    const saved = localStorage.getItem("palminoMotorsFilters");
+    
+    // Se non ci sono filtri salvati, avvia con "Tutte"
+    if (!saved) {
+      filterCategories("all");
+      return;
+    }
+
+    const filters = JSON.parse(saved);
+    const container = document.getElementById("categoryFilters");
+    const allBtn = container.querySelector('[data-filter="all"]');
+    const categoryButtons = container.querySelectorAll('.filter-btn:not([data-filter="all"])');
+
+    // Se è salvato "all", tutto ok
+    if (filters === "all") {
+      filterCategories("all");
+      return;
+    }
+
+    // Se è un array di filtri
+    if (Array.isArray(filters)) {
+      // Verifica che tutti gli indici salvati siano validi
+      const validFilters = filters.filter(f => parseInt(f) < totalCategories);
+      
+      // Se nessun filtro è valido, torna a "Tutte"
+      if (validFilters.length === 0) {
+        filterCategories("all");
+        saveFiltersToStorage("all");
+        return;
+      }
+
+      // Applica i filtri salvati validi
+      allBtn.classList.remove("active");
+      categoryButtons.forEach(btn => {
+        const btnFilter = btn.getAttribute("data-filter");
+        if (validFilters.includes(btnFilter)) {
+          btn.classList.add("active");
+        }
+      });
+      
+      filterCategories(validFilters);
+    } else {
+      // Formato non riconosciuto, torna a "Tutte"
+      filterCategories("all");
+      saveFiltersToStorage("all");
+    }
+  } catch (error) {
+    // In caso di errore, avvia con "Tutte"
+    console.error("Errore ripristino filtri:", error);
+    filterCategories("all");
+    saveFiltersToStorage("all");
+  }
 }
 
 function filterCategories(filter) {
