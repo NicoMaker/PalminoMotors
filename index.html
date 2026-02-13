@@ -17,9 +17,9 @@
     <div class="noise-overlay"></div>
     <div class="glow-bg"></div>
 
-    <div class="main-wrapper">
-      <!-- Header -->
-      <header class="hub-header">
+    <!-- Header Fisso -->
+    <header class="hub-header">
+      <div class="header-inner">
         <div class="logo-area">
           <div class="logo-circle">PM</div>
           <div class="header-text">
@@ -39,10 +39,28 @@
             <span class="stat-label">Assistenza</span>
           </div>
         </div>
-      </header>
 
-      <!-- Category Filters -->
-      <nav class="category-filters" id="categoryFilters" aria-label="Filtri categorie"></nav>
+        <!-- Dropdown Filter nell'header -->
+        <div class="filter-dropdown-wrapper">
+          <label for="filterSelect" class="dropdown-label">Categoria:</label>
+          <select id="filterSelect" class="filter-select" aria-label="Seleziona categoria">
+            <option value="all">🏠 Tutte le categorie</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br> 
+    <br>
+    <br>
+
+
+    <div class="main-wrapper">
 
       <!-- Links Container -->
       <main id="linksContainer" class="links-main"></main>
@@ -71,7 +89,7 @@
           <div class="footer-col">
             <h4>Contatti</h4>
             <p><a href="tel:+393490028627" class="footer-link" id="footerPhone"></a></p>
-            <p><a href="mailto:info@palminomotors.com" class="footer-link" id="footerEmail"></a></p>
+            <p><a href="/cdn-cgi/l/email-protection#b4dddad2dbf4c4d5d8d9dddadbd9dbc0dbc6c79ad7dbd9" class="footer-link" id="footerEmail"></a></p>
             <p><a href="#" class="footer-link" id="footerWhatsApp" target="_blank" rel="noopener noreferrer"></a></p>
           </div>
           <div class="footer-col">

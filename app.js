@@ -8,12 +8,12 @@ async function loadData() {
     const response = await fetch("data.json");
     const data = await response.json();
 
-    renderCategoryFilters(data.categories);
+    renderCategoryFilter(data.categories);
     renderCategories(data.categories);
     renderBrands(data.brands);
     populateFooter(data.company);
     handleLogos(data.company.logo);
-    restoreSavedFilters(data.categories.length);
+    restoreSavedFilter(data.categories.length);
   } catch (error) {
     console.error("Errore caricamento dati:", error);
   }
@@ -33,137 +33,105 @@ function handleLogos(logoPath) {
 
   if (oldCircle) {
     oldCircle.replaceWith(headerImg);
-  } else {
+  } else if (logoArea) {
     logoArea.prepend(headerImg);
   }
 
   const footerCol = document.getElementById("footerCompanyCol");
-  const footerImg = document.createElement("img");
-  footerImg.src = logoPath;
-  footerImg.className = "footer-logo";
-  footerImg.alt = "Logo Footer";
-  footerImg.crossOrigin = "anonymous";
-  footerCol.prepend(footerImg);
+  if (footerCol) {
+    const footerImg = document.createElement("img");
+    footerImg.src = logoPath;
+    footerImg.className = "footer-logo";
+    footerImg.alt = "Logo Footer";
+    footerImg.crossOrigin = "anonymous";
+    footerCol.prepend(footerImg);
+  }
 }
 
-function renderCategoryFilters(categories) {
-  const container = document.getElementById("categoryFilters");
+function getEmojiForCategory(index) {
+  const emojis = ["🌐", "🛠️", "📊", "📱", "☁️", "📅", "📧", "🏦"];
+  return emojis[index] || "📂";
+}
 
-  const allButton = document.createElement("button");
-  allButton.className = "filter-btn active";
-  allButton.textContent = "Tutte";
-  allButton.setAttribute("data-filter", "all");
-  container.appendChild(allButton);
+function renderCategoryFilter(categories) {
+  const filterSelect = document.getElementById("filterSelect");
+
+  if (!filterSelect) {
+    console.error("Element filterSelect not found");
+    return;
+  }
 
   categories.forEach((cat, index) => {
-    const button = document.createElement("button");
-    button.className = "filter-btn";
-    button.textContent = cat.name;
-    button.setAttribute("data-filter", index);
-    container.appendChild(button);
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = `${getEmojiForCategory(index)} ${cat.name}`;
+    filterSelect.appendChild(option);
   });
 
-  container.addEventListener("click", (e) => {
-    const button = e.target.closest(".filter-btn");
-    if (!button) return;
-
-    const filter = button.getAttribute("data-filter");
-    const allBtn = container.querySelector('[data-filter="all"]');
-    const categoryButtons = container.querySelectorAll('.filter-btn:not([data-filter="all"])');
-
-    if (filter === "all") {
-      // Cliccato "Tutte" - mostra tutto e deseleziona le categorie specifiche
-      allBtn.classList.add("active");
-      categoryButtons.forEach((btn) => btn.classList.remove("active"));
+  // Event listener per il cambio di selezione
+  filterSelect.addEventListener("change", (e) => {
+    const value = e.target.value;
+    if (value === "all") {
       filterCategories("all");
-      saveFiltersToStorage("all");
+      saveFilterToStorage("all");
     } else {
-      // Cliccato una categoria specifica
-      
-      // SEMPRE rimuovi "Tutte" quando clicchi una categoria
-      allBtn.classList.remove("active");
-      
-      // Toggle della categoria cliccata
-      button.classList.toggle("active");
-
-      const activeCategories = Array.from(categoryButtons).filter((btn) =>
-        btn.classList.contains("active")
-      );
-
-      if (activeCategories.length === 0) {
-        // Nessuna categoria selezionata -> torna a "Tutte"
-        allBtn.classList.add("active");
-        filterCategories("all");
-        saveFiltersToStorage("all");
-      } else if (activeCategories.length === categoryButtons.length) {
-        // Tutte le categorie selezionate -> equivale a "Tutte"
-        allBtn.classList.add("active");
-        categoryButtons.forEach((btn) => btn.classList.remove("active"));
-        filterCategories("all");
-        saveFiltersToStorage("all");
-      } else {
-        // Alcune categorie selezionate -> mostra solo quelle
-        const selectedFilters = activeCategories.map((btn) =>
-          btn.getAttribute("data-filter")
-        );
-        filterCategories(selectedFilters);
-        saveFiltersToStorage(selectedFilters);
-      }
+      filterCategories([value]);
+      saveFilterToStorage([value]);
     }
+    
+    // Scroll automatico in alto quando cambi categoria
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   });
 }
 
-function saveFiltersToStorage(filters) {
+function saveFilterToStorage(filter) {
   try {
-    localStorage.setItem("palminoMotorsFilters", JSON.stringify(filters));
+    localStorage.setItem("palminoMotorsFilter", JSON.stringify(filter));
   } catch (error) {
     // localStorage not available
   }
 }
 
-function restoreSavedFilters(totalCategories) {
+function restoreSavedFilter(totalCategories) {
   try {
-    const saved = localStorage.getItem("palminoMotorsFilters");
+    const saved = localStorage.getItem("palminoMotorsFilter");
     if (!saved) {
       filterCategories("all");
       return;
     }
 
-    const filters = JSON.parse(saved);
-    const container = document.getElementById("categoryFilters");
-    const allBtn = container.querySelector('[data-filter="all"]');
-    const categoryButtons = container.querySelectorAll(
-      '.filter-btn:not([data-filter="all"])'
-    );
+    const filter = JSON.parse(saved);
+    const filterSelect = document.getElementById("filterSelect");
 
-    if (filters === "all") {
+    if (!filterSelect) return;
+
+    if (filter === "all") {
+      filterSelect.value = "all";
       filterCategories("all");
       return;
     }
 
-    if (Array.isArray(filters)) {
-      const validFilters = filters.filter((f) => parseInt(f) < totalCategories);
-
-      if (validFilters.length === 0) {
+    if (Array.isArray(filter) && filter.length === 1) {
+      const validFilter = filter[0];
+      if (parseInt(validFilter) < totalCategories) {
+        filterSelect.value = validFilter;
+        filterCategories(filter);
+      } else {
+        filterSelect.value = "all";
         filterCategories("all");
-        saveFiltersToStorage("all");
-        return;
+        saveFilterToStorage("all");
       }
-
-      allBtn.classList.remove("active");
-      categoryButtons.forEach((btn) => {
-        if (validFilters.includes(btn.getAttribute("data-filter"))) {
-          btn.classList.add("active");
-        }
-      });
-      filterCategories(validFilters);
     } else {
+      filterSelect.value = "all";
       filterCategories("all");
-      saveFiltersToStorage("all");
+      saveFilterToStorage("all");
     }
   } catch (error) {
     filterCategories("all");
-    saveFiltersToStorage("all");
+    saveFilterToStorage("all");
   }
 }
 
@@ -183,6 +151,7 @@ function filterCategories(filter) {
 
 function renderCategories(categories) {
   const container = document.getElementById("linksContainer");
+  if (!container) return;
 
   container.innerHTML = categories
     .map(
@@ -213,6 +182,7 @@ function renderCategories(categories) {
 
 function renderBrands(brands) {
   const container = document.getElementById("brandContainer");
+  if (!container) return;
 
   if (!brands || brands.length === 0) {
     container.innerHTML = "<p>Nessun marchio disponibile.</p>";
@@ -259,25 +229,39 @@ function renderBrands(brands) {
 }
 
 function populateFooter(company) {
-  document.getElementById("companyName").textContent = company.fullName.toUpperCase();
+  const companyNameEl = document.getElementById("companyName");
+  if (companyNameEl) {
+    companyNameEl.textContent = company.fullName.toUpperCase();
+  }
 
   const addressLink = document.getElementById("fullAddress");
-  const fullAddress = `${company.address}, ${company.cap} ${company.city} (${company.province})`;
-  addressLink.textContent = fullAddress;
-  addressLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
+  if (addressLink) {
+    const fullAddress = `${company.address}, ${company.cap} ${company.city} (${company.province})`;
+    addressLink.textContent = fullAddress;
+    addressLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
+  }
 
   const phoneLink = document.getElementById("footerPhone");
-  phoneLink.href = `tel:${company.phone}`;
-  phoneLink.textContent = `Tel: ${company.phone}`;
+  if (phoneLink) {
+    phoneLink.href = `tel:${company.phone}`;
+    phoneLink.textContent = `Tel: ${company.phone}`;
+  }
 
   const emailLink = document.getElementById("footerEmail");
-  emailLink.href = `mailto:${company.email}`;
-  emailLink.textContent = `Email: ${company.email}`;
+  if (emailLink) {
+    emailLink.href = `mailto:${company.email}`;
+    emailLink.textContent = `Email: ${company.email}`;
+  }
 
   const whatsappLink = document.getElementById("footerWhatsApp");
-  const phoneNumber = company.phone.replace(/\+/g, "").replace(/\s/g, "");
-  whatsappLink.href = `https://wa.me/${phoneNumber}`;
-  whatsappLink.textContent = `WhatsApp: ${company.phone}`;
+  if (whatsappLink) {
+    const phoneNumber = company.phone.replace(/\+/g, "").replace(/\s/g, "");
+    whatsappLink.href = `https://wa.me/${phoneNumber}`;
+    whatsappLink.textContent = `WhatsApp: ${company.phone}`;
+  }
 
-  document.getElementById("footerPiva").textContent = `P.IVA: ${company.piva}`;
+  const pivaEl = document.getElementById("footerPiva");
+  if (pivaEl) {
+    pivaEl.textContent = `P.IVA: ${company.piva}`;
+  }
 }
