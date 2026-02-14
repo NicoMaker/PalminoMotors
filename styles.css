@@ -104,7 +104,7 @@ body {
   max-width: 900px;
   margin: 0 auto;
   padding: 40px 24px;
-  padding-top: 120px; /* Space for fixed header */
+  padding-top: 100px; /* Space for fixed header */
 }
 
 /* ===== HEADER FISSO ===== */
@@ -1067,7 +1067,7 @@ body {
 @media (max-width: 640px) {
   .main-wrapper {
     padding: 24px 16px;
-    padding-top: 140px; /* Spazio per header */
+    padding-top: 110px; /* Spazio per header */
   }
 
   .hub-header {

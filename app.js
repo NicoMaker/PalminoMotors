@@ -162,16 +162,7 @@ function toggleCategory(categoryIndex) {
     }
   }
 
-  // Se nessuna categoria è selezionata, resetta a mostra tutte (senza badge)
-  if (activeFilters.size === 0) {
-    allBtn.classList.add("active");
-    filterCategories();
-    updateActiveFiltersBadges();
-    saveFilterToStorage();
-    return;
-  }
-
-  // Aggiorna UI
+  // Aggiorna UI (anche se activeFilters è vuoto)
   updateCategoryButtons();
   filterCategories();
   updateActiveFiltersBadges();
@@ -197,7 +188,7 @@ function selectAllCategories() {
 function clearAllCategories() {
   activeFilters.clear();
   const allBtn = document.querySelector('.category-btn[data-category="all"]');
-  allBtn.classList.add("active");
+  allBtn.classList.remove("active");
   
   document.querySelectorAll('.category-btn:not([data-category="all"])').forEach((btn) => {
     btn.classList.remove("active");
@@ -211,8 +202,8 @@ function clearAllCategories() {
 function updateCategoryButtons() {
   const allBtn = document.querySelector('.category-btn[data-category="all"]');
   
-  // "Tutte" è attivo se tutte le categorie sono selezionate o se non c'è nessuna selezione
-  if (activeFilters.size === 0 || activeFilters.size === categoriesData.length) {
+  // "Tutte" è attivo SOLO se tutte le categorie sono selezionate
+  if (activeFilters.size === categoriesData.length) {
     allBtn.classList.add("active");
   } else {
     allBtn.classList.remove("active");
@@ -235,7 +226,10 @@ function filterCategories() {
   sections.forEach((section) => {
     const categoryIndex = section.getAttribute("data-category");
     
-    if (activeFilters.size === 0 || activeFilters.has(categoryIndex)) {
+    // Se non ci sono filtri attivi (activeFilters vuoto), nascondi tutto
+    if (activeFilters.size === 0) {
+      section.classList.add("hidden");
+    } else if (activeFilters.has(categoryIndex)) {
       section.classList.remove("hidden");
     } else {
       section.classList.add("hidden");
@@ -250,37 +244,11 @@ function filterCategories() {
 }
 
 function updateActiveFiltersBadges() {
+  // Non mostrare badge sopra il contenuto - solo nel menu laterale
   const container = document.getElementById("activeFilters");
-  if (!container) return;
-
-  // Se tutte le categorie sono selezionate o nessuna, non mostrare badge
-  if (activeFilters.size === 0 || activeFilters.size === categoriesData.length) {
+  if (container) {
     container.innerHTML = "";
-    return;
   }
-
-  container.innerHTML = Array.from(activeFilters)
-    .map((index) => {
-      const category = categoriesData[parseInt(index)];
-      if (!category) return "";
-      
-      return `
-        <div class="filter-badge">
-          <span class="filter-badge-icon">${getEmojiForCategory(parseInt(index))}</span>
-          <span>${category.name}</span>
-          <button class="filter-badge-remove" data-category="${index}" aria-label="Rimuovi filtro">×</button>
-        </div>
-      `;
-    })
-    .join("");
-
-  // Aggiungi event listeners per rimuovere
-  container.querySelectorAll(".filter-badge-remove").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const category = btn.getAttribute("data-category");
-      toggleCategory(category);
-    });
-  });
 }
 
 function saveFilterToStorage() {
