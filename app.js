@@ -3,6 +3,40 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("year").textContent = new Date().getFullYear();
 });
 
+/**
+ * Formatta un numero di telefono per la visualizzazione
+ * Rimuove caratteri non numerici (eccetto +) e aggiunge spazi per leggibilità
+ */
+function formatPhoneNumber(phone) {
+  if (!phone) return phone;
+  
+  // Rimuovi tutti gli spazi esistenti
+  let cleaned = phone.replace(/\s+/g, '');
+  
+  // Se inizia con +39 (Italia)
+  if (cleaned.startsWith('+39')) {
+    // +39 XXX XXX XXXX
+    return cleaned.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, '$1 $2 $3 $4');
+  }
+  // Se inizia con +
+  else if (cleaned.startsWith('+')) {
+    // Formato generico internazionale: +XX XXX XXX XXXX
+    return cleaned.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d{4})/, '$1 $2 $3 $4');
+  }
+  // Se è un numero italiano senza prefisso (10 cifre)
+  else if (cleaned.length === 10) {
+    // XXX XXX XXXX
+    return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+  }
+  // Formato generico per altri numeri
+  else if (cleaned.length > 6) {
+    // Dividi in gruppi di 3 cifre
+    return cleaned.replace(/(\d{3})(?=\d)/g, '$1 ');
+  }
+  
+  return phone;
+}
+
 async function loadData() {
   try {
     const response = await fetch("data.json");
@@ -244,7 +278,7 @@ function populateFooter(company) {
   const phoneLink = document.getElementById("footerPhone");
   if (phoneLink) {
     phoneLink.href = `tel:${company.phone}`;
-    phoneLink.textContent = `Tel: ${company.phone}`;
+    phoneLink.textContent = `Tel: ${formatPhoneNumber(company.phone)}`;
   }
 
   const emailLink = document.getElementById("footerEmail");
@@ -257,7 +291,7 @@ function populateFooter(company) {
   if (whatsappLink) {
     const phoneNumber = company.phone.replace(/\+/g, "").replace(/\s/g, "");
     whatsappLink.href = `https://wa.me/${phoneNumber}`;
-    whatsappLink.textContent = `WhatsApp: ${company.phone}`;
+    whatsappLink.textContent = `WhatsApp: ${formatPhoneNumber(company.phone)}`;
   }
 
   const pivaEl = document.getElementById("footerPiva");

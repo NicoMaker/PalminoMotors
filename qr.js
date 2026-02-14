@@ -88,6 +88,40 @@ class QRGenerator {
     }
   }
 
+  /**
+   * Formatta un numero di telefono per la visualizzazione
+   * Rimuove caratteri non numerici (eccetto +) e aggiunge spazi per leggibilità
+   */
+  formatPhoneNumber(phone) {
+    if (!phone) return phone;
+    
+    // Rimuovi tutti gli spazi esistenti
+    let cleaned = phone.replace(/\s+/g, '');
+    
+    // Se inizia con +39 (Italia)
+    if (cleaned.startsWith('+39')) {
+      // +39 XXX XXX XXXX
+      return cleaned.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, '$1 $2 $3 $4');
+    }
+    // Se inizia con +
+    else if (cleaned.startsWith('+')) {
+      // Formato generico internazionale: +XX XXX XXX XXXX
+      return cleaned.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d{4})/, '$1 $2 $3 $4');
+    }
+    // Se è un numero italiano senza prefisso (10 cifre)
+    else if (cleaned.length === 10) {
+      // XXX XXX XXXX
+      return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+    }
+    // Formato generico per altri numeri
+    else if (cleaned.length > 6) {
+      // Dividi in gruppi di 3 cifre
+      return cleaned.replace(/(\d{3})(?=\d)/g, '$1 ');
+    }
+    
+    return phone;
+  }
+
   updateFooter() {
     if (!this.companyData) return;
 
@@ -106,7 +140,7 @@ class QRGenerator {
     const footerPhone = document.getElementById("footerPhone");
     if (footerPhone) {
       footerPhone.href = `tel:${this.companyData.phone}`;
-      footerPhone.textContent = `Tel: ${this.companyData.phone}`;
+      footerPhone.textContent = `Tel: ${this.formatPhoneNumber(this.companyData.phone)}`;
     }
 
     const footerEmail = document.getElementById("footerEmail");
@@ -121,7 +155,7 @@ class QRGenerator {
         .replace(/\+/g, "")
         .replace(/\s/g, "");
       footerWhatsApp.href = `https://wa.me/${phoneNumber}`;
-      footerWhatsApp.textContent = `WhatsApp: ${this.companyData.phone}`;
+      footerWhatsApp.textContent = `WhatsApp: ${this.formatPhoneNumber(this.companyData.phone)}`;
     }
 
     const footerPiva = document.getElementById("footerPiva");
@@ -415,7 +449,7 @@ class QRGenerator {
       const smallTextSize = Math.max(9, size * 0.02);
       ctx.font = `${smallTextSize}px Calibri, Arial, sans-serif`;
       ctx.fillText(
-        `Tel: ${this.companyData.phone}`,
+        `Tel: ${this.formatPhoneNumber(this.companyData.phone)}`,
         finalCanvas.width / 2,
         footerY + footerHeight * 0.44, // ✅ CAMBIATO DA 0.52 A 0.44
       );
