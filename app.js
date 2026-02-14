@@ -134,12 +134,16 @@ function toggleCategory(categoryIndex) {
   
   // Se clicchi su "Tutte"
   if (categoryIndex === "all") {
-    // Se già tutte selezionate, non fare nulla
-    if (activeFilters.size === 0) {
-      return;
+    // Seleziona tutte le categorie visivamente
+    activeFilters.clear();
+    for (let i = 0; i < categoriesData.length; i++) {
+      activeFilters.add(i.toString());
     }
-    // Altrimenti seleziona tutte
-    selectAllCategories();
+    allBtn.classList.add("active");
+    updateCategoryButtons();
+    filterCategories();
+    updateActiveFiltersBadges();
+    saveFilterToStorage();
     return;
   }
 
@@ -147,36 +151,27 @@ function toggleCategory(categoryIndex) {
   if (activeFilters.has(categoryIndex)) {
     // Deseleziona questa categoria
     activeFilters.delete(categoryIndex);
+    allBtn.classList.remove("active");
   } else {
-    // Se nessuna categoria è selezionata (mostra tutte), 
-    // seleziona tutte TRANNE questa
-    if (activeFilters.size === 0) {
-      // Aggiungi tutte le categorie tranne quella cliccata
-      for (let i = 0; i < categoriesData.length; i++) {
-        if (i.toString() !== categoryIndex) {
-          activeFilters.add(i.toString());
-        }
-      }
-    } else {
-      // Altrimenti aggiungi normalmente
-      activeFilters.add(categoryIndex);
+    // Seleziona questa categoria
+    activeFilters.add(categoryIndex);
+    
+    // Se tutte le categorie sono ora selezionate, attiva anche "Tutte"
+    if (activeFilters.size === categoriesData.length) {
+      allBtn.classList.add("active");
     }
   }
 
-  // Se tutte le categorie sono selezionate, passa a "mostra tutte"
-  if (activeFilters.size === categoriesData.length) {
-    selectAllCategories();
-    return;
-  }
-
-  // Se nessuna categoria è selezionata, mostra tutte
+  // Se nessuna categoria è selezionata, resetta a mostra tutte (senza badge)
   if (activeFilters.size === 0) {
-    selectAllCategories();
+    allBtn.classList.add("active");
+    filterCategories();
+    updateActiveFiltersBadges();
+    saveFilterToStorage();
     return;
   }
 
   // Aggiorna UI
-  allBtn.classList.remove("active");
   updateCategoryButtons();
   filterCategories();
   updateActiveFiltersBadges();
@@ -184,6 +179,22 @@ function toggleCategory(categoryIndex) {
 }
 
 function selectAllCategories() {
+  // Seleziona tutte le categorie
+  activeFilters.clear();
+  for (let i = 0; i < categoriesData.length; i++) {
+    activeFilters.add(i.toString());
+  }
+  
+  const allBtn = document.querySelector('.category-btn[data-category="all"]');
+  allBtn.classList.add("active");
+  
+  updateCategoryButtons();
+  filterCategories();
+  updateActiveFiltersBadges();
+  saveFilterToStorage();
+}
+
+function clearAllCategories() {
   activeFilters.clear();
   const allBtn = document.querySelector('.category-btn[data-category="all"]');
   allBtn.classList.add("active");
@@ -197,21 +208,17 @@ function selectAllCategories() {
   saveFilterToStorage();
 }
 
-function clearAllCategories() {
-  activeFilters.clear();
-  updateCategoryButtons();
-  selectAllCategories();
-}
-
 function updateCategoryButtons() {
   const allBtn = document.querySelector('.category-btn[data-category="all"]');
   
-  if (activeFilters.size === 0) {
+  // "Tutte" è attivo se tutte le categorie sono selezionate o se non c'è nessuna selezione
+  if (activeFilters.size === 0 || activeFilters.size === categoriesData.length) {
     allBtn.classList.add("active");
   } else {
     allBtn.classList.remove("active");
   }
 
+  // Aggiorna i pulsanti delle singole categorie
   document.querySelectorAll('.category-btn:not([data-category="all"])').forEach((btn) => {
     const category = btn.getAttribute("data-category");
     if (activeFilters.has(category)) {
@@ -246,7 +253,8 @@ function updateActiveFiltersBadges() {
   const container = document.getElementById("activeFilters");
   if (!container) return;
 
-  if (activeFilters.size === 0) {
+  // Se tutte le categorie sono selezionate o nessuna, non mostrare badge
+  if (activeFilters.size === 0 || activeFilters.size === categoriesData.length) {
     container.innerHTML = "";
     return;
   }
@@ -288,6 +296,7 @@ function restoreSavedFilter(totalCategories) {
   try {
     const saved = localStorage.getItem("palminoMotorsFilter");
     if (!saved) {
+      // Default: seleziona tutte
       selectAllCategories();
       return;
     }
