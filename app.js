@@ -1,19 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
   loadData();
   document.getElementById("year").textContent = new Date().getFullYear();
-  initHamburgerMenu();
 });
-
-let categoriesData = [];
-let activeFilters = new Set();
 
 async function loadData() {
   try {
     const response = await fetch("data.json");
     const data = await response.json();
 
-    categoriesData = data.categories;
-    renderCategoryButtons(data.categories);
+    renderCategoryFilter(data.categories);
     renderCategories(data.categories);
     renderBrands(data.brands);
     populateFooter(data.company);
@@ -22,48 +17,6 @@ async function loadData() {
   } catch (error) {
     console.error("Errore caricamento dati:", error);
   }
-}
-
-function initHamburgerMenu() {
-  const hamburgerBtn = document.getElementById("hamburgerBtn");
-  const sidebarMenu = document.getElementById("sidebarMenu");
-  const sidebarOverlay = document.getElementById("sidebarOverlay");
-  const sidebarClose = document.getElementById("sidebarClose");
-  const selectAllBtn = document.getElementById("selectAllBtn");
-  const clearAllBtn = document.getElementById("clearAllBtn");
-
-  function openSidebar() {
-    hamburgerBtn.classList.add("active");
-    sidebarMenu.classList.add("active");
-    sidebarOverlay.classList.add("active");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeSidebar() {
-    hamburgerBtn.classList.remove("active");
-    sidebarMenu.classList.remove("active");
-    sidebarOverlay.classList.remove("active");
-    document.body.style.overflow = "";
-  }
-
-  hamburgerBtn.addEventListener("click", openSidebar);
-  sidebarClose.addEventListener("click", closeSidebar);
-  sidebarOverlay.addEventListener("click", closeSidebar);
-
-  selectAllBtn.addEventListener("click", () => {
-    selectAllCategories();
-  });
-
-  clearAllBtn.addEventListener("click", () => {
-    clearAllCategories();
-  });
-
-  // Chiudi con ESC
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && sidebarMenu.classList.contains("active")) {
-      closeSidebar();
-    }
-  });
 }
 
 function handleLogos(logoPath) {
@@ -100,161 +53,43 @@ function getEmojiForCategory(index) {
   return emojis[index] || "📂";
 }
 
-function renderCategoryButtons(categories) {
-  const container = document.getElementById("categoryButtonsContainer");
-  if (!container) return;
+function renderCategoryFilter(categories) {
+  const filterSelect = document.getElementById("filterSelect");
 
-  container.innerHTML = categories
-    .map(
-      (cat, index) => `
-        <button class="category-btn" data-category="${index}">
-          <span class="category-icon">${getEmojiForCategory(index)}</span>
-          <span class="category-name">${cat.name}</span>
-        </button>
-      `
-    )
-    .join("");
+  if (!filterSelect) {
+    console.error("Element filterSelect not found");
+    return;
+  }
 
-  // Aggiungi event listeners
-  const allBtn = document.querySelector('.category-btn[data-category="all"]');
-  allBtn.addEventListener("click", () => {
-    selectAllCategories();
+  categories.forEach((cat, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = `${getEmojiForCategory(index)} ${cat.name}`;
+    filterSelect.appendChild(option);
   });
 
-  container.querySelectorAll(".category-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const category = btn.getAttribute("data-category");
-      toggleCategory(category);
+  // Event listener per il cambio di selezione
+  filterSelect.addEventListener("change", (e) => {
+    const value = e.target.value;
+    if (value === "all") {
+      filterCategories("all");
+      saveFilterToStorage("all");
+    } else {
+      filterCategories([value]);
+      saveFilterToStorage([value]);
+    }
+    
+    // Scroll automatico in alto quando cambi categoria
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
     });
   });
 }
 
-function toggleCategory(categoryIndex) {
-  const allBtn = document.querySelector('.category-btn[data-category="all"]');
-  
-  // Se clicchi su "Tutte"
-  if (categoryIndex === "all") {
-    // Seleziona tutte le categorie visivamente
-    activeFilters.clear();
-    for (let i = 0; i < categoriesData.length; i++) {
-      activeFilters.add(i.toString());
-    }
-    allBtn.classList.add("active");
-    updateCategoryButtons();
-    filterCategories();
-    updateActiveFiltersBadges();
-    saveFilterToStorage();
-    return;
-  }
-
-  // Toggle la categoria
-  if (activeFilters.has(categoryIndex)) {
-    // Deseleziona questa categoria
-    activeFilters.delete(categoryIndex);
-    allBtn.classList.remove("active");
-  } else {
-    // Seleziona questa categoria
-    activeFilters.add(categoryIndex);
-    
-    // Se tutte le categorie sono ora selezionate, attiva anche "Tutte"
-    if (activeFilters.size === categoriesData.length) {
-      allBtn.classList.add("active");
-    }
-  }
-
-  // Aggiorna UI (anche se activeFilters è vuoto)
-  updateCategoryButtons();
-  filterCategories();
-  updateActiveFiltersBadges();
-  saveFilterToStorage();
-}
-
-function selectAllCategories() {
-  // Seleziona tutte le categorie
-  activeFilters.clear();
-  for (let i = 0; i < categoriesData.length; i++) {
-    activeFilters.add(i.toString());
-  }
-  
-  const allBtn = document.querySelector('.category-btn[data-category="all"]');
-  allBtn.classList.add("active");
-  
-  updateCategoryButtons();
-  filterCategories();
-  updateActiveFiltersBadges();
-  saveFilterToStorage();
-}
-
-function clearAllCategories() {
-  activeFilters.clear();
-  const allBtn = document.querySelector('.category-btn[data-category="all"]');
-  allBtn.classList.remove("active");
-  
-  document.querySelectorAll('.category-btn:not([data-category="all"])').forEach((btn) => {
-    btn.classList.remove("active");
-  });
-  
-  filterCategories();
-  updateActiveFiltersBadges();
-  saveFilterToStorage();
-}
-
-function updateCategoryButtons() {
-  const allBtn = document.querySelector('.category-btn[data-category="all"]');
-  
-  // "Tutte" è attivo SOLO se tutte le categorie sono selezionate
-  if (activeFilters.size === categoriesData.length) {
-    allBtn.classList.add("active");
-  } else {
-    allBtn.classList.remove("active");
-  }
-
-  // Aggiorna i pulsanti delle singole categorie
-  document.querySelectorAll('.category-btn:not([data-category="all"])').forEach((btn) => {
-    const category = btn.getAttribute("data-category");
-    if (activeFilters.has(category)) {
-      btn.classList.add("active");
-    } else {
-      btn.classList.remove("active");
-    }
-  });
-}
-
-function filterCategories() {
-  const sections = document.querySelectorAll(".category-section");
-
-  sections.forEach((section) => {
-    const categoryIndex = section.getAttribute("data-category");
-    
-    // Se non ci sono filtri attivi (activeFilters vuoto), nascondi tutto
-    if (activeFilters.size === 0) {
-      section.classList.add("hidden");
-    } else if (activeFilters.has(categoryIndex)) {
-      section.classList.remove("hidden");
-    } else {
-      section.classList.add("hidden");
-    }
-  });
-
-  // Smooth scroll to top
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-}
-
-function updateActiveFiltersBadges() {
-  // Non mostrare badge sopra il contenuto - solo nel menu laterale
-  const container = document.getElementById("activeFilters");
-  if (container) {
-    container.innerHTML = "";
-  }
-}
-
-function saveFilterToStorage() {
+function saveFilterToStorage(filter) {
   try {
-    const filterArray = Array.from(activeFilters);
-    localStorage.setItem("palminoMotorsFilter", JSON.stringify(filterArray));
+    localStorage.setItem("palminoMotorsFilter", JSON.stringify(filter));
   } catch (error) {
     // localStorage not available
   }
@@ -264,29 +99,54 @@ function restoreSavedFilter(totalCategories) {
   try {
     const saved = localStorage.getItem("palminoMotorsFilter");
     if (!saved) {
-      // Default: seleziona tutte
-      selectAllCategories();
+      filterCategories("all");
       return;
     }
 
     const filter = JSON.parse(saved);
-    
-    if (Array.isArray(filter) && filter.length > 0) {
-      activeFilters = new Set(filter.filter(f => parseInt(f) < totalCategories));
-      
-      if (activeFilters.size === 0) {
-        selectAllCategories();
+    const filterSelect = document.getElementById("filterSelect");
+
+    if (!filterSelect) return;
+
+    if (filter === "all") {
+      filterSelect.value = "all";
+      filterCategories("all");
+      return;
+    }
+
+    if (Array.isArray(filter) && filter.length === 1) {
+      const validFilter = filter[0];
+      if (parseInt(validFilter) < totalCategories) {
+        filterSelect.value = validFilter;
+        filterCategories(filter);
       } else {
-        updateCategoryButtons();
-        filterCategories();
-        updateActiveFiltersBadges();
+        filterSelect.value = "all";
+        filterCategories("all");
+        saveFilterToStorage("all");
       }
     } else {
-      selectAllCategories();
+      filterSelect.value = "all";
+      filterCategories("all");
+      saveFilterToStorage("all");
     }
   } catch (error) {
-    selectAllCategories();
+    filterCategories("all");
+    saveFilterToStorage("all");
   }
+}
+
+function filterCategories(filter) {
+  const sections = document.querySelectorAll(".category-section");
+  const filters = filter === "all" ? "all" : Array.isArray(filter) ? filter : [filter];
+
+  sections.forEach((section) => {
+    const categoryIndex = section.getAttribute("data-category");
+    if (filters === "all" || filters.includes(categoryIndex)) {
+      section.classList.remove("hidden");
+    } else {
+      section.classList.add("hidden");
+    }
+  });
 }
 
 function renderCategories(categories) {
