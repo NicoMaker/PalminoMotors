@@ -165,6 +165,12 @@
           "description": "Client email alternativo",
           "url": "https://outlook.live.com/mail/",
           "icon": "📨"
+        },
+        {
+          "title": "WhatsApp",
+          "description": "Chat WhatsApp",
+          "url": "https://web.whatsapp.com/",
+          "icon": "💬"
         }
       ]
     },

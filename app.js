@@ -37,6 +37,40 @@ function formatPhoneNumber(phone) {
   return phone;
 }
 
+/**
+ * Gestisce l'apertura di WhatsApp con priorità all'app (mobile o desktop)
+ * Fallback a WhatsApp Web se l'app non è installata
+ */
+function openWhatsApp(event, element) {
+  event.preventDefault();
+  
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const isDesktop = !isMobile;
+  
+  if (isMobile) {
+    // Su mobile: prova ad aprire l'app con protocollo whatsapp://
+    window.location.href = 'whatsapp://';
+    
+    // Fallback a WhatsApp Web dopo 1.5 secondi se l'app non si apre
+    setTimeout(() => {
+      if (document.visibilityState === 'visible') {
+        window.open('https://web.whatsapp.com/', '_blank');
+      }
+    }, 1500);
+  } else {
+    // Su desktop: prova ad aprire l'app desktop con protocollo whatsapp://
+    const appOpened = window.open('whatsapp://', '_blank');
+    
+    // Fallback a WhatsApp Web dopo 1 secondo se l'app non si apre
+    setTimeout(() => {
+      // Se la finestra dell'app non si è aperta o è stata chiusa immediatamente
+      if (!appOpened || appOpened.closed || document.visibilityState === 'visible') {
+        window.open('https://web.whatsapp.com/', '_blank');
+      }
+    }, 1000);
+  }
+}
+
 async function loadData() {
   try {
     const response = await fetch("data.json");
@@ -196,7 +230,11 @@ function renderCategories(categories) {
             ${cat.links
               .map(
                 (link) => `
-                  <a href="${link.url}" target="_blank" rel="noopener noreferrer" class="link-card">
+                  <a href="${link.url}" 
+                     target="_blank" 
+                     rel="noopener noreferrer" 
+                     class="link-card"
+                     ${link.title.toLowerCase().includes('whatsapp') ? 'onclick="openWhatsApp(event, this); return false;"' : ''}>
                     <span class="link-icon">${link.icon}</span>
                     <div class="link-info">
                       <h3>${link.title}</h3>
