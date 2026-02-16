@@ -62,18 +62,46 @@ body {
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 100px 24px 32px 24px;
 }
 
 /* ===== QR HEADER ===== */
 .qr-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 40px;
-  padding-bottom: 24px;
-  border-bottom: 2px solid transparent;
-  border-image: linear-gradient(90deg, var(--accent) 0%, #f97316 50%, #06b6d4 100%) 1;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  background: rgba(9, 9, 11, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+  border-bottom: 3px solid transparent;
+  border-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--accent) 20%,
+      #f97316 40%,
+      #10b981 60%,
+      #06b6d4 80%,
+      transparent 100%
+    )
+    1;
+}
+
+.qr-header::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border);
 }
 
 .back-link {
@@ -141,7 +169,7 @@ body {
 
 /* ===== PANELS ===== */
 .panel {
-  background: linear-gradient(135deg, var(--bg-card) 0%, rgba(17, 17, 19, 0.8) 100%);
+  background: var(--bg-card);
   border: 2px solid transparent;
   border-radius: var(--radius-lg);
   padding: 28px;
@@ -150,21 +178,10 @@ body {
   position: relative;
   overflow: visible;
   background-image: 
-    linear-gradient(135deg, var(--bg-card) 0%, rgba(17, 17, 19, 0.8) 100%),
+    linear-gradient(var(--bg-card), var(--bg-card)),
     linear-gradient(135deg, var(--accent) 0%, #f97316 50%, #06b6d4 100%);
   background-origin: padding-box, border-box;
   background-clip: padding-box, border-box;
-}
-
-.panel::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent) 0%, #f97316 50%, #06b6d4 100%);
-  z-index: 1;
 }
 
 .input-panel {
@@ -622,11 +639,11 @@ select.form-control option {
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .main-wrapper {
-    padding: 20px 16px;
+    padding: 80px 16px 20px 16px;
   }
 
   .qr-header {
-    margin-bottom: 24px;
+    padding: 12px 16px;
   }
 
   .page-title {
