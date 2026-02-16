@@ -537,7 +537,7 @@ body {
   gap: 16px;
   padding: 16px 18px;
   background: var(--bg-card);
-  border: 2px solid var(--border-hover);
+  border: 2px solid var(--border);
   border-radius: var(--radius);
   text-decoration: none;
   color: var(--text);
@@ -546,204 +546,71 @@ body {
   overflow: hidden;
 }
 
-.link-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  opacity: 0.6;
-  transition: opacity var(--transition);
-  pointer-events: none;
-}
-
-.link-card::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  opacity: 0.6;
-  transition: opacity var(--transition);
-  pointer-events: none;
-}
-
 .link-card:hover {
-  border-color: var(--border-hover);
   background: var(--bg-card-hover);
   transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
-.link-card:hover::before,
-.link-card:hover::after {
-  opacity: 1;
-}
-
-/* Bordi colorati per categoria */
-.category-section[data-category="0"] .link-card::before {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-0) 50%,
-    transparent 100%
-  );
-}
-.category-section[data-category="0"] .link-card::after {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-0) 50%,
-    transparent 100%
-  );
+/* Bordi colorati per categoria - TUTTO IL BORDO */
+.category-section[data-category="0"] .link-card {
+  border-color: var(--cat-0);
 }
 .category-section[data-category="0"] .link-card:hover {
   border-color: var(--cat-0);
-  box-shadow: 0 8px 24px var(--cat-0-soft);
+  box-shadow: 0 8px 32px var(--cat-0-soft);
 }
 
-.category-section[data-category="1"] .link-card::before {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-1) 50%,
-    transparent 100%
-  );
-}
-.category-section[data-category="1"] .link-card::after {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-1) 50%,
-    transparent 100%
-  );
+.category-section[data-category="1"] .link-card {
+  border-color: var(--cat-1);
 }
 .category-section[data-category="1"] .link-card:hover {
   border-color: var(--cat-1);
   box-shadow: 0 8px 24px var(--cat-1-soft);
 }
 
-.category-section[data-category="2"] .link-card::before {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-2) 50%,
-    transparent 100%
-  );
-}
-.category-section[data-category="2"] .link-card::after {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-2) 50%,
-    transparent 100%
-  );
+.category-section[data-category="2"] .link-card {
+  border-color: var(--cat-2);
 }
 .category-section[data-category="2"] .link-card:hover {
   border-color: var(--cat-2);
   box-shadow: 0 8px 24px var(--cat-2-soft);
 }
 
-.category-section[data-category="3"] .link-card::before {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-3) 50%,
-    transparent 100%
-  );
-}
-.category-section[data-category="3"] .link-card::after {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-3) 50%,
-    transparent 100%
-  );
+.category-section[data-category="3"] .link-card {
+  border-color: var(--cat-3);
 }
 .category-section[data-category="3"] .link-card:hover {
   border-color: var(--cat-3);
   box-shadow: 0 8px 24px var(--cat-3-soft);
 }
 
-.category-section[data-category="4"] .link-card::before {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-4) 50%,
-    transparent 100%
-  );
-}
-.category-section[data-category="4"] .link-card::after {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-4) 50%,
-    transparent 100%
-  );
+.category-section[data-category="4"] .link-card {
+  border-color: var(--cat-4);
 }
 .category-section[data-category="4"] .link-card:hover {
   border-color: var(--cat-4);
   box-shadow: 0 8px 24px var(--cat-4-soft);
 }
 
-.category-section[data-category="5"] .link-card::before {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-5) 50%,
-    transparent 100%
-  );
-}
-.category-section[data-category="5"] .link-card::after {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-5) 50%,
-    transparent 100%
-  );
+.category-section[data-category="5"] .link-card {
+  border-color: var(--cat-5);
 }
 .category-section[data-category="5"] .link-card:hover {
   border-color: var(--cat-5);
   box-shadow: 0 8px 24px var(--cat-5-soft);
 }
 
-.category-section[data-category="6"] .link-card::before {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-6) 50%,
-    transparent 100%
-  );
-}
-.category-section[data-category="6"] .link-card::after {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-6) 50%,
-    transparent 100%
-  );
+.category-section[data-category="6"] .link-card {
+  border-color: var(--cat-6);
 }
 .category-section[data-category="6"] .link-card:hover {
   border-color: var(--cat-6);
   box-shadow: 0 8px 24px var(--cat-6-soft);
 }
 
-.category-section[data-category="7"] .link-card::before {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-7) 50%,
-    transparent 100%
-  );
-}
-.category-section[data-category="7"] .link-card::after {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--cat-7) 50%,
-    transparent 100%
-  );
+.category-section[data-category="7"] .link-card {
+  border-color: var(--cat-7);
 }
 .category-section[data-category="7"] .link-card:hover {
   border-color: var(--cat-7);
@@ -868,40 +735,39 @@ body {
 
 .link-arrow {
   color: var(--text-muted);
-  opacity: 0;
-  transform: translateX(-4px);
+  opacity: 1;
+  transform: translateX(0);
   transition: all var(--transition);
   flex-shrink: 0;
 }
 
 .link-card:hover .link-arrow {
-  opacity: 1;
-  transform: translateX(0);
+  transform: translateX(4px);
 }
 
-/* Color the arrow on hover per category */
-.category-section[data-category="0"] .link-card:hover .link-arrow {
+/* Color the arrow per category - always visible */
+.category-section[data-category="0"] .link-arrow {
   color: var(--cat-0);
 }
-.category-section[data-category="1"] .link-card:hover .link-arrow {
+.category-section[data-category="1"] .link-arrow {
   color: var(--cat-1);
 }
-.category-section[data-category="2"] .link-card:hover .link-arrow {
+.category-section[data-category="2"] .link-arrow {
   color: var(--cat-2);
 }
-.category-section[data-category="3"] .link-card:hover .link-arrow {
+.category-section[data-category="3"] .link-arrow {
   color: var(--cat-3);
 }
-.category-section[data-category="4"] .link-card:hover .link-arrow {
+.category-section[data-category="4"] .link-arrow {
   color: var(--cat-4);
 }
-.category-section[data-category="5"] .link-card:hover .link-arrow {
+.category-section[data-category="5"] .link-arrow {
   color: var(--cat-5);
 }
-.category-section[data-category="6"] .link-card:hover .link-arrow {
+.category-section[data-category="6"] .link-arrow {
   color: var(--cat-6);
 }
-.category-section[data-category="7"] .link-card:hover .link-arrow {
+.category-section[data-category="7"] .link-arrow {
   color: var(--cat-7);
 }
 
@@ -986,7 +852,7 @@ body {
   gap: 0;
   padding: 32px 24px;
   background: var(--bg-card);
-  border: 2px solid var(--border-hover);
+  border: 2px solid var(--accent);
   border-radius: 20px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -1014,7 +880,7 @@ body {
   border-color: var(--accent);
   background: var(--bg-card-hover);
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 40px rgba(220, 38, 38, 0.25);
+  box-shadow: 0 12px 40px rgba(220, 38, 38, 0.3);
 }
 
 .brand-item:hover::before {
@@ -1388,10 +1254,6 @@ body {
 
   .link-info h3 {
     font-size: 0.85rem;
-  }
-
-  .link-arrow {
-    display: none;
   }
 
   .brand-links {
