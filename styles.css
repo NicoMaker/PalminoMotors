@@ -1417,14 +1417,14 @@ body {
 
   .filter-select {
     padding: 14px 20px;
-    font-size: 0.95rem;
+    font-size: 0.75rem;
     background-position: right 18px center;
     background-size: 16px;
     min-height: 50px;
   }
 
   .filter-select option {
-    font-size: 0.95rem;
+    font-size: 0.75rem;
     padding: 14px 18px;
   }
 }
