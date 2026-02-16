@@ -9,31 +9,31 @@ document.addEventListener("DOMContentLoaded", () => {
  */
 function formatPhoneNumber(phone) {
   if (!phone) return phone;
-  
+
   // Rimuovi tutti gli spazi esistenti
-  let cleaned = phone.replace(/\s+/g, '');
-  
+  let cleaned = phone.replace(/\s+/g, "");
+
   // Se inizia con +39 (Italia)
-  if (cleaned.startsWith('+39')) {
+  if (cleaned.startsWith("+39")) {
     // +39 XXX XXX XXXX
-    return cleaned.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, '$1 $2 $3 $4');
+    return cleaned.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
   }
   // Se inizia con +
-  else if (cleaned.startsWith('+')) {
+  else if (cleaned.startsWith("+")) {
     // Formato generico internazionale: +XX XXX XXX XXXX
-    return cleaned.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d{4})/, '$1 $2 $3 $4');
+    return cleaned.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
   }
   // Se è un numero italiano senza prefisso (10 cifre)
   else if (cleaned.length === 10) {
     // XXX XXX XXXX
-    return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+    return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
   }
   // Formato generico per altri numeri
   else if (cleaned.length > 6) {
     // Dividi in gruppi di 3 cifre
-    return cleaned.replace(/(\d{3})(?=\d)/g, '$1 ');
+    return cleaned.replace(/(\d{3})(?=\d)/g, "$1 ");
   }
-  
+
   return phone;
 }
 
@@ -43,29 +43,33 @@ function formatPhoneNumber(phone) {
  */
 function openWhatsApp(event, element) {
   event.preventDefault();
-  
+
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const isDesktop = !isMobile;
-  
+
   if (isMobile) {
     // Su mobile: prova ad aprire l'app con protocollo whatsapp://
-    window.location.href = 'whatsapp://';
-    
+    window.location.href = "whatsapp://";
+
     // Fallback a WhatsApp Web dopo 1.5 secondi se l'app non si apre
     setTimeout(() => {
-      if (document.visibilityState === 'visible') {
-        window.open('https://web.whatsapp.com/', '_blank');
+      if (document.visibilityState === "visible") {
+        window.open("https://web.whatsapp.com/", "_blank");
       }
     }, 1500);
   } else {
     // Su desktop: prova ad aprire l'app desktop con protocollo whatsapp://
-    const appOpened = window.open('whatsapp://', '_blank');
-    
+    const appOpened = window.open("whatsapp://", "_blank");
+
     // Fallback a WhatsApp Web dopo 1 secondo se l'app non si apre
     setTimeout(() => {
       // Se la finestra dell'app non si è aperta o è stata chiusa immediatamente
-      if (!appOpened || appOpened.closed || document.visibilityState === 'visible') {
-        window.open('https://web.whatsapp.com/', '_blank');
+      if (
+        !appOpened ||
+        appOpened.closed ||
+        document.visibilityState === "visible"
+      ) {
+        window.open("https://web.whatsapp.com/", "_blank");
       }
     }, 1000);
   }
@@ -146,11 +150,11 @@ function renderCategoryFilter(categories) {
       filterCategories([value]);
       saveFilterToStorage([value]);
     }
-    
+
     // Scroll automatico in alto quando cambi categoria
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   });
 }
@@ -205,7 +209,8 @@ function restoreSavedFilter(totalCategories) {
 
 function filterCategories(filter) {
   const sections = document.querySelectorAll(".category-section");
-  const filters = filter === "all" ? "all" : Array.isArray(filter) ? filter : [filter];
+  const filters =
+    filter === "all" ? "all" : Array.isArray(filter) ? filter : [filter];
 
   sections.forEach((section) => {
     const categoryIndex = section.getAttribute("data-category");
@@ -234,7 +239,7 @@ function renderCategories(categories) {
                      target="_blank" 
                      rel="noopener noreferrer" 
                      class="link-card"
-                     ${link.title.toLowerCase().includes('whatsapp') ? 'onclick="openWhatsApp(event, this); return false;"' : ''}>
+                     ${link.title.toLowerCase().includes("whatsapp") ? 'onclick="openWhatsApp(event, this); return false;"' : ""}>
                     <span class="link-icon">${link.icon}</span>
                     <div class="link-info">
                       <h3>${link.title}</h3>
@@ -243,11 +248,11 @@ function renderCategories(categories) {
                     <svg class="link-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
                       <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                  </a>`
+                  </a>`,
               )
               .join("")}
           </div>
-        </section>`
+        </section>`,
     )
     .join("");
 }
@@ -266,6 +271,7 @@ function renderBrands(brands) {
       (brand) => `
         <div class="brand-item">
           <span class="brand-name">${brand.name}</span>
+          <div class="brand-gradient"></div>
           <div class="brand-socials">
             ${
               brand.url
@@ -295,7 +301,7 @@ function renderBrands(brands) {
                 : ""
             }
           </div>
-        </div>`
+        </div>`,
     )
     .join("");
 }
