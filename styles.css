@@ -537,7 +537,7 @@ body {
   gap: 16px;
   padding: 16px 18px;
   background: var(--bg-card);
-  border: 2px solid var(--border);
+  border: 2px solid var(--border-hover);
   border-radius: var(--radius);
   text-decoration: none;
   color: var(--text);
@@ -553,7 +553,7 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  opacity: 0;
+  opacity: 0.6;
   transition: opacity var(--transition);
   pointer-events: none;
 }
@@ -565,7 +565,7 @@ body {
   left: 0;
   right: 0;
   height: 2px;
-  opacity: 0;
+  opacity: 0.6;
   transition: opacity var(--transition);
   pointer-events: none;
 }
@@ -986,7 +986,7 @@ body {
   gap: 0;
   padding: 32px 24px;
   background: var(--bg-card);
-  border: 2px solid var(--border);
+  border: 2px solid var(--border-hover);
   border-radius: 20px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -1006,7 +1006,7 @@ body {
     transparent 50%,
     rgba(249, 115, 22, 0.05) 100%
   );
-  opacity: 0;
+  opacity: 0.3;
   transition: opacity 0.4s ease;
 }
 
@@ -1100,7 +1100,7 @@ body {
   text-decoration: none;
   color: var(--text-secondary);
   background: var(--bg);
-  border: 2px solid var(--border);
+  border: 2px solid var(--border-hover);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
