@@ -537,13 +537,13 @@ select.form-control option {
 }
 
 .footer-logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 10px;
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
   object-fit: contain;
   margin-bottom: 12px;
   background: var(--bg);
-  padding: 4px;
+  padding: 6px;
 }
 
 .footer-company-name {
