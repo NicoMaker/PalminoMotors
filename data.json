@@ -15,6 +15,8 @@
   "categories": [
     {
       "name": "Siti Web e Portali",
+      "color": "#3b82f6",
+      "colorLight": "#60a5fa",
       "links": [
         {
           "title": "Sito Ufficiale",
@@ -44,6 +46,8 @@
     },
     {
       "name": "Portali Assistenza",
+      "color": "#f97316",
+      "colorLight": "#fb923c",
       "links": [
         {
           "title": "Portale Assistenza MBP",
@@ -67,6 +71,8 @@
     },
     {
       "name": "Gestionali e Operativi",
+      "color": "#10b981",
+      "colorLight": "#34d399",
       "links": [
         {
           "title": "Gestionale Moto.it",
@@ -90,6 +96,8 @@
     },
     {
       "name": "Vetrina Social & Shop",
+      "color": "#f43f5e",
+      "colorLight": "#fb7185",
       "links": [
         {
           "title": "Vetrina Subito.it",
@@ -113,6 +121,8 @@
     },
     {
       "name": "Servizi Cloud & Hosting",
+      "color": "#06b6d4",
+      "colorLight": "#22d3ee",
       "links": [
         {
           "title": "Aruba Cloud Console",
@@ -130,6 +140,8 @@
     },
     {
       "name": "Pianificazione & Calendario",
+      "color": "#eab308",
+      "colorLight": "#fde047",
       "links": [
         {
           "title": "Google Calendar",
@@ -153,6 +165,8 @@
     },
     {
       "name": "Email & Comunicazioni",
+      "color": "#a855f7",
+      "colorLight": "#c084fc",
       "links": [
         {
           "title": "Gmail",
@@ -176,6 +190,8 @@
     },
     {
       "name": "Gestione Bancaria",
+      "color": "#14b8a6",
+      "colorLight": "#2dd4bf",
       "links": [
         {
           "title": "Gestione Deutsche Bank",
@@ -189,35 +205,47 @@
   "brands": [
     {
       "name": "Morbidelli",
+      "color": "#dc2626",
+      "colorLight": "#f97316",
       "url": "https://www.morbidelli.com/it-it/",
       "instagram": "https://www.instagram.com/morbidelliit/",
       "facebook": "https://www.facebook.com/Morbidelliglobal"
     },
     {
       "name": "Cyclone",
+      "color": "#3b82f6",
+      "colorLight": "#06b6d4",
       "url": "https://www.cyclonemoto.it/",
       "instagram": "https://www.instagram.com/cyclonemotor_es/"
     },
     {
       "name": "Benda",
+      "color": "#10b981",
+      "colorLight": "#eab308",
       "url": "https://www.bendakeeway.com/it-it",
       "instagram": "https://www.instagram.com/benda_global/",
       "facebook": "https://www.facebook.com/BendamotorPh"
     },
     {
       "name": "Keeway",
+      "color": "#f43f5e",
+      "colorLight": "#f97316",
       "url": "https://italy.keeway.com/",
       "instagram": "https://www.instagram.com/keewayitalia/",
       "facebook": "https://www.facebook.com/KeewayEgypt"
     },
     {
       "name": "SWM",
+      "color": "#a855f7",
+      "colorLight": "#06b6d4",
       "url": "https://www.swm-motorcycles.it/",
       "instagram": "https://www.instagram.com/swmmotorcyclesofficial/",
       "facebook": "https://www.facebook.com/swmmotode"
     },
     {
       "name": "Brixton",
+      "color": "#eab308",
+      "colorLight": "#f97316",
       "url": "https://www.brixton-motorcycles.com/it/",
       "instagram": "https://www.instagram.com/brixton_motorcycles/",
       "facebook": "https://www.facebook.com/brixtonmoto"

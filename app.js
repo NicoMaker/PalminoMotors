@@ -4,71 +4,50 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /**
+ * Converte un colore HEX in stringa "r, g, b" per uso in rgba()
+ */
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
+    : "255, 255, 255";
+}
+
+/**
  * Formatta un numero di telefono per la visualizzazione
- * Rimuove caratteri non numerici (eccetto +) e aggiunge spazi per leggibilità
  */
 function formatPhoneNumber(phone) {
   if (!phone) return phone;
-
-  // Rimuovi tutti gli spazi esistenti
   let cleaned = phone.replace(/\s+/g, "");
-
-  // Se inizia con +39 (Italia)
   if (cleaned.startsWith("+39")) {
-    // +39 XXX XXX XXXX
     return cleaned.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
-  }
-  // Se inizia con +
-  else if (cleaned.startsWith("+")) {
-    // Formato generico internazionale: +XX XXX XXX XXXX
+  } else if (cleaned.startsWith("+")) {
     return cleaned.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
-  }
-  // Se è un numero italiano senza prefisso (10 cifre)
-  else if (cleaned.length === 10) {
-    // XXX XXX XXXX
+  } else if (cleaned.length === 10) {
     return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
-  }
-  // Formato generico per altri numeri
-  else if (cleaned.length > 6) {
-    // Dividi in gruppi di 3 cifre
+  } else if (cleaned.length > 6) {
     return cleaned.replace(/(\d{3})(?=\d)/g, "$1 ");
   }
-
   return phone;
 }
 
 /**
- * Gestisce l'apertura di WhatsApp con priorità all'app (mobile o desktop)
- * Fallback a WhatsApp Web se l'app non è installata
+ * Gestisce l'apertura di WhatsApp con priorità all'app
  */
 function openWhatsApp(event, element) {
   event.preventDefault();
-
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  const isDesktop = !isMobile;
-
   if (isMobile) {
-    // Su mobile: prova ad aprire l'app con protocollo whatsapp://
     window.location.href = "whatsapp://";
-
-    // Fallback a WhatsApp Web dopo 1.5 secondi se l'app non si apre
     setTimeout(() => {
       if (document.visibilityState === "visible") {
         window.open("https://web.whatsapp.com/", "_blank");
       }
     }, 1500);
   } else {
-    // Su desktop: prova ad aprire l'app desktop con protocollo whatsapp://
     const appOpened = window.open("whatsapp://", "_blank");
-
-    // Fallback a WhatsApp Web dopo 1 secondo se l'app non si apre
     setTimeout(() => {
-      // Se la finestra dell'app non si è aperta o è stata chiusa immediatamente
-      if (
-        !appOpened ||
-        appOpened.closed ||
-        document.visibilityState === "visible"
-      ) {
+      if (!appOpened || appOpened.closed || document.visibilityState === "visible") {
         window.open("https://web.whatsapp.com/", "_blank");
       }
     }, 1000);
@@ -86,9 +65,150 @@ async function loadData() {
     populateFooter(data.company);
     handleLogos(data.company.logo);
     restoreSavedFilter(data.categories.length);
+    applyDynamicColors(data.categories, data.brands);
   } catch (error) {
     console.error("Errore caricamento dati:", error);
   }
+}
+
+/**
+ * Applica i colori dinamici via JS:
+ * - Bordi delle card di categoria
+ * - Titoli di sezione (gradient inline)
+ * - Icone delle card
+ * - Frecce delle card
+ * - Brand: bordo, gradient-bar e nome
+ */
+function applyDynamicColors(categories, brands) {
+  // --- CATEGORIE ---
+  categories.forEach((cat, index) => {
+    const color = cat.color || "#ffffff";
+    const colorLight = cat.colorLight || color;
+    const rgb = hexToRgb(color);
+    const soft = `rgba(${rgb}, 0.15)`;
+    const medium = `rgba(${rgb}, 0.30)`;
+    const softBorder = `rgba(${rgb}, 0.20)`;
+
+    const section = document.querySelector(`.category-section[data-category="${index}"]`);
+    if (!section) return;
+
+    // Titolo: gradient inline tramite CSS custom properties su style
+    const title = section.querySelector(".category-title");
+    if (title) {
+      title.style.backgroundImage = `linear-gradient(135deg, ${color} 0%, ${colorLight} 100%)`;
+      title.style.webkitBackgroundClip = "text";
+      title.style.backgroundClip = "text";
+      title.style.webkitTextFillColor = "transparent";
+    }
+
+    // Card: bordo colorato + hover shadow
+    const cards = section.querySelectorAll(".link-card");
+    cards.forEach((card) => {
+      card.style.borderColor = color;
+
+      card.addEventListener("mouseenter", () => {
+        card.style.boxShadow = `0 8px 32px rgba(${rgb}, 0.25)`;
+      });
+      card.addEventListener("mouseleave", () => {
+        card.style.boxShadow = "";
+      });
+    });
+
+    // Icone: sfondo soft + bordo
+    const icons = section.querySelectorAll(".link-icon");
+    icons.forEach((icon) => {
+      icon.style.background = soft;
+      icon.style.borderColor = softBorder;
+
+      const card = icon.closest(".link-card");
+      if (card) {
+        card.addEventListener("mouseenter", () => {
+          icon.style.background = medium;
+          icon.style.borderColor = color;
+          icon.style.boxShadow = `0 0 20px ${soft}`;
+        });
+        card.addEventListener("mouseleave", () => {
+          icon.style.background = soft;
+          icon.style.borderColor = softBorder;
+          icon.style.boxShadow = "";
+        });
+      }
+    });
+
+    // Frecce: colore categoria
+    const arrows = section.querySelectorAll(".link-arrow");
+    arrows.forEach((arrow) => {
+      arrow.style.color = color;
+    });
+  });
+
+  // --- BRAND ---
+  brands.forEach((brand, index) => {
+    const color = brand.color || "#dc2626";
+    const colorLight = brand.colorLight || "#f97316";
+    const rgb = hexToRgb(color);
+    const rgbLight = hexToRgb(colorLight);
+
+    const items = document.querySelectorAll(".brand-item");
+    const item = items[index];
+    if (!item) return;
+
+    // Bordo card brand
+    item.style.borderColor = color;
+
+    // Pseudo-sfondo ::before non è accessibile via JS direttamente,
+    // usiamo una variabile CSS inline sull'elemento
+    item.style.setProperty("--brand-color", color);
+    item.style.setProperty("--brand-color-light", colorLight);
+
+    // Gradient bar decorativa
+    const gradientBar = item.querySelector(".brand-gradient");
+    if (gradientBar) {
+      gradientBar.style.background = `linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(${rgb}, 0.3) 15%,
+        ${color} 35%,
+        ${colorLight} 50%,
+        ${color} 65%,
+        rgba(${rgb}, 0.3) 85%,
+        transparent 100%
+      )`;
+    }
+
+    // Nome brand: gradient testo
+    const nameEl = item.querySelector(".brand-name");
+    if (nameEl) {
+      nameEl.style.backgroundImage = `linear-gradient(135deg, #fafafa 0%, ${color} 100%)`;
+      nameEl.style.webkitBackgroundClip = "text";
+      nameEl.style.backgroundClip = "text";
+      nameEl.style.webkitTextFillColor = "transparent";
+    }
+
+    // Hover card brand
+    item.addEventListener("mouseenter", () => {
+      item.style.borderColor = color;
+      item.style.boxShadow = `0 12px 40px rgba(${rgb}, 0.3)`;
+    });
+    item.addEventListener("mouseleave", () => {
+      item.style.borderColor = color;
+      item.style.boxShadow = "";
+    });
+
+    // Brand pill hover: usa il colore del brand invece dell'accent globale
+    const pills = item.querySelectorAll(".brand-pill");
+    pills.forEach((pill) => {
+      pill.addEventListener("mouseenter", () => {
+        pill.style.setProperty("--pill-bg", color);
+        pill.style.borderColor = color;
+        pill.style.boxShadow = `0 8px 20px rgba(${rgb}, 0.35)`;
+      });
+      pill.addEventListener("mouseleave", () => {
+        pill.style.borderColor = "";
+        pill.style.boxShadow = "";
+      });
+    });
+  });
 }
 
 function handleLogos(logoPath) {
@@ -140,7 +260,6 @@ function renderCategoryFilter(categories) {
     filterSelect.appendChild(option);
   });
 
-  // Event listener per il cambio di selezione
   filterSelect.addEventListener("change", (e) => {
     const value = e.target.value;
     if (value === "all") {
@@ -150,12 +269,7 @@ function renderCategoryFilter(categories) {
       filterCategories([value]);
       saveFilterToStorage([value]);
     }
-
-    // Scroll automatico in alto quando cambi categoria
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 }
 
@@ -177,7 +291,6 @@ function restoreSavedFilter(totalCategories) {
 
     const filter = JSON.parse(saved);
     const filterSelect = document.getElementById("filterSelect");
-
     if (!filterSelect) return;
 
     if (filter === "all") {
@@ -235,9 +348,9 @@ function renderCategories(categories) {
             ${cat.links
               .map(
                 (link) => `
-                  <a href="${link.url}" 
-                     target="_blank" 
-                     rel="noopener noreferrer" 
+                  <a href="${link.url}"
+                     target="_blank"
+                     rel="noopener noreferrer"
                      class="link-card"
                      ${link.title.toLowerCase().includes("whatsapp") ? 'onclick="openWhatsApp(event, this); return false;"' : ""}>
                     <span class="link-icon">${link.icon}</span>
