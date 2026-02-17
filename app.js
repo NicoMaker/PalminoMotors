@@ -32,25 +32,66 @@ function formatPhoneNumber(phone) {
 }
 
 /**
- * Gestisce l'apertura di WhatsApp con priorità all'app
+ * Gestisce l'apertura di WhatsApp:
+ * - Su mobile: tenta di aprire l'app installata, altrimenti WhatsApp Web
+ * - Su desktop: apre direttamente WhatsApp Web
  */
 function openWhatsApp(event, element) {
   event.preventDefault();
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
   if (isMobile) {
-    window.location.href = "whatsapp://";
-    setTimeout(() => {
-      if (document.visibilityState === "visible") {
-        window.open("https://web.whatsapp.com/", "_blank");
+    // Su mobile proviamo lo schema nativo whatsapp://
+    // Se l'app è installata si apre, altrimenti dopo il timeout apriamo WhatsApp Web
+    const appUrl = "whatsapp://";
+    const webUrl = "https://web.whatsapp.com/";
+
+    // Nascondi la pagina: se torna visibile entro 2s l'app non è installata
+    let fallbackTimer = setTimeout(() => {
+      if (document.visibilityState !== "hidden") {
+        window.open(webUrl, "_blank");
       }
-    }, 1500);
+    }, 2000);
+
+    document.addEventListener(
+      "visibilitychange",
+      function onHide() {
+        if (document.visibilityState === "hidden") {
+          clearTimeout(fallbackTimer);
+          document.removeEventListener("visibilitychange", onHide);
+        }
+      },
+      { once: true }
+    );
+
+    window.location.href = appUrl;
   } else {
-    const appOpened = window.open("whatsapp://", "_blank");
-    setTimeout(() => {
-      if (!appOpened || appOpened.closed || document.visibilityState === "visible") {
-        window.open("https://web.whatsapp.com/", "_blank");
-      }
-    }, 1000);
+    // Su desktop: tenta di aprire l'app con iframe nascosto (non blocca la pagina)
+    // Se l'app non è installata, apre WhatsApp Web dopo il timeout
+    const webUrl = "https://web.whatsapp.com/";
+
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    document.body.appendChild(iframe);
+
+    let fallbackTimer = setTimeout(() => {
+      document.body.removeChild(iframe);
+      window.open(webUrl, "_blank");
+    }, 1500);
+
+    document.addEventListener(
+      "visibilitychange",
+      function onHide() {
+        if (document.visibilityState === "hidden") {
+          clearTimeout(fallbackTimer);
+          document.body.removeChild(iframe);
+          document.removeEventListener("visibilitychange", onHide);
+        }
+      },
+      { once: true }
+    );
+
+    iframe.src = "whatsapp://";
   }
 }
 
