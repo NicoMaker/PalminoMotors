@@ -463,7 +463,9 @@ function renderBrands(brands) {
 function populateFooter(company) {
   const companyNameEl = document.getElementById("companyName");
   if (companyNameEl) {
-    companyNameEl.textContent = company.fullName.toUpperCase();
+    companyNameEl.textContent = company.fullName
+      .toLowerCase()
+      .replace(/\b\w/g, (c) => c.toUpperCase());
   }
 
   const addressLink = document.getElementById("fullAddress");
