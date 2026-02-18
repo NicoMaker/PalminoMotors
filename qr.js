@@ -94,31 +94,31 @@ class QRGenerator {
    */
   formatPhoneNumber(phone) {
     if (!phone) return phone;
-    
+
     // Rimuovi tutti gli spazi esistenti
-    let cleaned = phone.replace(/\s+/g, '');
-    
+    let cleaned = phone.replace(/\s+/g, "");
+
     // Se inizia con +39 (Italia)
-    if (cleaned.startsWith('+39')) {
+    if (cleaned.startsWith("+39")) {
       // +39 XXX XXX XXXX
-      return cleaned.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, '$1 $2 $3 $4');
+      return cleaned.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
     }
     // Se inizia con +
-    else if (cleaned.startsWith('+')) {
+    else if (cleaned.startsWith("+")) {
       // Formato generico internazionale: +XX XXX XXX XXXX
-      return cleaned.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d{4})/, '$1 $2 $3 $4');
+      return cleaned.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
     }
     // Se è un numero italiano senza prefisso (10 cifre)
     else if (cleaned.length === 10) {
       // XXX XXX XXXX
-      return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
+      return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
     }
     // Formato generico per altri numeri
     else if (cleaned.length > 6) {
       // Dividi in gruppi di 3 cifre
-      return cleaned.replace(/(\d{3})(?=\d)/g, '$1 ');
+      return cleaned.replace(/(\d{3})(?=\d)/g, "$1 ");
     }
-    
+
     return phone;
   }
 

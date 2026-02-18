@@ -61,7 +61,7 @@ function openWhatsApp(event, element) {
           document.removeEventListener("visibilitychange", onHide);
         }
       },
-      { once: true }
+      { once: true },
     );
 
     window.location.href = appUrl;
@@ -88,7 +88,7 @@ function openWhatsApp(event, element) {
           document.removeEventListener("visibilitychange", onHide);
         }
       },
-      { once: true }
+      { once: true },
     );
 
     iframe.src = "whatsapp://";
@@ -130,7 +130,9 @@ function applyDynamicColors(categories, brands) {
     const medium = `rgba(${rgb}, 0.30)`;
     const softBorder = `rgba(${rgb}, 0.20)`;
 
-    const section = document.querySelector(`.category-section[data-category="${index}"]`);
+    const section = document.querySelector(
+      `.category-section[data-category="${index}"]`,
+    );
     if (!section) return;
 
     // Titolo: gradient inline tramite CSS custom properties su style
