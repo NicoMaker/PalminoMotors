@@ -389,6 +389,20 @@ body {
   color: var(--text);
 }
 
+.chip-deselect-all {
+  border-color: rgba(255, 80, 80, 0.35);
+  color: rgba(255, 120, 120, 0.85);
+  background: rgba(220, 38, 38, 0.07);
+  gap: 5px;
+}
+
+.chip-deselect-all:hover {
+  border-color: rgba(255, 80, 80, 0.7);
+  color: #ff8080;
+  background: rgba(220, 38, 38, 0.15);
+  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.12);
+}
+
 /* ===== MAIN WRAPPER ===== */
 .main-wrapper {
   position: relative;
