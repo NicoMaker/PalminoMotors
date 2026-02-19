@@ -144,6 +144,11 @@ function buildChips(categories) {
         state.selectedCategories.delete(idx);
       } else {
         state.selectedCategories.add(idx);
+        // Se tutte le categorie sono selezionate, torna a "Tutte"
+        const totalCategories = document.querySelectorAll('#categoryChips .chip:not(.chip-all)').length;
+        if (state.selectedCategories.size >= totalCategories) {
+          state.selectedCategories.clear();
+        }
       }
       updateChipUI();
       updateView();
@@ -462,7 +467,7 @@ function applyDynamicColors(categories, brands) {
     const item = items[index];
     if (!item) return;
 
-    item.style.borderColor = `rgba(${rgb}, 0.25)`;
+    item.style.borderColor = `rgba(${rgb}, 0.6)`;
     item.style.setProperty("--brand-color", color);
     item.style.setProperty("--brand-color-light", colorLight);
 
@@ -485,7 +490,7 @@ function applyDynamicColors(categories, brands) {
       item.style.transform = "translateY(-3px)";
     });
     item.addEventListener("mouseleave", () => {
-      item.style.borderColor = `rgba(${rgb}, 0.25)`;
+      item.style.borderColor = `rgba(${rgb}, 0.6)`;
       item.style.boxShadow = "";
       item.style.transform = "";
     });
