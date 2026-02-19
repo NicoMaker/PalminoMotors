@@ -257,11 +257,15 @@ function updateChipUI() {
   const hasSelection =
     state.selectedCategories !== null && state.selectedCategories.size > 0;
 
+  const isNone =
+    state.selectedCategories !== null && state.selectedCategories.size === 0;
+
   allChip.classList.toggle("active", isAll);
 
-  // Mostra/nascondi bottone "Nessuna"
+  // Bottone "Nessuna": sempre visibile, evidenziato quando nessuna categoria selezionata
   if (deselectBtn) {
-    deselectBtn.classList.toggle("visible", hasSelection);
+    deselectBtn.classList.add("visible");
+    deselectBtn.classList.toggle("active", isNone);
   }
 
   chips.forEach((chip) => {
