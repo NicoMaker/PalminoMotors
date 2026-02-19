@@ -145,7 +145,9 @@ function buildChips(categories) {
       } else {
         state.selectedCategories.add(idx);
         // Se tutte le categorie sono selezionate, torna a "Tutte"
-        const totalCategories = document.querySelectorAll('#categoryChips .chip:not(.chip-all)').length;
+        const totalCategories = document.querySelectorAll(
+          "#categoryChips .chip:not(.chip-all)",
+        ).length;
         if (state.selectedCategories.size >= totalCategories) {
           state.selectedCategories.clear();
         }
@@ -310,7 +312,9 @@ function updateView() {
     // Aggiorna il contatore visibile della sezione
     const countEl = section.querySelector(".category-count");
     if (countEl) {
-      const visibleCount = section.querySelectorAll(".link-card:not(.search-hidden)").length;
+      const visibleCount = section.querySelectorAll(
+        ".link-card:not(.search-hidden)",
+      ).length;
       countEl.textContent = visibleCount;
     }
 
