@@ -71,6 +71,10 @@ function escapeRegExp(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+function scrollToContent() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
 function highlightText(text, term) {
   if (!term) return text;
   const re = new RegExp(`(${escapeRegExp(term)})`, "gi");
@@ -81,9 +85,10 @@ function highlightText(text, term) {
 //  STATE  (no localStorage — sempre da zero)
 // ──────────────────────────────────────────────
 const state = {
-  selectedCategories: null, // null = tutte; Set = categorie specifiche (vuoto = nessuna)
+  selectedCategories: null,
   searchQuery: "",
   totalCategories: 0,
+  totalServices: 0,
 };
 
 // ──────────────────────────────────────────────
@@ -102,6 +107,8 @@ async function loadData() {
     buildChips(data.categories);
     initSearch();
     initReset();
+    // Calcola il totale servizi una volta sola
+    state.totalServices = data.categories.reduce((sum, cat) => sum + cat.links.length, 0);
     updateView();
   } catch (e) {
     console.error("Errore caricamento dati:", e);
@@ -123,14 +130,13 @@ function buildChips(categories) {
   const allChip = container.querySelector(".chip-all");
   allChip.addEventListener("click", () => {
     if (state.selectedCategories === null) {
-      // Già su "Tutte" → deseleziona tutto
       state.selectedCategories = new Set();
     } else {
-      // Vai su "Tutte"
       state.selectedCategories = null;
     }
     updateChipUI();
     updateView();
+    scrollToContent();
   });
 
   // Bottone "Deseleziona tutto" — appare in fondo alla riga chip
@@ -143,6 +149,7 @@ function buildChips(categories) {
     state.selectedCategories = new Set();
     updateChipUI();
     updateView();
+    scrollToContent();
     // Scroll verso il bottone "Tutte"
     setTimeout(() => {
       container.scrollTo({ left: 0, behavior: "smooth" });
@@ -184,7 +191,7 @@ function buildChips(categories) {
             state.selectedCategories = null;
             updateChipUI();
             updateView();
-            // Scroll verso chip "Tutte"
+            scrollToContent();
             setTimeout(() => {
               const allChipEl = document.querySelector(".chip-all");
               const chipsScroll = document.getElementById("categoryChips");
@@ -199,31 +206,9 @@ function buildChips(categories) {
 
       updateChipUI();
       updateView();
+      scrollToContent();
 
-      // Scroll automatico alla sezione se una sola categoria visibile
-      if (
-        state.selectedCategories !== null &&
-        state.selectedCategories.size === 1
-      ) {
-        const onlyIdx = [...state.selectedCategories][0];
-        const section = document.querySelector(
-          `.category-section[data-category="${onlyIdx}"]`,
-        );
-        if (section) {
-          setTimeout(() => {
-            const headerHeight =
-              document.querySelector(".hub-header")?.offsetHeight || 0;
-            const top =
-              section.getBoundingClientRect().top +
-              window.scrollY -
-              headerHeight -
-              16;
-            window.scrollTo({ top, behavior: "smooth" });
-          }, 80);
-        }
-      }
-
-      // Se si è rimasti senza selezione → scroll verso "Tutte"
+      // Se si è rimasti senza selezione → scroll chip verso "Tutte"
       if (
         state.selectedCategories !== null &&
         state.selectedCategories.size === 0
@@ -309,6 +294,7 @@ function initSearch() {
     state.searchQuery = input.value.trim();
     clear.classList.toggle("visible", state.searchQuery.length > 0);
     updateView();
+    if (state.searchQuery.length > 0) scrollToContent();
   });
 
   clear.addEventListener("click", () => {
@@ -330,6 +316,7 @@ function initReset() {
     document.getElementById("searchClear").classList.remove("visible");
     updateChipUI();
     updateView();
+    scrollToContent();
   });
 }
 
@@ -438,6 +425,25 @@ function updateView() {
     } else {
       noResults.style.display = "none";
     }
+  }
+
+  // Aggiorna il contatore servizi visibili nell'header
+  const servicesCountEl = document.getElementById("servicesCount");
+  const servicesLabelEl = document.getElementById("servicesLabel");
+  if (servicesCountEl) {
+    const visibleCards = document.querySelectorAll(".link-card:not(.search-hidden)");
+    let visibleCount = 0;
+    visibleCards.forEach(card => {
+      const section = card.closest(".category-section");
+      if (section && !section.classList.contains("hidden")) visibleCount++;
+    });
+    const isFiltered = state.searchQuery || (state.selectedCategories !== null && state.selectedCategories.size > 0);
+    if (isFiltered && visibleCount !== state.totalServices) {
+      servicesCountEl.textContent = `${visibleCount}/${state.totalServices}`;
+    } else {
+      servicesCountEl.textContent = state.totalServices || "—";
+    }
+    if (servicesLabelEl) servicesLabelEl.textContent = "Servizi";
   }
 }
 
