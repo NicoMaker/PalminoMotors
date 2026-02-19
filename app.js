@@ -237,41 +237,27 @@ function buildChips(categories) {
     container.appendChild(chip);
   });
 
-  // Arrow scroll buttons — scorrono la barra, con wrap agli estremi
+  // Arrow scroll buttons
   const scrollEl = container;
   const leftBtn = document.getElementById("chipsLeft");
   const rightBtn = document.getElementById("chipsRight");
 
   function updateArrows() {
     if (!leftBtn || !rightBtn) return;
-    // Mai disabilitati — gestiscono il wrap
-    leftBtn.disabled = false;
-    rightBtn.disabled = false;
+    leftBtn.disabled = scrollEl.scrollLeft <= 2;
+    rightBtn.disabled =
+      scrollEl.scrollLeft + scrollEl.clientWidth >= scrollEl.scrollWidth - 2;
   }
 
   leftBtn?.addEventListener("click", () => {
-    const atStart = scrollEl.scrollLeft <= 10;
-    if (atStart) {
-      // Siamo già all'inizio → salta alla fine (ultima chip)
-      scrollEl.scrollTo({ left: scrollEl.scrollWidth, behavior: "smooth" });
-    } else {
-      scrollEl.scrollBy({ left: -200, behavior: "smooth" });
-    }
+    scrollEl.scrollBy({ left: -200, behavior: "smooth" });
   });
-
   rightBtn?.addEventListener("click", () => {
-    const maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
-    const atEnd = scrollEl.scrollLeft >= maxScroll - 10;
-    if (atEnd) {
-      // Siamo alla fine → salta all'inizio (chip "Tutte")
-      scrollEl.scrollTo({ left: 0, behavior: "smooth" });
-    } else {
-      scrollEl.scrollBy({ left: 200, behavior: "smooth" });
-    }
+    scrollEl.scrollBy({ left: 200, behavior: "smooth" });
   });
-
   scrollEl.addEventListener("scroll", updateArrows);
   updateArrows();
+  // Re-check after fonts load
   window.addEventListener("load", updateArrows);
 }
 
