@@ -3,131 +3,403 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("year").textContent = new Date().getFullYear();
 });
 
-/**
- * Converte un colore HEX in stringa "r, g, b" per uso in rgba()
- */
+// ──────────────────────────────────────────────
+//  UTILS
+// ──────────────────────────────────────────────
 function hexToRgb(hex) {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`
-    : "255, 255, 255";
+  const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return r
+    ? `${parseInt(r[1], 16)}, ${parseInt(r[2], 16)}, ${parseInt(r[3], 16)}`
+    : "255,255,255";
 }
 
-/**
- * Formatta un numero di telefono per la visualizzazione
- */
 function formatPhoneNumber(phone) {
   if (!phone) return phone;
-  let cleaned = phone.replace(/\s+/g, "");
-  if (cleaned.startsWith("+39")) {
-    return cleaned.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
-  } else if (cleaned.startsWith("+")) {
-    return cleaned.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
-  } else if (cleaned.length === 10) {
-    return cleaned.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
-  } else if (cleaned.length > 6) {
-    return cleaned.replace(/(\d{3})(?=\d)/g, "$1 ");
-  }
+  let c = phone.replace(/\s+/g, "");
+  if (c.startsWith("+39"))
+    return c.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
+  if (c.startsWith("+"))
+    return c.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
+  if (c.length === 10) return c.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
+  if (c.length > 6) return c.replace(/(\d{3})(?=\d)/g, "$1 ");
   return phone;
 }
 
-/**
- * Gestisce l'apertura di WhatsApp:
- * - Su mobile: tenta di aprire l'app installata, altrimenti WhatsApp Web
- * - Su desktop: apre direttamente WhatsApp Web
- */
-function openWhatsApp(event, element) {
+function openWhatsApp(event) {
   event.preventDefault();
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
+  const webUrl = "https://web.whatsapp.com/";
   if (isMobile) {
-    // Su mobile proviamo lo schema nativo whatsapp://
-    // Se l'app è installata si apre, altrimenti dopo il timeout apriamo WhatsApp Web
-    const appUrl = "whatsapp://";
-    const webUrl = "https://web.whatsapp.com/";
-
-    // Nascondi la pagina: se torna visibile entro 2s l'app non è installata
-    let fallbackTimer = setTimeout(() => {
-      if (document.visibilityState !== "hidden") {
-        window.open(webUrl, "_blank");
-      }
+    let t = setTimeout(() => {
+      if (document.visibilityState !== "hidden") window.open(webUrl, "_blank");
     }, 2000);
-
     document.addEventListener(
       "visibilitychange",
-      function onHide() {
+      function h() {
         if (document.visibilityState === "hidden") {
-          clearTimeout(fallbackTimer);
-          document.removeEventListener("visibilitychange", onHide);
+          clearTimeout(t);
+          document.removeEventListener("visibilitychange", h);
         }
       },
       { once: true },
     );
-
-    window.location.href = appUrl;
+    window.location.href = "whatsapp://";
   } else {
-    // Su desktop: tenta di aprire l'app con iframe nascosto (non blocca la pagina)
-    // Se l'app non è installata, apre WhatsApp Web dopo il timeout
-    const webUrl = "https://web.whatsapp.com/";
-
     const iframe = document.createElement("iframe");
     iframe.style.display = "none";
     document.body.appendChild(iframe);
-
-    let fallbackTimer = setTimeout(() => {
+    let t = setTimeout(() => {
       document.body.removeChild(iframe);
       window.open(webUrl, "_blank");
     }, 1500);
-
     document.addEventListener(
       "visibilitychange",
-      function onHide() {
+      function h() {
         if (document.visibilityState === "hidden") {
-          clearTimeout(fallbackTimer);
+          clearTimeout(t);
           document.body.removeChild(iframe);
-          document.removeEventListener("visibilitychange", onHide);
+          document.removeEventListener("visibilitychange", h);
         }
       },
       { once: true },
     );
-
     iframe.src = "whatsapp://";
   }
 }
 
+function escapeRegExp(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function highlightText(text, term) {
+  if (!term) return text;
+  const re = new RegExp(`(${escapeRegExp(term)})`, "gi");
+  return text.replace(re, '<mark class="highlight">$1</mark>');
+}
+
+// ──────────────────────────────────────────────
+//  STATE  (no localStorage — sempre da zero)
+// ──────────────────────────────────────────────
+const state = {
+  selectedCategories: new Set(), // empty = tutte
+  searchQuery: "",
+};
+
+// ──────────────────────────────────────────────
+//  LOAD
+// ──────────────────────────────────────────────
 async function loadData() {
   try {
-    const response = await fetch("data.json");
-    const data = await response.json();
+    const res = await fetch("data.json");
+    const data = await res.json();
 
-    renderCategoryFilter(data.categories);
     renderCategories(data.categories);
     renderBrands(data.brands);
     populateFooter(data.company);
     handleLogos(data.company.logo);
-    restoreSavedFilter(data.categories.length);
     applyDynamicColors(data.categories, data.brands);
-  } catch (error) {
-    console.error("Errore caricamento dati:", error);
+    buildChips(data.categories);
+    initSearch();
+    initReset();
+    updateView();
+  } catch (e) {
+    console.error("Errore caricamento dati:", e);
   }
 }
 
-/**
- * Applica i colori dinamici via JS:
- * - Bordi delle card di categoria
- * - Titoli di sezione (gradient inline)
- * - Icone delle card
- * - Frecce delle card
- * - Brand: bordo, gradient-bar e nome
- */
+// ──────────────────────────────────────────────
+//  CHIPS (multi-select)
+// ──────────────────────────────────────────────
+function getEmojiForCategory(i) {
+  return ["🌐", "🛠️", "📊", "📱", "☁️", "📅", "📧", "🏦"][i] ?? "📂";
+}
+
+function buildChips(categories) {
+  const container = document.getElementById("categoryChips");
+
+  // "Tutte" chip già nel HTML — collega evento
+  const allChip = container.querySelector(".chip-all");
+  allChip.addEventListener("click", () => {
+    state.selectedCategories.clear();
+    updateChipUI();
+    updateView();
+  });
+
+  categories.forEach((cat, i) => {
+    const chip = document.createElement("button");
+    chip.className = "chip";
+    chip.dataset.index = i;
+
+    const dot = document.createElement("span");
+    dot.className = "chip-dot";
+    dot.style.background = `linear-gradient(135deg, ${cat.color} 0%, ${cat.colorLight || cat.color} 100%)`;
+
+    chip.appendChild(dot);
+    chip.appendChild(document.createTextNode(cat.name));
+    chip.style.setProperty("--chip-color", cat.color);
+
+    chip.addEventListener("click", () => {
+      const idx = String(i);
+      if (state.selectedCategories.has(idx)) {
+        state.selectedCategories.delete(idx);
+      } else {
+        state.selectedCategories.add(idx);
+      }
+      updateChipUI();
+      updateView();
+    });
+
+    container.appendChild(chip);
+  });
+
+  // Arrow scroll buttons
+  const scrollEl = container;
+  const leftBtn = document.getElementById("chipsLeft");
+  const rightBtn = document.getElementById("chipsRight");
+
+  function updateArrows() {
+    if (!leftBtn || !rightBtn) return;
+    leftBtn.disabled = scrollEl.scrollLeft <= 2;
+    rightBtn.disabled =
+      scrollEl.scrollLeft + scrollEl.clientWidth >= scrollEl.scrollWidth - 2;
+  }
+
+  leftBtn?.addEventListener("click", () => {
+    scrollEl.scrollBy({ left: -200, behavior: "smooth" });
+  });
+  rightBtn?.addEventListener("click", () => {
+    scrollEl.scrollBy({ left: 200, behavior: "smooth" });
+  });
+  scrollEl.addEventListener("scroll", updateArrows);
+  updateArrows();
+  // Re-check after fonts load
+  window.addEventListener("load", updateArrows);
+}
+
+function updateChipUI() {
+  const chips = document.querySelectorAll("#categoryChips .chip");
+  const allChip = document.querySelector(".chip-all");
+  const isAll = state.selectedCategories.size === 0;
+
+  allChip.classList.toggle("active", isAll);
+
+  chips.forEach((chip) => {
+    if (chip.classList.contains("chip-all")) return;
+    const idx = chip.dataset.index;
+    const active = state.selectedCategories.has(idx);
+    chip.classList.toggle("active", active);
+    if (active) {
+      chip.style.borderColor = chip
+        .querySelector(".chip-dot")
+        .style.background.split("(")[1]
+        ?.split(")")[0]
+        ? chip.style.getPropertyValue("--chip-color")
+        : "";
+      chip.style.borderColor = chip.style.getPropertyValue("--chip-color");
+      chip.style.boxShadow = `0 0 0 2px ${chip.style.getPropertyValue("--chip-color")}22, 0 4px 16px ${chip.style.getPropertyValue("--chip-color")}22`;
+      chip.style.color = "#f0f0f8";
+    } else {
+      chip.style.borderColor = "";
+      chip.style.boxShadow = "";
+      chip.style.color = "";
+    }
+  });
+}
+
+// ──────────────────────────────────────────────
+//  SEARCH
+// ──────────────────────────────────────────────
+function initSearch() {
+  const input = document.getElementById("searchInput");
+  const clear = document.getElementById("searchClear");
+
+  input.addEventListener("input", () => {
+    state.searchQuery = input.value.trim();
+    clear.classList.toggle("visible", state.searchQuery.length > 0);
+    updateView();
+  });
+
+  clear.addEventListener("click", () => {
+    input.value = "";
+    state.searchQuery = "";
+    clear.classList.remove("visible");
+    updateView();
+    input.focus();
+  });
+}
+
+function initReset() {
+  const btn = document.getElementById("resetBtn");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    state.selectedCategories.clear();
+    state.searchQuery = "";
+    document.getElementById("searchInput").value = "";
+    document.getElementById("searchClear").classList.remove("visible");
+    updateChipUI();
+    updateView();
+  });
+}
+
+// ──────────────────────────────────────────────
+//  UPDATE VIEW  (filter + search combined)
+// ──────────────────────────────────────────────
+function updateView() {
+  const sections = document.querySelectorAll(".category-section");
+  const query = state.searchQuery.toLowerCase();
+  const hasFilter = state.selectedCategories.size > 0;
+  let anyVisible = false;
+
+  sections.forEach((section) => {
+    const catIdx = section.getAttribute("data-category");
+    const inFilter = !hasFilter || state.selectedCategories.has(catIdx);
+
+    if (!inFilter) {
+      section.classList.add("hidden");
+      return;
+    }
+
+    // search within this section
+    const cards = section.querySelectorAll(".link-card");
+    let sectionHasMatch = false;
+
+    cards.forEach((card) => {
+      const title = card.querySelector(".link-info h3");
+      const desc = card.querySelector(".link-info p");
+
+      if (!query) {
+        // reset highlights
+        if (title) title.textContent = title.textContent;
+        if (desc) desc.textContent = desc.textContent;
+        card.classList.remove("search-hidden");
+        sectionHasMatch = true;
+      } else {
+        const rawTitle =
+          title?.getAttribute("data-raw") || title?.textContent || "";
+        const rawDesc =
+          desc?.getAttribute("data-raw") || desc?.textContent || "";
+
+        // store original text on first pass
+        if (title && !title.hasAttribute("data-raw"))
+          title.setAttribute("data-raw", title.textContent);
+        if (desc && !desc.hasAttribute("data-raw"))
+          desc.setAttribute("data-raw", desc.textContent);
+
+        const titleMatch = rawTitle.toLowerCase().includes(query);
+        const descMatch = rawDesc.toLowerCase().includes(query);
+
+        if (titleMatch || descMatch) {
+          card.classList.remove("search-hidden");
+          if (title)
+            title.innerHTML = highlightText(rawTitle, state.searchQuery);
+          if (desc) desc.innerHTML = highlightText(rawDesc, state.searchQuery);
+          sectionHasMatch = true;
+        } else {
+          card.classList.add("search-hidden");
+          if (title) title.innerHTML = rawTitle;
+          if (desc) desc.innerHTML = rawDesc;
+        }
+      }
+    });
+
+    if (sectionHasMatch) {
+      section.classList.remove("hidden");
+      anyVisible = true;
+    } else {
+      section.classList.add("hidden");
+    }
+  });
+
+  const noResults = document.getElementById("noResults");
+  if (noResults) noResults.style.display = anyVisible ? "none" : "flex";
+}
+
+// ──────────────────────────────────────────────
+//  RENDER
+// ──────────────────────────────────────────────
+function renderCategories(categories) {
+  const container = document.getElementById("linksContainer");
+  if (!container) return;
+
+  container.innerHTML = categories
+    .map(
+      (cat, catIndex) => `
+    <section class="category-section" data-category="${catIndex}">
+      <div class="category-header">
+        <span class="category-dot" style="background: linear-gradient(135deg, ${cat.color} 0%, ${cat.colorLight || cat.color} 100%);"></span>
+        <h2 class="category-title">${cat.name}</h2>
+        <span class="category-count">${cat.links.length}</span>
+      </div>
+      <div class="links-grid">
+        ${cat.links
+          .map(
+            (link) => `
+          <a href="${link.url}"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="link-card"
+             ${link.title.toLowerCase().includes("whatsapp") ? 'onclick="openWhatsApp(event); return false;"' : ""}>
+            <span class="link-icon">${link.icon}</span>
+            <div class="link-info">
+              <h3>${link.title}</h3>
+              <p>${link.description}</p>
+            </div>
+            <svg class="link-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none">
+              <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>`,
+          )
+          .join("")}
+      </div>
+    </section>`,
+    )
+    .join("");
+}
+
+function renderBrands(brands) {
+  const container = document.getElementById("brandContainer");
+  if (!container) return;
+  if (!brands?.length) {
+    container.innerHTML = "<p>Nessun marchio disponibile.</p>";
+    return;
+  }
+
+  container.innerHTML = brands
+    .map(
+      (brand) => `
+    <div class="brand-item">
+      <span class="brand-name">${brand.name}</span>
+      <div class="brand-gradient"></div>
+      <div class="brand-socials">
+        ${brand.url ? `<a href="${brand.url}"       target="_blank" rel="noopener noreferrer" class="brand-pill" aria-label="Sito ${brand.name}">${svgGlobe()}</a>` : ""}
+        ${brand.facebook ? `<a href="${brand.facebook}"  target="_blank" rel="noopener noreferrer" class="brand-pill" aria-label="Facebook ${brand.name}">${svgFacebook()}</a>` : ""}
+        ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill" aria-label="Instagram ${brand.name}">${svgInstagram()}</a>` : ""}
+      </div>
+    </div>`,
+    )
+    .join("");
+}
+
+function svgGlobe() {
+  return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`;
+}
+function svgFacebook() {
+  return `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`;
+}
+function svgInstagram() {
+  return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>`;
+}
+
+// ──────────────────────────────────────────────
+//  DYNAMIC COLORS
+// ──────────────────────────────────────────────
 function applyDynamicColors(categories, brands) {
-  // --- CATEGORIE ---
   categories.forEach((cat, index) => {
     const color = cat.color || "#ffffff";
     const colorLight = cat.colorLight || color;
     const rgb = hexToRgb(color);
-    const soft = `rgba(${rgb}, 0.15)`;
-    const medium = `rgba(${rgb}, 0.30)`;
+    const soft = `rgba(${rgb}, 0.14)`;
+    const medium = `rgba(${rgb}, 0.28)`;
     const softBorder = `rgba(${rgb}, 0.20)`;
 
     const section = document.querySelector(
@@ -135,7 +407,6 @@ function applyDynamicColors(categories, brands) {
     );
     if (!section) return;
 
-    // Titolo: gradient inline tramite CSS custom properties su style
     const title = section.querySelector(".category-title");
     if (title) {
       title.style.backgroundImage = `linear-gradient(135deg, ${color} 0%, ${colorLight} 100%)`;
@@ -144,7 +415,6 @@ function applyDynamicColors(categories, brands) {
       title.style.webkitTextFillColor = "transparent";
     }
 
-    // Card: bordo colorato + hover shadow
     const cards = section.querySelectorAll(".link-card");
     cards.forEach((card) => {
       card.style.borderColor = color;
@@ -157,7 +427,6 @@ function applyDynamicColors(categories, brands) {
       });
     });
 
-    // Icone: sfondo soft + bordo
     const icons = section.querySelectorAll(".link-icon");
     icons.forEach((icon) => {
       icon.style.background = soft;
@@ -178,48 +447,30 @@ function applyDynamicColors(categories, brands) {
       }
     });
 
-    // Frecce: colore categoria
     const arrows = section.querySelectorAll(".link-arrow");
-    arrows.forEach((arrow) => {
-      arrow.style.color = color;
+    arrows.forEach((a) => {
+      a.style.color = color;
     });
   });
 
-  // --- BRAND ---
   brands.forEach((brand, index) => {
     const color = brand.color || "#dc2626";
     const colorLight = brand.colorLight || "#f97316";
     const rgb = hexToRgb(color);
-    const rgbLight = hexToRgb(colorLight);
 
     const items = document.querySelectorAll(".brand-item");
     const item = items[index];
     if (!item) return;
 
-    // Bordo card brand
-    item.style.borderColor = color;
-
-    // Pseudo-sfondo ::before non è accessibile via JS direttamente,
-    // usiamo una variabile CSS inline sull'elemento
+    item.style.borderColor = `rgba(${rgb}, 0.25)`;
     item.style.setProperty("--brand-color", color);
     item.style.setProperty("--brand-color-light", colorLight);
 
-    // Gradient bar decorativa
     const gradientBar = item.querySelector(".brand-gradient");
     if (gradientBar) {
-      gradientBar.style.background = `linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(${rgb}, 0.3) 15%,
-        ${color} 35%,
-        ${colorLight} 50%,
-        ${color} 65%,
-        rgba(${rgb}, 0.3) 85%,
-        transparent 100%
-      )`;
+      gradientBar.style.background = `linear-gradient(90deg, transparent, rgba(${rgb},0.3) 15%, ${color} 35%, ${colorLight} 50%, ${color} 65%, rgba(${rgb},0.3) 85%, transparent)`;
     }
 
-    // Nome brand: gradient testo
     const nameEl = item.querySelector(".brand-name");
     if (nameEl) {
       nameEl.style.backgroundImage = `linear-gradient(135deg, #fafafa 0%, ${color} 100%)`;
@@ -228,49 +479,36 @@ function applyDynamicColors(categories, brands) {
       nameEl.style.webkitTextFillColor = "transparent";
     }
 
-    // Hover card brand
     item.addEventListener("mouseenter", () => {
       item.style.borderColor = color;
-      item.style.boxShadow = `0 12px 40px rgba(${rgb}, 0.3)`;
+      item.style.boxShadow = `0 8px 32px rgba(${rgb}, 0.2)`;
+      item.style.transform = "translateY(-3px)";
     });
     item.addEventListener("mouseleave", () => {
-      item.style.borderColor = color;
+      item.style.borderColor = `rgba(${rgb}, 0.25)`;
       item.style.boxShadow = "";
-    });
-
-    // Brand pill hover: usa il colore del brand invece dell'accent globale
-    const pills = item.querySelectorAll(".brand-pill");
-    pills.forEach((pill) => {
-      pill.addEventListener("mouseenter", () => {
-        pill.style.setProperty("--pill-bg", color);
-        pill.style.borderColor = color;
-        pill.style.boxShadow = `0 8px 20px rgba(${rgb}, 0.35)`;
-      });
-      pill.addEventListener("mouseleave", () => {
-        pill.style.borderColor = "";
-        pill.style.boxShadow = "";
-      });
+      item.style.transform = "";
     });
   });
 }
 
+// ──────────────────────────────────────────────
+//  LOGO
+// ──────────────────────────────────────────────
 function handleLogos(logoPath) {
   if (!logoPath) return;
 
   const logoArea = document.querySelector(".logo-area");
-  const oldCircle = document.querySelector(".logo-circle");
-
+  const circle = document.querySelector(".logo-circle");
   const headerImg = document.createElement("img");
   headerImg.src = logoPath;
   headerImg.className = "main-logo";
-  headerImg.alt = "Palmino Motors Logo";
+  headerImg.alt = "Logo";
   headerImg.crossOrigin = "anonymous";
+  headerImg.onerror = () => headerImg.remove();
 
-  if (oldCircle) {
-    oldCircle.replaceWith(headerImg);
-  } else if (logoArea) {
-    logoArea.prepend(headerImg);
-  }
+  if (circle) circle.replaceWith(headerImg);
+  else if (logoArea) logoArea.prepend(headerImg);
 
   const footerCol = document.getElementById("footerCompanyCol");
   if (footerCol) {
@@ -279,202 +517,26 @@ function handleLogos(logoPath) {
     footerImg.className = "footer-logo";
     footerImg.alt = "Logo Footer";
     footerImg.crossOrigin = "anonymous";
+    footerImg.onerror = () => footerImg.remove();
     footerCol.prepend(footerImg);
   }
 }
 
-function getEmojiForCategory(index) {
-  const emojis = ["🌐", "🛠️", "📊", "📱", "☁️", "📅", "📧", "🏦"];
-  return emojis[index] || "📂";
-}
-
-function renderCategoryFilter(categories) {
-  const filterSelect = document.getElementById("filterSelect");
-
-  if (!filterSelect) {
-    console.error("Element filterSelect not found");
-    return;
-  }
-
-  categories.forEach((cat, index) => {
-    const option = document.createElement("option");
-    option.value = index;
-    option.textContent = `${getEmojiForCategory(index)} ${cat.name}`;
-    filterSelect.appendChild(option);
-  });
-
-  filterSelect.addEventListener("change", (e) => {
-    const value = e.target.value;
-    if (value === "all") {
-      filterCategories("all");
-      saveFilterToStorage("all");
-    } else {
-      filterCategories([value]);
-      saveFilterToStorage([value]);
-    }
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-}
-
-function saveFilterToStorage(filter) {
-  try {
-    localStorage.setItem("palminoMotorsFilter", JSON.stringify(filter));
-  } catch (error) {
-    // localStorage not available
-  }
-}
-
-function restoreSavedFilter(totalCategories) {
-  try {
-    const saved = localStorage.getItem("palminoMotorsFilter");
-    if (!saved) {
-      filterCategories("all");
-      return;
-    }
-
-    const filter = JSON.parse(saved);
-    const filterSelect = document.getElementById("filterSelect");
-    if (!filterSelect) return;
-
-    if (filter === "all") {
-      filterSelect.value = "all";
-      filterCategories("all");
-      return;
-    }
-
-    if (Array.isArray(filter) && filter.length === 1) {
-      const validFilter = filter[0];
-      if (parseInt(validFilter) < totalCategories) {
-        filterSelect.value = validFilter;
-        filterCategories(filter);
-      } else {
-        filterSelect.value = "all";
-        filterCategories("all");
-        saveFilterToStorage("all");
-      }
-    } else {
-      filterSelect.value = "all";
-      filterCategories("all");
-      saveFilterToStorage("all");
-    }
-  } catch (error) {
-    filterCategories("all");
-    saveFilterToStorage("all");
-  }
-}
-
-function filterCategories(filter) {
-  const sections = document.querySelectorAll(".category-section");
-  const filters =
-    filter === "all" ? "all" : Array.isArray(filter) ? filter : [filter];
-
-  sections.forEach((section) => {
-    const categoryIndex = section.getAttribute("data-category");
-    if (filters === "all" || filters.includes(categoryIndex)) {
-      section.classList.remove("hidden");
-    } else {
-      section.classList.add("hidden");
-    }
-  });
-}
-
-function renderCategories(categories) {
-  const container = document.getElementById("linksContainer");
-  if (!container) return;
-
-  container.innerHTML = categories
-    .map(
-      (cat, catIndex) => `
-        <section class="category-section" data-category="${catIndex}">
-          <h2 class="category-title">${cat.name}</h2>
-          <div class="links-grid">
-            ${cat.links
-              .map(
-                (link) => `
-                  <a href="${link.url}"
-                     target="_blank"
-                     rel="noopener noreferrer"
-                     class="link-card"
-                     ${link.title.toLowerCase().includes("whatsapp") ? 'onclick="openWhatsApp(event, this); return false;"' : ""}>
-                    <span class="link-icon">${link.icon}</span>
-                    <div class="link-info">
-                      <h3>${link.title}</h3>
-                      <p>${link.description}</p>
-                    </div>
-                    <svg class="link-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                      <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </a>`,
-              )
-              .join("")}
-          </div>
-        </section>`,
-    )
-    .join("");
-}
-
-function renderBrands(brands) {
-  const container = document.getElementById("brandContainer");
-  if (!container) return;
-
-  if (!brands || brands.length === 0) {
-    container.innerHTML = "<p>Nessun marchio disponibile.</p>";
-    return;
-  }
-
-  container.innerHTML = brands
-    .map(
-      (brand) => `
-        <div class="brand-item">
-          <span class="brand-name">${brand.name}</span>
-          <div class="brand-gradient"></div>
-          <div class="brand-socials">
-            ${
-              brand.url
-                ? `<a href="${brand.url}" target="_blank" rel="noopener noreferrer" class="brand-pill" aria-label="Sito ${brand.name}">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                    </svg>
-                   </a>`
-                : ""
-            }
-            ${
-              brand.facebook
-                ? `<a href="${brand.facebook}" target="_blank" rel="noopener noreferrer" class="brand-pill" aria-label="Facebook ${brand.name}">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                    </svg>
-                   </a>`
-                : ""
-            }
-            ${
-              brand.instagram
-                ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill" aria-label="Instagram ${brand.name}">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
-                    </svg>
-                   </a>`
-                : ""
-            }
-          </div>
-        </div>`,
-    )
-    .join("");
-}
-
+// ──────────────────────────────────────────────
+//  FOOTER
+// ──────────────────────────────────────────────
 function populateFooter(company) {
   const companyNameEl = document.getElementById("companyName");
-  if (companyNameEl) {
+  if (companyNameEl)
     companyNameEl.textContent = company.fullName
       .toLowerCase()
       .replace(/\b\w/g, (c) => c.toUpperCase());
-  }
 
   const addressLink = document.getElementById("fullAddress");
   if (addressLink) {
-    const fullAddress = `${company.address}, ${company.cap} ${company.city} (${company.province})`;
-    addressLink.textContent = fullAddress;
-    addressLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`;
+    const full = `${company.address}, ${company.cap} ${company.city} (${company.province})`;
+    addressLink.textContent = full;
+    addressLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(full)}`;
   }
 
   const phoneLink = document.getElementById("footerPhone");
@@ -489,15 +551,13 @@ function populateFooter(company) {
     emailLink.textContent = `Email: ${company.email}`;
   }
 
-  const whatsappLink = document.getElementById("footerWhatsApp");
-  if (whatsappLink) {
-    const phoneNumber = company.phone.replace(/\+/g, "").replace(/\s/g, "");
-    whatsappLink.href = `https://wa.me/${phoneNumber}`;
-    whatsappLink.textContent = `WhatsApp: ${formatPhoneNumber(company.phone)}`;
+  const waLink = document.getElementById("footerWhatsApp");
+  if (waLink) {
+    const n = company.phone.replace(/\+/g, "").replace(/\s/g, "");
+    waLink.href = `https://wa.me/${n}`;
+    waLink.textContent = `WhatsApp: ${formatPhoneNumber(company.phone)}`;
   }
 
   const pivaEl = document.getElementById("footerPiva");
-  if (pivaEl) {
-    pivaEl.textContent = `P.IVA: ${company.piva}`;
-  }
+  if (pivaEl) pivaEl.textContent = `P.IVA: ${company.piva}`;
 }
