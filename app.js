@@ -145,9 +145,7 @@ function buildChips(categories) {
       } else {
         state.selectedCategories.add(idx);
         // Se tutte le categorie sono selezionate, torna a "Tutte"
-        const totalCategories = document.querySelectorAll(
-          "#categoryChips .chip:not(.chip-all)",
-        ).length;
+        const totalCategories = document.querySelectorAll('#categoryChips .chip:not(.chip-all)').length;
         if (state.selectedCategories.size >= totalCategories) {
           state.selectedCategories.clear();
         }
@@ -309,6 +307,13 @@ function updateView() {
       }
     });
 
+    // Aggiorna il contatore visibile della sezione
+    const countEl = section.querySelector(".category-count");
+    if (countEl) {
+      const visibleCount = section.querySelectorAll(".link-card:not(.search-hidden)").length;
+      countEl.textContent = visibleCount;
+    }
+
     if (sectionHasMatch) {
       section.classList.remove("hidden");
       anyVisible = true;
@@ -366,6 +371,13 @@ function renderCategories(categories) {
 function renderBrands(brands) {
   const container = document.getElementById("brandContainer");
   if (!container) return;
+
+  // Aggiorna il conteggio dinamico accanto al titolo
+  const countBadge = document.getElementById("brandCount");
+  if (countBadge) {
+    countBadge.textContent = brands?.length ? `${brands.length}` : "";
+  }
+
   if (!brands?.length) {
     container.innerHTML = "<p>Nessun marchio disponibile.</p>";
     return;
