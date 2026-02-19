@@ -250,7 +250,7 @@ function buildChips(categories) {
   }
 
   leftBtn?.addEventListener("click", () => {
-    const atStart = scrollEl.scrollLeft <= 2;
+    const atStart = scrollEl.scrollLeft <= 10;
     if (atStart) {
       // Siamo già all'inizio → salta alla fine (ultima chip)
       scrollEl.scrollTo({ left: scrollEl.scrollWidth, behavior: "smooth" });
@@ -260,8 +260,8 @@ function buildChips(categories) {
   });
 
   rightBtn?.addEventListener("click", () => {
-    const atEnd =
-      scrollEl.scrollLeft + scrollEl.clientWidth >= scrollEl.scrollWidth - 2;
+    const maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
+    const atEnd = scrollEl.scrollLeft >= maxScroll - 10;
     if (atEnd) {
       // Siamo alla fine → salta all'inizio (chip "Tutte")
       scrollEl.scrollTo({ left: 0, behavior: "smooth" });
