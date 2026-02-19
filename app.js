@@ -145,7 +145,9 @@ function buildChips(categories) {
       } else {
         state.selectedCategories.add(idx);
         // Se tutte le categorie sono selezionate, torna a "Tutte"
-        const totalCategories = document.querySelectorAll('#categoryChips .chip:not(.chip-all)').length;
+        const totalCategories = document.querySelectorAll(
+          "#categoryChips .chip:not(.chip-all)",
+        ).length;
         if (state.selectedCategories.size >= totalCategories) {
           state.selectedCategories.clear();
         }
