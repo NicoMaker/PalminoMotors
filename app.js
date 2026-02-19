@@ -237,27 +237,41 @@ function buildChips(categories) {
     container.appendChild(chip);
   });
 
-  // Arrow scroll buttons
+  // Arrow scroll buttons — scorrono la barra, con wrap agli estremi
   const scrollEl = container;
   const leftBtn = document.getElementById("chipsLeft");
   const rightBtn = document.getElementById("chipsRight");
 
   function updateArrows() {
     if (!leftBtn || !rightBtn) return;
-    leftBtn.disabled = scrollEl.scrollLeft <= 2;
-    rightBtn.disabled =
-      scrollEl.scrollLeft + scrollEl.clientWidth >= scrollEl.scrollWidth - 2;
+    // Mai disabilitati — gestiscono il wrap
+    leftBtn.disabled = false;
+    rightBtn.disabled = false;
   }
 
   leftBtn?.addEventListener("click", () => {
-    scrollEl.scrollBy({ left: -200, behavior: "smooth" });
+    const atStart = scrollEl.scrollLeft <= 2;
+    if (atStart) {
+      // Siamo già all'inizio → salta alla fine (ultima chip)
+      scrollEl.scrollTo({ left: scrollEl.scrollWidth, behavior: "smooth" });
+    } else {
+      scrollEl.scrollBy({ left: -200, behavior: "smooth" });
+    }
   });
+
   rightBtn?.addEventListener("click", () => {
-    scrollEl.scrollBy({ left: 200, behavior: "smooth" });
+    const atEnd =
+      scrollEl.scrollLeft + scrollEl.clientWidth >= scrollEl.scrollWidth - 2;
+    if (atEnd) {
+      // Siamo alla fine → salta all'inizio (chip "Tutte")
+      scrollEl.scrollTo({ left: 0, behavior: "smooth" });
+    } else {
+      scrollEl.scrollBy({ left: 200, behavior: "smooth" });
+    }
   });
+
   scrollEl.addEventListener("scroll", updateArrows);
   updateArrows();
-  // Re-check after fonts load
   window.addEventListener("load", updateArrows);
 }
 
