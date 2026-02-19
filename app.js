@@ -108,7 +108,10 @@ async function loadData() {
     initSearch();
     initReset();
     // Calcola il totale servizi una volta sola
-    state.totalServices = data.categories.reduce((sum, cat) => sum + cat.links.length, 0);
+    state.totalServices = data.categories.reduce(
+      (sum, cat) => sum + cat.links.length,
+      0,
+    );
     updateView();
   } catch (e) {
     console.error("Errore caricamento dati:", e);
@@ -431,13 +434,17 @@ function updateView() {
   const servicesCountEl = document.getElementById("servicesCount");
   const servicesLabelEl = document.getElementById("servicesLabel");
   if (servicesCountEl) {
-    const visibleCards = document.querySelectorAll(".link-card:not(.search-hidden)");
+    const visibleCards = document.querySelectorAll(
+      ".link-card:not(.search-hidden)",
+    );
     let visibleCount = 0;
-    visibleCards.forEach(card => {
+    visibleCards.forEach((card) => {
       const section = card.closest(".category-section");
       if (section && !section.classList.contains("hidden")) visibleCount++;
     });
-    const isFiltered = state.searchQuery || (state.selectedCategories !== null && state.selectedCategories.size > 0);
+    const isFiltered =
+      state.searchQuery ||
+      (state.selectedCategories !== null && state.selectedCategories.size > 0);
     if (isFiltered && visibleCount !== state.totalServices) {
       servicesCountEl.textContent = `${visibleCount}/${state.totalServices}`;
     } else {
