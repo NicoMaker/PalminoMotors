@@ -430,6 +430,10 @@ function updateView() {
     }
   }
 
+  // Stato "tutto aperto": chip "Tutte" attivo (null) E nessuna ricerca
+  // Se selectedCategories è un Set (anche con tutte selezionate) → mostra X/tot
+  const isDefaultView = false; // mostra sempre X/totale (anche con chip "Tutte")
+
   // Aggiorna il contatore servizi visibili nell'header
   const servicesCountEl = document.getElementById("servicesCount");
   const servicesLabelEl = document.getElementById("servicesLabel");
@@ -442,15 +446,26 @@ function updateView() {
       const section = card.closest(".category-section");
       if (section && !section.classList.contains("hidden")) visibleCount++;
     });
-    const isFiltered =
-      state.searchQuery ||
-      (state.selectedCategories !== null && state.selectedCategories.size > 0);
-    if (isFiltered && visibleCount !== state.totalServices) {
-      servicesCountEl.textContent = `${visibleCount}/${state.totalServices}`;
-    } else {
+    if (isDefaultView) {
       servicesCountEl.textContent = state.totalServices || "—";
+    } else {
+      servicesCountEl.textContent = `${visibleCount}/${state.totalServices}`;
     }
     if (servicesLabelEl) servicesLabelEl.textContent = "Servizi";
+  }
+
+  // Aggiorna il contatore categorie visibili nell'header
+  const categoriesCountEl = document.getElementById("categoriesCount");
+  if (categoriesCountEl) {
+    const totalCats = state.totalCategories;
+    const visibleCats = document.querySelectorAll(
+      ".category-section:not(.hidden)",
+    ).length;
+    if (isDefaultView) {
+      categoriesCountEl.textContent = totalCats || "—";
+    } else {
+      categoriesCountEl.textContent = `${visibleCats}/${totalCats}`;
+    }
   }
 }
 
