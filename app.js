@@ -211,8 +211,13 @@ function buildChips(categories) {
         );
         if (section) {
           setTimeout(() => {
-            const headerHeight = document.querySelector(".hub-header")?.offsetHeight || 0;
-            const top = section.getBoundingClientRect().top + window.scrollY - headerHeight - 16;
+            const headerHeight =
+              document.querySelector(".hub-header")?.offsetHeight || 0;
+            const top =
+              section.getBoundingClientRect().top +
+              window.scrollY -
+              headerHeight -
+              16;
             window.scrollTo({ top, behavior: "smooth" });
           }, 80);
         }
@@ -261,7 +266,8 @@ function updateChipUI() {
   const allChip = document.querySelector(".chip-all");
   const deselectBtn = document.getElementById("deselectAllBtn");
   const isAll = state.selectedCategories === null;
-  const hasSelection = state.selectedCategories !== null && state.selectedCategories.size > 0;
+  const hasSelection =
+    state.selectedCategories !== null && state.selectedCategories.size > 0;
 
   allChip.classList.toggle("active", isAll);
 
@@ -271,11 +277,14 @@ function updateChipUI() {
   }
 
   chips.forEach((chip) => {
-    if (chip.classList.contains("chip-all") || chip.classList.contains("chip-deselect-all")) return;
+    if (
+      chip.classList.contains("chip-all") ||
+      chip.classList.contains("chip-deselect-all")
+    )
+      return;
     const idx = chip.dataset.index;
     const active =
-      state.selectedCategories !== null &&
-      state.selectedCategories.has(idx);
+      state.selectedCategories !== null && state.selectedCategories.has(idx);
     chip.classList.toggle("active", active);
     if (active) {
       chip.style.borderColor = chip.style.getPropertyValue("--chip-color");
@@ -337,8 +346,7 @@ function updateView() {
 
   sections.forEach((section) => {
     const catIdx = section.getAttribute("data-category");
-    const inFilter =
-      isAll || (!isNone && state.selectedCategories.has(catIdx));
+    const inFilter = isAll || (!isNone && state.selectedCategories.has(catIdx));
 
     if (!inFilter) {
       section.classList.add("hidden");
@@ -412,13 +420,20 @@ function updateView() {
     if (!anyVisible) {
       noResults.style.display = "flex";
       const isNoneCheck =
-        state.selectedCategories !== null && state.selectedCategories.size === 0;
+        state.selectedCategories !== null &&
+        state.selectedCategories.size === 0;
       if (isNoneCheck) {
-        if (noResultsText) noResultsText.textContent = "Nessuna categoria selezionata";
-        if (noResultsSub) noResultsSub.textContent = "Clicca su una categoria per visualizzarne i contenuti";
+        if (noResultsText)
+          noResultsText.textContent = "Nessuna categoria selezionata";
+        if (noResultsSub)
+          noResultsSub.textContent =
+            "Clicca su una categoria per visualizzarne i contenuti";
       } else {
-        if (noResultsText) noResultsText.textContent = "Nessun risultato trovato";
-        if (noResultsSub) noResultsSub.textContent = "Prova con un termine diverso o rimuovi i filtri";
+        if (noResultsText)
+          noResultsText.textContent = "Nessun risultato trovato";
+        if (noResultsSub)
+          noResultsSub.textContent =
+            "Prova con un termine diverso o rimuovi i filtri";
       }
     } else {
       noResults.style.display = "none";
