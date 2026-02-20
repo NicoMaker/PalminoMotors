@@ -14,33 +14,34 @@
   },
   "categories": [
     {
-      "name": "Siti Web e Portali",
-      "color": "#3b82f6",
-      "colorLight": "#60a5fa",
+      "name": "Gestionali e Operativi",
+      "color": "#10b981",
+      "colorLight": "#34d399",
       "links": [
         {
-          "title": "Sito Ufficiale",
-          "description": "Portale principale Palmino Motors",
-          "url": "https://www.palminomotors.com",
-          "icon": "🌐"
+          "title": "Gestione Magazzino",
+          "description": "Software per gestione magazzino",
+          "url": "http://89.36.210.147:3000",
+          "icon": "📦"
         },
         {
-          "title": "Gestione WordPress",
-          "description": "Pannello amministrativo Palmino Motors",
-          "url": "https://www.palminomotors.com/moto-admin",
-          "icon": "⚙️"
-        },
+          "title": "Gestione Preventivi",
+          "description": "Pannello per creazione e gestione preventivi",
+          "url": "http://89.36.210.147:3001",
+          "icon": "🧾"
+        }
+      ]
+    },
+    {
+      "name": "Pianificazione & Calendario",
+      "color": "#eab308",
+      "colorLight": "#fde047",
+      "links": [
         {
-          "title": "Creazione QR Code",
-          "description": "Strumento per generazione QR Code personalizzati",
-          "url": "qr.html",
-          "icon": "📱"
-        },
-        {
-          "title": "Calcolatore Sconto e Aumento Prezzo",
-          "description": "Strumento per calcolo sconto e aumento prezzo",
-          "url": "https://paginageneralesiti.netlify.app/site/utilities/calcolatore_sconto_aumento/",
-          "icon": "🧮"
+          "title": "Google Calendar",
+          "description": "Calendario appuntamenti Palmino Motors",
+          "url": "https://calendar.google.com/calendar/u/0/r",
+          "icon": "📅"
         }
       ]
     },
@@ -60,106 +61,19 @@
           "description": "Area riservata assistenza e ricambi SWM",
           "url": "https://swan-swm.softway.it/service/",
           "icon": "🛠️"
-        },
-        {
-          "title": "Multigestionale Motori",
-          "description": "Portale per gestione assistenza e ricambi Multigestionale Motori",
-          "url": "https://motori.multigestionale.com/",
-          "icon": "🛠️"
         }
       ]
     },
     {
-      "name": "Gestionali e Operativi",
-      "color": "#10b981",
-      "colorLight": "#34d399",
+      "name": "Finanziarie",
+      "color": "#14b8a6",
+      "colorLight": "#2dd4bf",
       "links": [
         {
-          "title": "Gestionale Moto.it",
-          "description": "Area riservata caricamento annunci",
-          "url": "https://dealer.moto.it/palmino",
-          "icon": "🏍️"
-        },
-        {
-          "title": "Gestione Magazzino",
-          "description": "Software per gestione magazzino",
-          "url": "http://89.36.210.147:3000",
-          "icon": "📦"
-        },
-        {
-          "title": "Gestione Preventivi",
-          "description": "Pannello per creazione e gestione preventivi",
-          "url": "http://89.36.210.147:3001",
-          "icon": "🧾"
-        }
-      ]
-    },
-    {
-      "name": "Vetrina Social & Shop",
-      "color": "#f43f5e",
-      "colorLight": "#fb7185",
-      "links": [
-        {
-          "title": "Vetrina Subito.it",
-          "description": "Gestione shop Subito",
-          "url": "https://impresapiu.subito.it/shops/52322-palmino-motors",
-          "icon": "🛍️"
-        },
-        {
-          "title": "Vetrina Facebook",
-          "description": "Gestione shop Facebook",
-          "url": "https://www.facebook.com/profile.php?id=100091247677157",
-          "icon": "👥"
-        },
-        {
-          "title": "Vetrina Instagram",
-          "description": "Gestione shop Instagram",
-          "url": "https://www.instagram.com/palminomotors/",
-          "icon": "📸"
-        }
-      ]
-    },
-    {
-      "name": "Servizi Cloud & Hosting",
-      "color": "#06b6d4",
-      "colorLight": "#22d3ee",
-      "links": [
-        {
-          "title": "Aruba Cloud Console",
-          "description": "Area VPS e server Aruba Cloud",
-          "url": "https://admin.services.cloud.it/Login.aspx",
-          "icon": "☁️"
-        },
-        {
-          "title": "Servizi Aruba",
-          "description": "Console domini, PEC e servizi Aruba",
-          "url": "https://customerarea.aruba.it/start/Login",
-          "icon": "🔧"
-        }
-      ]
-    },
-    {
-      "name": "Pianificazione & Calendario",
-      "color": "#eab308",
-      "colorLight": "#fde047",
-      "links": [
-        {
-          "title": "Google Calendar",
-          "description": "Calendario appuntamenti Palmino Motors",
-          "url": "https://calendar.google.com/calendar/u/0/r",
-          "icon": "📅"
-        },
-        {
-          "title": "Google Drive",
-          "description": "Archivio documenti, preventivi e file condivisi",
-          "url": "https://drive.google.com/drive/folders/1ymEXYv6FR51FSQmQ3syr8fWwDvecg9nJ?usp=drive_link",
-          "icon": "📁"
-        },
-        {
-          "title": "Canva",
-          "description": "Strumento grafico per creazione contenuti social e promozionali",
-          "url": "https://www.canva.com/folder/FAF-MCLkJGY",
-          "icon": "🎨"
+          "title": "Gestione Deutsche Bank",
+          "description": "Accesso aree riservate Deutsche Bank",
+          "url": "https://www.dbeasy.it/accesso_clienti_aree_riservate/",
+          "icon": "🏦"
         }
       ]
     },
@@ -189,15 +103,101 @@
       ]
     },
     {
-      "name": "Gestione Bancaria",
-      "color": "#14b8a6",
-      "colorLight": "#2dd4bf",
+      "name": "Siti Web e Portali",
+      "color": "#3b82f6",
+      "colorLight": "#60a5fa",
       "links": [
         {
-          "title": "Gestione Deutsche Bank",
-          "description": "Accesso aree riservate Deutsche Bank",
-          "url": "https://www.dbeasy.it/accesso_clienti_aree_riservate/",
-          "icon": "🏦"
+          "title": "Sito Ufficiale",
+          "description": "Portale principale Palmino Motors",
+          "url": "https://www.palminomotors.com",
+          "icon": "🌐"
+        },
+        {
+          "title": "Gestione WordPress",
+          "description": "Pannello amministrativo Palmino Motors",
+          "url": "https://www.palminomotors.com/moto-admin",
+          "icon": "⚙️"
+        },
+        {
+          "title": "Creazione QR Code",
+          "description": "Strumento per generazione QR Code personalizzati",
+          "url": "qr.html",
+          "icon": "📱"
+        },
+        {
+          "title": "Calcolatore Sconto e Aumento Prezzo",
+          "description": "Strumento per calcolo sconto e aumento prezzo",
+          "url": "https://paginageneralesiti.netlify.app/site/utilities/calcolatore_sconto_aumento/",
+          "icon": "🧮"
+        },
+        {
+          "title": "Gestionale Moto.it",
+          "description": "Area riservata caricamento annunci",
+          "url": "https://dealer.moto.it/palmino",
+          "icon": "🏍️"
+        },
+        {
+          "title": "Google Drive",
+          "description": "Archivio documenti, preventivi e file condivisi",
+          "url": "https://drive.google.com/drive/folders/1ymEXYv6FR51FSQmQ3syr8fWwDvecg9nJ?usp=drive_link",
+          "icon": "📁"
+        },
+        {
+          "title": "Canva",
+          "description": "Strumento grafico per creazione contenuti social e promozionali",
+          "url": "https://www.canva.com/folder/FAF-MCLkJGY",
+          "icon": "🎨"
+        }
+      ]
+    },
+    {
+      "name": "Vetrina Social & Shop",
+      "color": "#f43f5e",
+      "colorLight": "#fb7185",
+      "links": [
+        {
+          "title": "Vetrina Subito.it",
+          "description": "Gestione shop Subito",
+          "url": "https://impresapiu.subito.it/shops/52322-palmino-motors",
+          "icon": "🛍️"
+        },
+        {
+          "title": "Vetrina Facebook",
+          "description": "Gestione shop Facebook",
+          "url": "https://www.facebook.com/profile.php?id=100091247677157",
+          "icon": "👥"
+        },
+        {
+          "title": "Vetrina Instagram",
+          "description": "Gestione shop Instagram",
+          "url": "https://www.instagram.com/palminomotors/",
+          "icon": "📸"
+        },
+        {
+          "title": "Gestionale Subito ",
+          "description": "Area riservata caricamento annunci Subito",
+          "url": "https://motori.multigestionale.com/",
+          "icon": "🛒"
+        }
+      ]
+    },
+    {
+      "name": "Servizi Cloud & Hosting",
+      "color": "#06b6d4",
+      "colorLight": "#22d3ee",
+      "links": [
+        {
+          "title": "Aruba Cloud Console",
+          "description": "Area VPS e server Aruba Cloud",
+          "url": "https://admin.services.cloud.it/Login.aspx",
+          "icon": "☁️"
+        },
+        {
+          "title": "Servizi Aruba",
+          "description": "Console domini, PEC e servizi Aruba",
+          "url": "https://customerarea.aruba.it/start/Login",
+          "icon": "🔧"
         }
       ]
     }
