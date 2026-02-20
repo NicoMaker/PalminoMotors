@@ -982,6 +982,10 @@ body.header-expanded {
   border: 2px solid var(--dc);
 }
 
-#headerAreaTag{
+#headerAreaTag {
   display: none;
+}
+
+.header-right span {
+  display: block;
 }
