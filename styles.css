@@ -422,11 +422,9 @@ body {
 .detail-main {
   width: 100%;
   padding: 24px;
-  min-height: calc(100vh - var(--header-h) - 460px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 .detail-links-grid {
   display: flex;
@@ -876,13 +874,34 @@ body {
     padding: 10px 16px;
   }
   .detail-main {
-    padding: 20px 16px 32px;
+    padding: 16px 16px 24px;
   }
   .detail-links-grid {
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    flex-wrap: unset;
   }
   .detail-links-grid .detail-link-card {
+    flex: unset;
     max-width: 100%;
+    width: 100%;
+  }
+  .detail-link-card {
+    padding: 12px 14px;
+    gap: 12px;
+  }
+  .detail-link-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    font-size: 1.4rem;
+  }
+  .detail-link-info h3 {
+    font-size: 0.87rem;
+  }
+  .detail-link-info p {
+    font-size: 0.75rem;
   }
   .brand-section {
     padding: 32px 16px;
