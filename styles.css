@@ -651,8 +651,11 @@ body.header-expanded {
   gap: 0;
   padding: 38px 28px 32px;
   background: var(--bg-card);
-  border: 2px solid rgba(var(--bcr), 0.5);
+  border: 2px solid var(--bc);
   border-radius: 22px;
+  box-shadow:
+    0 0 18px rgba(var(--bcr), 0.18),
+    inset 0 0 24px rgba(var(--bcr), 0.05);
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 /* Reorder children via order so gradient appears between name and socials */
