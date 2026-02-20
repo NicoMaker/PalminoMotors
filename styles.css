@@ -958,3 +958,23 @@ body.header-expanded {
   outline-offset: 3px;
   border-radius: 4px;
 }
+
+
+.hub-header::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent) 20%,
+    #f97316 40%,
+    #10b981 60%,
+    #06b6d4 80%,
+    transparent
+  );
+  z-index: 1;
+}
