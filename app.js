@@ -71,11 +71,14 @@ function handleHeaderLogo(logoPath) {
   if (!logoPath) return;
   const wrap = document.getElementById("headerLogoWrap");
   if (!wrap) return;
-  // Replace the PM circle with actual logo image immediately
+
   const img = document.createElement("img");
   img.src = logoPath;
   img.className = "header-logo-img";
   img.alt = "Logo";
+  img.style.cursor = "pointer"; // Rende palese che è cliccabile
+  img.onclick = goHome; // <--- AGGIUNGI QUESTA RIGA
+
   img.onerror = () => img.remove();
   wrap.innerHTML = "";
   wrap.className = "header-logo-img-wrap";
@@ -93,12 +96,19 @@ function buildHomeScreen(data) {
     img.src = data.company.logo;
     img.className = "home-logo-img-big";
     img.alt = data.company.fullName || "Logo";
+
+    // --- MODIFICA: Torna alla home cliccando il logo grande ---
+    img.style.cursor = "pointer";
+    img.onclick = goHome;
+    // ---------------------------------------------------------
+
     img.onerror = () => {
       hero.innerHTML = '<div class="home-logo-circle-big">PM</div>';
     };
     hero.innerHTML = "";
     hero.appendChild(img);
   }
+
   // HOME COMPANY NAME
   const nameEl = document.getElementById("homeCompanyName");
   if (nameEl && data.company?.fullName)
@@ -107,6 +117,7 @@ function buildHomeScreen(data) {
   const grid = document.getElementById("areaGrid");
   if (!grid) return;
 
+  // Mappatura delle categorie dati
   const catCards = data.categories.map((cat, i) => {
     const rgb = hexToRgb(cat.color);
     const cl = cat.colorLight || cat.color;
@@ -122,7 +133,7 @@ function buildHomeScreen(data) {
       </button>`;
   });
 
-  // Brand card
+  // Aggiunta card speciale per i Brand Ufficiali
   const brandRgb = hexToRgb("#dc2626");
   catCards.push(`
     <button class="area-card" onclick="enterArea('brands')"
@@ -137,7 +148,6 @@ function buildHomeScreen(data) {
 
   grid.innerHTML = catCards.join("");
 }
-
 function getAreaEmoji(label) {
   const map = {
     Gestionali: "📦",
