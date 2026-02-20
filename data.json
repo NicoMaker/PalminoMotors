@@ -39,7 +39,7 @@
       ]
     },
     {
-      "name": "Calendario",
+      "name": "Calendario & Contatti",
       "color": "#eab308",
       "colorLight": "#fde047",
       "links": [
@@ -48,6 +48,12 @@
           "description": "Calendario appuntamenti Palmino Motors",
           "url": "https://calendar.google.com/calendar/u/0/r",
           "icon": "📅"
+        },
+        {
+          "title": "Google Contacts",
+          "description": "Contatti clienti Palmino Motors",
+          "url": "https://contacts.google.com",
+          "icon": "👥"
         }
       ]
     },
