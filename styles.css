@@ -289,24 +289,30 @@ body {
   max-width: 980px;
   margin: 10px auto 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 6px;
   position: relative;
 }
 
+/* ── Desktop: wrap su massimo 2 righe ── */
 .chips-arrow {
   flex-shrink: 0;
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: 1.5px solid var(--border);
   background: var(--bg-card);
   color: var(--text-muted);
-  display: flex;
+  display: none; /* nascosto di default, visibile solo se overflow */
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all var(--transition);
+  margin-top: 3px;
+}
+
+.chips-arrow.visible {
+  display: flex;
 }
 
 .chips-arrow:hover {
@@ -323,30 +329,51 @@ body {
 .chips-scroll {
   display: flex;
   align-items: center;
-  gap: 7px;
-  overflow-x: auto;
-  padding: 4px 2px 6px;
+  gap: 8px;
+  flex-wrap: wrap;
+  max-height: 98px; /* ~2 righe chip (43px cad.) + 8px gap + 4px padding */
+  overflow: hidden;
   flex: 1;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  scroll-behavior: smooth;
+  padding: 4px 2px 6px;
+  transition: max-height 0.3s ease;
 }
 
-.chips-scroll::-webkit-scrollbar {
-  display: none;
+/* ── Mobile: scroll orizzontale, 1 riga ── */
+@media (max-width: 640px) {
+  .chips-wrapper {
+    align-items: center;
+  }
+
+  .chips-arrow {
+    display: flex !important;
+  }
+
+  .chips-scroll {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-height: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+  }
+
+  .chips-scroll::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .chip {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 7px 14px;
+  gap: 8px;
+  padding: 10px 20px;
   border-radius: 999px;
   background: var(--bg-card);
   border: 1.5px solid var(--border);
   color: var(--text-muted);
   font-family: var(--font-sans);
-  font-size: 0.78rem;
+  font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
@@ -363,8 +390,8 @@ body {
 }
 
 .chip-dot {
-  width: 7px;
-  height: 7px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
   background: var(--accent);
   flex-shrink: 0;
@@ -474,7 +501,8 @@ body {
 
 .links-grid {
   display: grid;
-  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 10px;
 }
 
 /* ===== LINK CARDS ===== */
@@ -531,9 +559,11 @@ body {
   font-size: 0.85rem;
   color: var(--text-secondary);
   line-height: 1.4;
-  white-space: nowrap;
+  white-space: normal;
   overflow: hidden;
-  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .link-arrow {

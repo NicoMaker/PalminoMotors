@@ -132,33 +132,11 @@ function buildChips(categories) {
   // "Tutte" chip già nel HTML — collega evento
   const allChip = container.querySelector(".chip-all");
   allChip.addEventListener("click", () => {
-    if (state.selectedCategories === null) {
-      state.selectedCategories = new Set();
-    } else {
-      state.selectedCategories = null;
-    }
+    state.selectedCategories = null;
     updateChipUI();
     updateView();
     scrollToContent();
   });
-
-  // Bottone "Deseleziona tutto" — appare in fondo alla riga chip
-  const deselectAllBtn = document.createElement("button");
-  deselectAllBtn.className = "chip chip-deselect-all";
-  deselectAllBtn.id = "deselectAllBtn";
-  deselectAllBtn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg> Nessuna`;
-  deselectAllBtn.style.display = "";
-  deselectAllBtn.addEventListener("click", () => {
-    state.selectedCategories = new Set();
-    updateChipUI();
-    updateView();
-    scrollToContent();
-    // Scroll verso il bottone "Tutte"
-    setTimeout(() => {
-      container.scrollTo({ left: 0, behavior: "smooth" });
-    }, 50);
-  });
-  container.appendChild(deselectAllBtn);
 
   categories.forEach((cat, i) => {
     const chip = document.createElement("button");
@@ -175,105 +153,102 @@ function buildChips(categories) {
 
     chip.addEventListener("click", () => {
       const idx = String(i);
-
-      if (state.selectedCategories === null) {
-        // Eravamo su "Tutte": deseleziona questa → seleziona tutte le altre
-        const allIdxs = new Set();
-        for (let j = 0; j < state.totalCategories; j++) {
-          if (String(j) !== idx) allIdxs.add(String(j));
-        }
-        state.selectedCategories = allIdxs;
+      // Single-select: se già selezionata, torna a "Tutte"; altrimenti seleziona solo questa
+      if (
+        state.selectedCategories !== null &&
+        state.selectedCategories.size === 1 &&
+        state.selectedCategories.has(idx)
+      ) {
+        state.selectedCategories = null;
       } else {
-        // Modalità multi-select normale
-        if (state.selectedCategories.has(idx)) {
-          state.selectedCategories.delete(idx);
-        } else {
-          state.selectedCategories.add(idx);
-          // Se tutte le categorie sono selezionate → torna a "Tutte"
-          if (state.selectedCategories.size >= state.totalCategories) {
-            state.selectedCategories = null;
-            updateChipUI();
-            updateView();
-            scrollToContent();
-            setTimeout(() => {
-              const allChipEl = document.querySelector(".chip-all");
-              const chipsScroll = document.getElementById("categoryChips");
-              if (allChipEl && chipsScroll) {
-                chipsScroll.scrollTo({ left: 0, behavior: "smooth" });
-              }
-            }, 80);
-            return;
-          }
-        }
+        state.selectedCategories = new Set([idx]);
       }
-
       updateChipUI();
       updateView();
       scrollToContent();
-
-      // Se si è rimasti senza selezione → scroll chip verso "Tutte"
-      if (
-        state.selectedCategories !== null &&
-        state.selectedCategories.size === 0
-      ) {
-        setTimeout(() => {
-          container.scrollTo({ left: 0, behavior: "smooth" });
-        }, 80);
-      }
     });
 
     container.appendChild(chip);
   });
 
-  // Arrow scroll buttons
-  const scrollEl = container;
   const leftBtn = document.getElementById("chipsLeft");
   const rightBtn = document.getElementById("chipsRight");
 
-  function updateArrows() {
-    if (!leftBtn || !rightBtn) return;
-    leftBtn.disabled = scrollEl.scrollLeft <= 2;
-    rightBtn.disabled =
-      scrollEl.scrollLeft + scrollEl.clientWidth >= scrollEl.scrollWidth - 2;
+  function isMobile() {
+    return window.innerWidth <= 640;
+  }
+
+  function updateDesktopArrows() {
+    if (isMobile()) return;
+    // Controlla se i chip eccedono 2 righe (overflow nascosto)
+    const scrollH = container.scrollHeight;
+    const clientH = container.clientHeight;
+    const hasOverflow = scrollH > clientH + 4;
+    leftBtn?.classList.toggle("visible", hasOverflow);
+    rightBtn?.classList.toggle("visible", hasOverflow);
+    if (leftBtn) leftBtn.disabled = container.scrollTop <= 2;
+    if (rightBtn) rightBtn.disabled = container.scrollTop + container.clientHeight >= container.scrollHeight - 2;
+  }
+
+  function updateMobileArrows() {
+    if (!isMobile()) return;
+    if (leftBtn) leftBtn.disabled = container.scrollLeft <= 2;
+    if (rightBtn) rightBtn.disabled =
+      container.scrollLeft + container.clientWidth >= container.scrollWidth - 2;
   }
 
   leftBtn?.addEventListener("click", () => {
-    scrollEl.scrollBy({ left: -200, behavior: "smooth" });
+    if (isMobile()) {
+      container.scrollBy({ left: -200, behavior: "smooth" });
+    } else {
+      container.scrollBy({ top: -60, behavior: "smooth" });
+    }
   });
+
   rightBtn?.addEventListener("click", () => {
-    scrollEl.scrollBy({ left: 200, behavior: "smooth" });
+    if (isMobile()) {
+      container.scrollBy({ left: 200, behavior: "smooth" });
+    } else {
+      container.scrollBy({ top: 60, behavior: "smooth" });
+    }
   });
-  scrollEl.addEventListener("scroll", updateArrows);
-  updateArrows();
-  // Re-check after fonts load
-  window.addEventListener("load", updateArrows);
+
+  container.addEventListener("scroll", () => {
+    if (isMobile()) updateMobileArrows();
+    else updateDesktopArrows();
+  });
+
+  window.addEventListener("resize", () => {
+    if (isMobile()) {
+      // mobile: reset scroll orizzontale
+      container.style.overflowX = "";
+      updateMobileArrows();
+    } else {
+      updateDesktopArrows();
+    }
+  });
+
+  window.addEventListener("load", () => {
+    updateDesktopArrows();
+    updateMobileArrows();
+  });
+
+  // Prima chiamata
+  setTimeout(() => {
+    updateDesktopArrows();
+    updateMobileArrows();
+  }, 100);
 }
 
 function updateChipUI() {
   const chips = document.querySelectorAll("#categoryChips .chip");
   const allChip = document.querySelector(".chip-all");
-  const deselectBtn = document.getElementById("deselectAllBtn");
   const isAll = state.selectedCategories === null;
-  const hasSelection =
-    state.selectedCategories !== null && state.selectedCategories.size > 0;
-
-  const isNone =
-    state.selectedCategories !== null && state.selectedCategories.size === 0;
 
   allChip.classList.toggle("active", isAll);
 
-  // Bottone "Nessuna": sempre visibile, evidenziato quando nessuna categoria selezionata
-  if (deselectBtn) {
-    deselectBtn.classList.add("visible");
-    deselectBtn.classList.toggle("active", isNone);
-  }
-
   chips.forEach((chip) => {
-    if (
-      chip.classList.contains("chip-all") ||
-      chip.classList.contains("chip-deselect-all")
-    )
-      return;
+    if (chip.classList.contains("chip-all")) return;
     const idx = chip.dataset.index;
     const active =
       state.selectedCategories !== null && state.selectedCategories.has(idx);
@@ -340,7 +315,7 @@ function updateView() {
 
   sections.forEach((section) => {
     const catIdx = section.getAttribute("data-category");
-    const inFilter = isAll || (!isNone && state.selectedCategories.has(catIdx));
+    const inFilter = isAll || (state.selectedCategories !== null && state.selectedCategories.has(catIdx));
 
     if (!inFilter) {
       section.classList.add("hidden");
@@ -434,10 +409,6 @@ function updateView() {
     }
   }
 
-  // Stato "tutto aperto": chip "Tutte" attivo (null) E nessuna ricerca
-  // Se selectedCategories è un Set (anche con tutte selezionate) → mostra X/tot
-  const isDefaultView = false; // mostra sempre X/totale (anche con chip "Tutte")
-
   // Aggiorna il contatore servizi visibili nell'header
   const servicesCountEl = document.getElementById("servicesCount");
   const servicesLabelEl = document.getElementById("servicesLabel");
@@ -450,26 +421,17 @@ function updateView() {
       const section = card.closest(".category-section");
       if (section && !section.classList.contains("hidden")) visibleCount++;
     });
-    if (isDefaultView) {
-      servicesCountEl.textContent = state.totalServices || "—";
-    } else {
-      servicesCountEl.textContent = `${visibleCount}/${state.totalServices}`;
-    }
+    servicesCountEl.textContent = visibleCount;
     if (servicesLabelEl) servicesLabelEl.textContent = "Servizi";
   }
 
   // Aggiorna il contatore categorie visibili nell'header
   const categoriesCountEl = document.getElementById("categoriesCount");
   if (categoriesCountEl) {
-    const totalCats = state.totalCategories;
     const visibleCats = document.querySelectorAll(
       ".category-section:not(.hidden)",
     ).length;
-    if (isDefaultView) {
-      categoriesCountEl.textContent = totalCats || "—";
-    } else {
-      categoriesCountEl.textContent = `${visibleCats}/${totalCats}`;
-    }
+    categoriesCountEl.textContent = visibleCats;
   }
 }
 
