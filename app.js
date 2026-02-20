@@ -182,11 +182,18 @@ function enterArea(index) {
   const header = document.getElementById("hubHeader");
   tag.style.display = "";
 
+  const stickyBar = document.getElementById("headerSectionTitleRow");
+  const stickyTitle = document.getElementById("headerSectionTitleText");
+  stickyBar.style.display = "";
+  document.body.classList.add("header-expanded");
+
   if (index === "brands") {
     dot.style.background = "linear-gradient(135deg,#dc2626,#f97316)";
     namEl.textContent = "Brand Ufficiali";
     header.style.setProperty("--hc", "#dc2626");
     header.style.setProperty("--hr", hexToRgb("#dc2626"));
+    stickyTitle.textContent = "Brand Ufficiali";
+    stickyBar.style.setProperty("--hc", "#dc2626");
     renderBrandPage();
   } else {
     const cat = _data.categories[index];
@@ -195,6 +202,8 @@ function enterArea(index) {
     namEl.textContent = cat.name;
     header.style.setProperty("--hc", cat.color);
     header.style.setProperty("--hr", rgb);
+    stickyTitle.textContent = cat.name;
+    stickyBar.style.setProperty("--hc", cat.color);
     renderCategoryDetail(cat, rgb, cat.color, cat.colorLight || cat.color);
   }
 }
@@ -202,6 +211,9 @@ function enterArea(index) {
 function goHome() {
   document.getElementById("screenDetail").style.display = "none";
   document.getElementById("screenHome").style.display = "";
+  document.body.classList.remove("header-expanded");
+  const sb = document.getElementById("headerSectionTitleRow");
+  if (sb) sb.style.display = "none";
   document.getElementById("backBtn").style.display = "none";
   document.getElementById("headerAreaTag").style.display = "none";
 
@@ -240,17 +252,14 @@ function renderCategoryDetail(cat, rgb, color, colorLight) {
       return;
     }
 
-    // Costruzione HTML con Titolo e Spazio
+    // Costruzione HTML senza Titolo (ora nella sticky bar)
     main.innerHTML = `
-      <br>
-      <h2 class="section-title-dynamic" style="color: ${color}; margin-bottom: 24px; font-family: var(--font-sans); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
-        ${cat.name}
-      </h2>
       <div class="detail-links-grid">
         ${links
           .map((link) => {
             const isWa = link.title.toLowerCase().includes("whatsapp");
             return `
+            <br>
             <a href="${link.url}" target="_blank" rel="noopener noreferrer"
               class="detail-link-card"
               style="--dc:${color};--dcl:${colorLight};--dcr:${rgb};"
@@ -291,12 +300,9 @@ function renderBrandPage() {
   const main = document.getElementById("detailMain");
   const brands = _data.brands;
 
-  // Costruzione HTML con Titolo Brand e Spazio
+  // Costruzione HTML senza Titolo (ora nella sticky bar)
   main.innerHTML = `
     <br>
-    <h2 class="section-title-dynamic" style="color: #dc2626; margin-bottom: 24px; font-family: var(--font-sans); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
-      Brand Ufficiali
-    </h2>
     <div class="brand-links brand-links-2col">
       ${brands
         .map((brand) => {

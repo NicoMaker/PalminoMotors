@@ -18,6 +18,7 @@
   --font-mono: "JetBrains Mono", "SF Mono", monospace;
   --tr: 180ms cubic-bezier(0.4, 0, 0.2, 1);
   --header-h: 72px;
+  --header-h-expanded: 116px;
 }
 
 *,
@@ -42,6 +43,10 @@ body {
   display: flex;
   flex-direction: column;
   padding-top: var(--header-h);
+  transition: padding-top 0.2s ease;
+}
+body.header-expanded {
+  padding-top: var(--header-h-expanded);
 }
 
 .noise-overlay {
@@ -226,6 +231,26 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 200px;
+}
+
+/* ═══════════════════════════════════════
+   HEADER TITLE ROW (seconda riga, solo in detail)
+   ═══════════════════════════════════════ */
+.header-section-title-row {
+  max-width: 960px;
+  margin: 10px auto 0;
+  padding: 10px 0 2px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.header-section-title-text {
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: var(--hc, var(--accent));
 }
 
 /* ═══════════════════════════════════════
@@ -421,7 +446,7 @@ body {
 
 .detail-main {
   width: 100%;
-  padding: 24px;
+  padding: 36px 24px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -626,7 +651,7 @@ body {
   gap: 0;
   padding: 38px 28px 32px;
   background: var(--bg-card);
-  border: 2px solid;
+  border: 2px solid rgba(var(--bcr), 0.5);
   border-radius: 22px;
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
