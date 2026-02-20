@@ -229,7 +229,6 @@ body {
    PAGES (flex: grow per spingere footer)
    ═══════════════════════════════════════ */
 .page {
-  flex: 1;
   position: relative;
   z-index: 1;
 }
@@ -238,6 +237,7 @@ body {
    HOME — SELEZIONE AREA
    ═══════════════════════════════════════ */
 .page-home {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -417,15 +417,14 @@ body {
 }
 
 .detail-main {
-  flex: 1;
   width: 100%;
-  padding: 40px 24px 48px;
+  padding: 24px;
+  min-height: calc(100vh - var(--header-h) - 460px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
 }
-
 .detail-links-grid {
   display: flex;
   flex-wrap: wrap;
@@ -433,19 +432,18 @@ body {
   justify-content: center;
   width: 100%;
   max-width: 860px;
-  margin: 0 auto;
 }
 
 .detail-links-grid .detail-link-card {
-  flex: 1 1 300px;
-  max-width: 420px;
+  flex: 1 1 340px;
+  max-width: 500px;
 }
 
 .detail-link-card {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 15px 16px;
+  gap: 16px;
+  padding: 14px 18px;
   background: var(--bg-card);
   border: 2px solid rgba(var(--dcr), 0.35);
   border-radius: var(--radius);
@@ -461,14 +459,14 @@ body {
 }
 
 .detail-link-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 12px;
+  width: 90px;
+  height: 90px;
+  border-radius: 20px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.45rem;
+  font-size: 2.8rem;
   background: rgba(var(--dcr), 0.12);
   border: 1px solid rgba(var(--dcr), 0.2);
   transition: all var(--tr);
