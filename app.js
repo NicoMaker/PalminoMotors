@@ -126,7 +126,7 @@ function buildHomeScreen(data) {
         style="--ac:${cat.color}; --acl:${cl}; --acr:${rgb};">
         <div class="area-card-shine"></div>
         <div class="area-card-icon" style="background:rgba(${rgb},0.15); border:2.5px solid ${cat.color};">
-          ${getAreaEmoji(cat.name)}
+        ${cat.icon || cat.links[0]?.icon || getAreaEmoji(cat.name)}
         </div>
         <span class="area-card-label">${cat.name}</span>
         <span class="area-card-badge">${cat.links.length} link</span>
@@ -150,14 +150,6 @@ function buildHomeScreen(data) {
 }
 function getAreaEmoji(label) {
   const map = {
-    Gestionali: "📦",
-    Pianificazione: "📅",
-    Portali: "🛠️",
-    Finanziarie: "🏦",
-    Email: "📧",
-    Siti: "🌐",
-    Social: "📱",
-    Cloud: "☁️",
   };
   for (const [key, emoji] of Object.entries(map)) {
     if (label.includes(key)) return emoji;
