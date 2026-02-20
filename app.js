@@ -234,6 +234,7 @@ function renderCategoryDetail(cat, rgb, color, colorLight) {
       .map((link) => {
         const isWa = link.title.toLowerCase().includes("whatsapp");
         return `
+        <br>
         <a href="${link.url}" target="_blank" rel="noopener noreferrer"
           class="detail-link-card"
           style="--dc:${color};--dcl:${colorLight};--dcr:${rgb};"
@@ -275,7 +276,7 @@ function renderCategoryDetail(cat, rgb, color, colorLight) {
 function renderBrandPage() {
   const main = document.getElementById("detailMain");
   const brands = _data.brands;
-  main.innerHTML = `<div class="brand-links brand-links-2col">${brands
+  main.innerHTML = `<br> <div class="brand-links brand-links-2col">${brands
     .map((brand) => {
       const bc = brand.color || "#dc2626";
       const bcl = brand.colorLight || "#f97316";
