@@ -959,7 +959,6 @@ body.header-expanded {
   border-radius: 4px;
 }
 
-
 .hub-header::after {
   content: "";
   position: absolute;
@@ -977,4 +976,8 @@ body.header-expanded {
     transparent
   );
   z-index: 1;
+}
+
+.detail-link-card {
+  border: 2px solid var(--dc);
 }

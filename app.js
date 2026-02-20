@@ -24,9 +24,7 @@ function formatPhoneNumber(phone) {
   return phone;
 }
 
-function escapeRegExp(s) {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
+const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 function highlightText(text, term) {
   if (!term) return text;
@@ -243,14 +241,13 @@ function renderCategoryDetail(cat, rgb, color, colorLight) {
       return;
     }
 
-    // Costruzione HTML senza Titolo (ora nella sticky bar)
     main.innerHTML = `
+      <br>
       <div class="detail-links-grid">
         ${links
           .map((link) => {
             const isWa = link.title.toLowerCase().includes("whatsapp");
             return `
-            <br>
             <a href="${link.url}" target="_blank" rel="noopener noreferrer"
               class="detail-link-card"
               style="--dc:${color};--dcl:${colorLight};--dcr:${rgb};"
@@ -268,7 +265,6 @@ function renderCategoryDetail(cat, rgb, color, colorLight) {
           .join("")}
       </div>`;
 
-    // Aggiunta degli effetti hover via JS
     main.querySelectorAll(".detail-link-card").forEach((card) => {
       card.addEventListener("mouseenter", () => {
         card.style.boxShadow = `0 8px 32px rgba(${rgb},0.25)`;
