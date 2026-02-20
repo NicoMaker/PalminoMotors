@@ -61,18 +61,36 @@ function handleHeaderLogo(logoPath) {
   if (!logoPath) return;
   const wrap = document.getElementById("headerLogoWrap");
   if (!wrap) return;
+  // Replace the PM circle with actual logo image immediately
   const img = document.createElement("img");
   img.src = logoPath;
   img.className = "header-logo-img";
   img.alt = "Logo";
   img.onerror = () => img.remove();
-  wrap.replaceWith(img);
+  wrap.innerHTML = "";
+  wrap.className = "header-logo-img-wrap";
+  wrap.appendChild(img);
 }
 
 // ══════════════════════════════════════════════
 //  HOME — GRIGLIA SELEZIONE AREA
 // ══════════════════════════════════════════════
 function buildHomeScreen(data) {
+  // HOME LOGO HERO
+  const hero = document.getElementById("homeLogoHero");
+  if (hero && data.company?.logo) {
+    const img = document.createElement("img");
+    img.src = data.company.logo;
+    img.className = "home-logo-img-big";
+    img.alt = data.company.fullName || "Logo";
+    img.onerror = () => { hero.innerHTML = '<div class="home-logo-circle-big">PM</div>'; };
+    hero.innerHTML = "";
+    hero.appendChild(img);
+  }
+  // HOME COMPANY NAME
+  const nameEl = document.getElementById("homeCompanyName");
+  if (nameEl && data.company?.fullName) nameEl.textContent = data.company.fullName;
+
   const grid = document.getElementById("areaGrid");
   if (!grid) return;
 
@@ -83,7 +101,7 @@ function buildHomeScreen(data) {
       <button class="area-card" onclick="enterArea(${i})"
         style="--ac:${cat.color}; --acl:${cl}; --acr:${rgb};">
         <div class="area-card-shine"></div>
-        <div class="area-card-icon" style="background:linear-gradient(135deg,${cat.color},${cl})">
+        <div class="area-card-icon" style="background:rgba(${rgb},0.15); border:2.5px solid ${cat.color};">
           ${getAreaEmoji(cat.name)}
         </div>
         <span class="area-card-label">${cat.name}</span>
@@ -97,7 +115,7 @@ function buildHomeScreen(data) {
     <button class="area-card" onclick="enterArea('brands')"
       style="--ac:#dc2626; --acl:#f97316; --acr:${brandRgb};">
       <div class="area-card-shine"></div>
-      <div class="area-card-icon" style="background:linear-gradient(135deg,#dc2626,#f97316)">
+      <div class="area-card-icon" style="background:rgba(220,38,38,0.15); border:2.5px solid #dc2626;">
         🏷️
       </div>
       <span class="area-card-label">Brand Ufficiali</span>
@@ -231,7 +249,7 @@ function renderCategoryDetail(cat, rgb, color, colorLight) {
 function renderBrandPage() {
   const main = document.getElementById("detailMain");
   const brands = _data.brands;
-  main.innerHTML = `<div class="brand-links">${brands.map(brand => {
+  main.innerHTML = `<div class="brand-links brand-links-2col">${brands.map(brand => {
     const bc = brand.color || "#dc2626";
     const bcl = brand.colorLight || "#f97316";
     const brgb = hexToRgb(bc);
