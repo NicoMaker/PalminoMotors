@@ -7,7 +7,10 @@
     <link rel="stylesheet" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="icon" type="image/x-icon" href="img/Logo2.png" />
   </head>
   <body>
@@ -26,12 +29,27 @@
         </div>
         <div class="header-right">
           <!-- Tasto back (solo in detail) -->
-          <button class="back-btn" id="backBtn" style="display:none" onclick="goHome()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          <button
+            class="back-btn"
+            id="backBtn"
+            style="display: none"
+            onclick="goHome()"
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            >
+              <path d="M19 12H5M12 5l-7 7 7 7" />
+            </svg>
             <span>Indietro</span>
           </button>
           <!-- Nome area corrente (solo in detail) -->
-          <div class="header-area-tag" id="headerAreaTag" style="display:none">
+          <div class="header-area-tag" id="headerAreaTag" style="display: none">
             <span class="header-area-dot" id="headerAreaDot"></span>
             <span class="header-area-name" id="headerAreaName"></span>
           </div>
@@ -52,15 +70,17 @@
     </div>
 
     <!-- ══ SCHERMATA DETAIL: vista area ══ -->
-    <div id="screenDetail" class="page page-detail" style="display:none">
-
+    <div id="screenDetail" class="page page-detail" style="display: none">
       <!-- Link cards -->
       <main class="detail-main" id="detailMain"></main>
       <!-- Brand section (come prima, in fondo) -->
-      <section class="brand-section" id="brandSection" style="display:none">
+      <section class="brand-section" id="brandSection" style="display: none">
         <h3 class="brand-section-title">
           <span class="title-line"></span>
-          <span>Brand Ufficiali <span id="brandCount" class="brand-count-badge"></span></span>
+          <span
+            >Brand Ufficiali
+            <span id="brandCount" class="brand-count-badge"></span
+          ></span>
           <span class="title-line"></span>
         </h3>
         <div class="brand-links" id="brandContainer"></div>
@@ -73,7 +93,14 @@
         <div class="footer-logo-section" id="footerCompanyCol">
           <h2 class="footer-company-name" id="companyName">Palmino Motors</h2>
           <p class="footer-address">
-            <a href="#" id="fullAddress" class="footer-link" target="_blank" rel="noopener noreferrer">Caricamento...</a>
+            <a
+              href="#"
+              id="fullAddress"
+              class="footer-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Caricamento...</a
+            >
           </p>
         </div>
         <div class="footer-grid">
@@ -81,12 +108,22 @@
             <h4>Contatti</h4>
             <p><a href="#" class="footer-link" id="footerPhone"></a></p>
             <p><a href="#" class="footer-link" id="footerEmail"></a></p>
-            <p><a href="#" class="footer-link" id="footerWhatsApp" target="_blank" rel="noopener noreferrer"></a></p>
+            <p>
+              <a
+                href="#"
+                class="footer-link"
+                id="footerWhatsApp"
+                target="_blank"
+                rel="noopener noreferrer"
+              ></a>
+            </p>
           </div>
           <div class="footer-col">
             <h4>Dati Legali</h4>
             <p id="footerPiva"></p>
-            <p class="footer-copyright">&copy; <span id="year"></span> Tutti i diritti riservati</p>
+            <p class="footer-copyright">
+              &copy; <span id="year"></span> Tutti i diritti riservati
+            </p>
           </div>
         </div>
       </div>
