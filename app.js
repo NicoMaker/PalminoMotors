@@ -240,39 +240,43 @@ function renderCategoryDetail(cat, rgb, color, colorLight) {
       return;
     }
 
-    main.innerHTML = `<div class="detail-links-grid">${links
-      .map((link) => {
-        const isWa = link.title.toLowerCase().includes("whatsapp");
-        return `
-        <br>
-        <a href="${link.url}" target="_blank" rel="noopener noreferrer"
-          class="detail-link-card"
-          style="--dc:${color};--dcl:${colorLight};--dcr:${rgb};"
-          ${isWa ? 'onclick="openWhatsApp(event)"' : ""}>
-          <span class="detail-link-icon">${link.icon}</span>
-          <div class="detail-link-info">
-            <h3>${highlightText(link.title, query)}</h3>
-            <p>${highlightText(link.description, query)}</p>
-          </div>
-          <svg class="detail-link-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none">
-            <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </a>`;
-      })
-      .join("")}</div>`;
+    // Costruzione HTML con Titolo e Spazio
+    main.innerHTML = `
+      <br>
+      <h2 class="section-title-dynamic" style="color: ${color}; margin-bottom: 24px; font-family: var(--font-sans); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+        ${cat.name}
+      </h2>
+      <div class="detail-links-grid">
+        ${links
+          .map((link) => {
+            const isWa = link.title.toLowerCase().includes("whatsapp");
+            return `
+            <a href="${link.url}" target="_blank" rel="noopener noreferrer"
+              class="detail-link-card"
+              style="--dc:${color};--dcl:${colorLight};--dcr:${rgb};"
+              ${isWa ? 'onclick="openWhatsApp(event)"' : ""}>
+              <span class="detail-link-icon">${link.icon}</span>
+              <div class="detail-link-info">
+                <h3>${highlightText(link.title, query)}</h3>
+                <p>${highlightText(link.description, query)}</p>
+              </div>
+              <svg class="detail-link-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none">
+                <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </a>`;
+          })
+          .join("")}
+      </div>`;
 
+    // Aggiunta degli effetti hover via JS
     main.querySelectorAll(".detail-link-card").forEach((card) => {
       card.addEventListener("mouseenter", () => {
         card.style.boxShadow = `0 8px 32px rgba(${rgb},0.25)`;
         card.style.borderColor = color;
-        const icon = card.querySelector(".detail-link-icon");
-        if (icon) icon.style.boxShadow = `0 0 18px rgba(${rgb},0.35)`;
       });
       card.addEventListener("mouseleave", () => {
         card.style.boxShadow = "";
         card.style.borderColor = "";
-        const icon = card.querySelector(".detail-link-icon");
-        if (icon) icon.style.boxShadow = "";
       });
     });
   }
@@ -286,30 +290,39 @@ function renderCategoryDetail(cat, rgb, color, colorLight) {
 function renderBrandPage() {
   const main = document.getElementById("detailMain");
   const brands = _data.brands;
-  main.innerHTML = `<br> <div class="brand-links brand-links-2col">${brands
-    .map((brand) => {
-      const bc = brand.color || "#dc2626";
-      const bcl = brand.colorLight || "#f97316";
-      const brgb = hexToRgb(bc);
-      return `
-      <div class="brand-item" style="--bc:${bc};--bcl:${bcl};--bcr:${brgb};">
-        <div class="brand-item-glow"></div>
-        <div class="brand-gradient" style="background:linear-gradient(90deg,transparent,rgba(${brgb},0.3) 15%,${bc} 35%,${bcl} 50%,${bc} 65%,rgba(${brgb},0.3) 85%,transparent)"></div>
-        <span class="brand-name" style="background:linear-gradient(135deg,#fafafa,${bc});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${brand.name}</span>
-        <div class="brand-socials">
-          ${brand.url ? `<a href="${brand.url}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgGlobe()}</a>` : ""}
-          ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgFacebook()}</a>` : ""}
-          ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgInstagram()}</a>` : ""}
-        </div>
-      </div>`;
-    })
-    .join("")}</div>`;
 
+  // Costruzione HTML con Titolo Brand e Spazio
+  main.innerHTML = `
+    <br>
+    <h2 class="section-title-dynamic" style="color: #dc2626; margin-bottom: 24px; font-family: var(--font-sans); font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+      Brand Ufficiali
+    </h2>
+    <div class="brand-links brand-links-2col">
+      ${brands
+        .map((brand) => {
+          const bc = brand.color || "#dc2626";
+          const bcl = brand.colorLight || "#f97316";
+          const brgb = hexToRgb(bc);
+          return `
+          <div class="brand-item" style="--bc:${bc};--bcl:${bcl};--bcr:${brgb};">
+            <div class="brand-item-glow"></div>
+            <div class="brand-gradient" style="background:linear-gradient(90deg,transparent,rgba(${brgb},0.3) 15%,${bc} 35%,${bcl} 50%,${bc} 65%,rgba(${brgb},0.3) 85%,transparent)"></div>
+            <span class="brand-name" style="background:linear-gradient(135deg,#fafafa,${bc});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${brand.name}</span>
+            <div class="brand-socials">
+              ${brand.url ? `<a href="${brand.url}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgGlobe()}</a>` : ""}
+              ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgFacebook()}</a>` : ""}
+              ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgInstagram()}</a>` : ""}
+            </div>
+          </div>`;
+        })
+        .join("")}
+    </div>`;
+
+  // Listener per l'animazione dei brand
   main.querySelectorAll(".brand-item").forEach((item, idx) => {
     const brand = brands[idx];
     const bc = brand.color || "#dc2626";
     const brgb = hexToRgb(bc);
-    item.style.borderColor = `rgba(${brgb},0.5)`;
     item.addEventListener("mouseenter", () => {
       item.style.borderColor = bc;
       item.style.boxShadow = `0 8px 32px rgba(${brgb},0.2)`;
