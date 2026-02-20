@@ -29,6 +29,12 @@
           "description": "Pannello per creazione e gestione preventivi",
           "url": "http://89.36.210.147:3001",
           "icon": "🧾"
+        },
+        {
+          "title":"Fattura Smart",
+          "description":"Pannello per creazione e gestione fatture",
+          "url":"https://app.webdesk.it/Apps/Login/View",
+          "icon":"💼"
         }
       ]
     },
