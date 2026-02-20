@@ -39,7 +39,7 @@
       ]
     },
     {
-      "name": "Pianificazione & Calendario",
+      "name": "Calendario",
       "color": "#eab308",
       "colorLight": "#fde047",
       "links": [
@@ -109,7 +109,7 @@
       ]
     },
     {
-      "name": "Siti Web e Portali",
+      "name": "Siti Web/Social",
       "color": "#3b82f6",
       "colorLight": "#60a5fa",
       "links": [
@@ -154,15 +154,8 @@
           "description": "Strumento grafico per creazione contenuti social e promozionali",
           "url": "https://www.canva.com/folder/FAF-MCLkJGY",
           "icon": "🎨"
-        }
-      ]
-    },
-    {
-      "name": "Vetrina Social & Shop",
-      "color": "#f43f5e",
-      "colorLight": "#fb7185",
-      "links": [
-        {
+        },
+         {
           "title": "Vetrina Subito.it",
           "description": "Gestione shop Subito",
           "url": "https://impresapiu.subito.it/shops/52322-palmino-motors",

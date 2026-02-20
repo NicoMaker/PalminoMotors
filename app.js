@@ -1,691 +1,363 @@
+// ══════════════════════════════════════════════
+//  PALMINO MOTORS — HUB OPERATIVO
+// ══════════════════════════════════════════════
+let _data = null;
+
 document.addEventListener("DOMContentLoaded", () => {
-  loadData();
   document.getElementById("year").textContent = new Date().getFullYear();
+  loadData();
 });
 
-// ──────────────────────────────────────────────
-//  UTILS
-// ──────────────────────────────────────────────
+// ── UTILS ──────────────────────────────────────
 function hexToRgb(hex) {
   const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return r
-    ? `${parseInt(r[1], 16)}, ${parseInt(r[2], 16)}, ${parseInt(r[3], 16)}`
-    : "255,255,255";
+  return r ? `${parseInt(r[1],16)}, ${parseInt(r[2],16)}, ${parseInt(r[3],16)}` : "255,255,255";
 }
 
 function formatPhoneNumber(phone) {
   if (!phone) return phone;
-  let c = phone.replace(/\s+/g, "");
-  if (c.startsWith("+39"))
-    return c.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
-  if (c.startsWith("+"))
-    return c.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
-  if (c.length === 10) return c.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
-  if (c.length > 6) return c.replace(/(\d{3})(?=\d)/g, "$1 ");
+  let c = phone.replace(/\s+/g,"");
+  if (c.startsWith("+39")) return c.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
   return phone;
+}
+
+function escapeRegExp(s) { return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"); }
+
+function highlightText(text, term) {
+  if (!term) return text;
+  return text.replace(new RegExp(`(${escapeRegExp(term)})`,"gi"),'<mark class="highlight">$1</mark>');
 }
 
 function openWhatsApp(event) {
   event.preventDefault();
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const webUrl = "https://web.whatsapp.com/";
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   if (isMobile) {
-    let t = setTimeout(() => {
-      if (document.visibilityState !== "hidden") window.open(webUrl, "_blank");
-    }, 2000);
-    document.addEventListener(
-      "visibilitychange",
-      function h() {
-        if (document.visibilityState === "hidden") {
-          clearTimeout(t);
-          document.removeEventListener("visibilitychange", h);
-        }
-      },
-      { once: true },
-    );
+    setTimeout(() => { if (document.visibilityState !== "hidden") window.open(webUrl,"_blank"); }, 2000);
     window.location.href = "whatsapp://";
   } else {
-    const iframe = document.createElement("iframe");
-    iframe.style.display = "none";
-    document.body.appendChild(iframe);
-    let t = setTimeout(() => {
-      document.body.removeChild(iframe);
-      window.open(webUrl, "_blank");
-    }, 1500);
-    document.addEventListener(
-      "visibilitychange",
-      function h() {
-        if (document.visibilityState === "hidden") {
-          clearTimeout(t);
-          document.body.removeChild(iframe);
-          document.removeEventListener("visibilitychange", h);
-        }
-      },
-      { once: true },
-    );
-    iframe.src = "whatsapp://";
+    window.open(webUrl,"_blank");
   }
 }
 
-function escapeRegExp(s) {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function scrollToContent() {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function highlightText(text, term) {
-  if (!term) return text;
-  const re = new RegExp(`(${escapeRegExp(term)})`, "gi");
-  return text.replace(re, '<mark class="highlight">$1</mark>');
-}
-
-// ──────────────────────────────────────────────
-//  STATE  (no localStorage — sempre da zero)
-// ──────────────────────────────────────────────
-const state = {
-  selectedCategories: null,
-  searchQuery: "",
-  totalCategories: 0,
-  totalServices: 0,
-};
-
-// ──────────────────────────────────────────────
-//  LOAD
-// ──────────────────────────────────────────────
+// ── LOAD ──────────────────────────────────────
 async function loadData() {
   try {
     const res = await fetch("data.json");
-    const data = await res.json();
-
-    renderCategories(data.categories);
-    renderBrands(data.brands);
-    populateFooter(data.company);
-    handleLogos(data.company.logo);
-    applyDynamicColors(data.categories, data.brands);
-    buildChips(data.categories);
-    initSearch();
-    initReset();
-    // Calcola il totale servizi una volta sola
-    state.totalServices = data.categories.reduce(
-      (sum, cat) => sum + cat.links.length,
-      0,
-    );
-    updateView();
-  } catch (e) {
-    console.error("Errore caricamento dati:", e);
+    _data = await res.json();
+    populateFooter(_data.company);
+    handleHeaderLogo(_data.company.logo);
+    renderBrands(_data.brands);
+    buildHomeScreen(_data);
+  } catch(e) {
+    console.error("Errore:", e);
   }
 }
 
-// ──────────────────────────────────────────────
-//  CHIPS (multi-select)
-// ──────────────────────────────────────────────
-function getEmojiForCategory(i) {
-  return ["🌐", "🛠️", "📊", "📱", "☁️", "📅", "📧", "🏦"][i] ?? "📂";
+// ══════════════════════════════════════════════
+//  HEADER LOGO
+// ══════════════════════════════════════════════
+function handleHeaderLogo(logoPath) {
+  if (!logoPath) return;
+  const wrap = document.getElementById("headerLogoWrap");
+  if (!wrap) return;
+  const img = document.createElement("img");
+  img.src = logoPath;
+  img.className = "header-logo-img";
+  img.alt = "Logo";
+  img.onerror = () => img.remove();
+  wrap.replaceWith(img);
 }
 
-function buildChips(categories) {
-  const container = document.getElementById("categoryChips");
-  state.totalCategories = categories.length;
+// ══════════════════════════════════════════════
+//  HOME — GRIGLIA SELEZIONE AREA
+// ══════════════════════════════════════════════
+function buildHomeScreen(data) {
+  const grid = document.getElementById("areaGrid");
+  if (!grid) return;
 
-  // "Tutte" chip già nel HTML — collega evento
-  const allChip = container.querySelector(".chip-all");
-  allChip.addEventListener("click", () => {
-    state.selectedCategories = null;
-    updateChipUI();
-    updateView();
-    scrollToContent();
+  const catCards = data.categories.map((cat, i) => {
+    const rgb = hexToRgb(cat.color);
+    const cl  = cat.colorLight || cat.color;
+    return `
+      <button class="area-card" onclick="enterArea(${i})"
+        style="--ac:${cat.color}; --acl:${cl}; --acr:${rgb};">
+        <div class="area-card-shine"></div>
+        <div class="area-card-icon" style="background:linear-gradient(135deg,${cat.color},${cl})">
+          ${getAreaEmoji(cat.name)}
+        </div>
+        <span class="area-card-label">${cat.name}</span>
+        <span class="area-card-badge">${cat.links.length} link</span>
+      </button>`;
   });
 
-  categories.forEach((cat, i) => {
-    const chip = document.createElement("button");
-    chip.className = "chip";
-    chip.dataset.index = i;
+  // Brand card
+  const brandRgb = hexToRgb("#dc2626");
+  catCards.push(`
+    <button class="area-card" onclick="enterArea('brands')"
+      style="--ac:#dc2626; --acl:#f97316; --acr:${brandRgb};">
+      <div class="area-card-shine"></div>
+      <div class="area-card-icon" style="background:linear-gradient(135deg,#dc2626,#f97316)">
+        🏷️
+      </div>
+      <span class="area-card-label">Brand Ufficiali</span>
+      <span class="area-card-badge">${data.brands.length} brand</span>
+    </button>`);
 
-    const dot = document.createElement("span");
-    dot.className = "chip-dot";
-    dot.style.background = `linear-gradient(135deg, ${cat.color} 0%, ${cat.colorLight || cat.color} 100%)`;
+  grid.innerHTML = catCards.join("");
+}
 
-    chip.appendChild(dot);
-    chip.appendChild(document.createTextNode(cat.name));
-    chip.style.setProperty("--chip-color", cat.color);
-
-    chip.addEventListener("click", () => {
-      const idx = String(i);
-      // Single-select: se già selezionata, torna a "Tutte"; altrimenti seleziona solo questa
-      if (
-        state.selectedCategories !== null &&
-        state.selectedCategories.size === 1 &&
-        state.selectedCategories.has(idx)
-      ) {
-        state.selectedCategories = null;
-      } else {
-        state.selectedCategories = new Set([idx]);
-      }
-      updateChipUI();
-      updateView();
-      scrollToContent();
-    });
-
-    container.appendChild(chip);
-  });
-
-  const leftBtn = document.getElementById("chipsLeft");
-  const rightBtn = document.getElementById("chipsRight");
-
-  function isMobile() {
-    return window.innerWidth <= 640;
+function getAreaEmoji(label) {
+  const map = {
+    "Gestionali":"📦","Pianificazione":"📅","Portali":"🛠️",
+    "Finanziarie":"🏦","Email":"📧","Siti":"🌐","Social":"📱","Cloud":"☁️"
+  };
+  for (const [key, emoji] of Object.entries(map)) {
+    if (label.includes(key)) return emoji;
   }
+  return "📂";
+}
 
-  function updateDesktopArrows() {
-    if (isMobile()) return;
-    // Controlla se i chip eccedono 2 righe (overflow nascosto)
-    const scrollH = container.scrollHeight;
-    const clientH = container.clientHeight;
-    const hasOverflow = scrollH > clientH + 4;
-    leftBtn?.classList.toggle("visible", hasOverflow);
-    rightBtn?.classList.toggle("visible", hasOverflow);
-    if (leftBtn) leftBtn.disabled = container.scrollTop <= 2;
-    if (rightBtn) rightBtn.disabled = container.scrollTop + container.clientHeight >= container.scrollHeight - 2;
+// ══════════════════════════════════════════════
+//  NAVIGAZIONE
+// ══════════════════════════════════════════════
+function enterArea(index) {
+  document.getElementById("screenHome").style.display = "none";
+  document.getElementById("screenDetail").style.display = "";
+  document.getElementById("backBtn").style.display = "";
+  // Brand section: nascondi sempre (non piu in fondo)
+  document.getElementById("brandSection").style.display = "none";
+  window.scrollTo({ top: 0 });
+
+  const tag = document.getElementById("headerAreaTag");
+  const dot = document.getElementById("headerAreaDot");
+  const namEl = document.getElementById("headerAreaName");
+  const header = document.getElementById("hubHeader");
+  tag.style.display = "";
+
+  if (index === "brands") {
+    dot.style.background = "linear-gradient(135deg,#dc2626,#f97316)";
+    namEl.textContent = "Brand Ufficiali";
+    header.style.setProperty("--hc", "#dc2626");
+    header.style.setProperty("--hr", hexToRgb("#dc2626"));
+    renderBrandPage();
+  } else {
+    const cat = _data.categories[index];
+    const rgb = hexToRgb(cat.color);
+    dot.style.background = `linear-gradient(135deg,${cat.color},${cat.colorLight||cat.color})`;
+    namEl.textContent = cat.name;
+    header.style.setProperty("--hc", cat.color);
+    header.style.setProperty("--hr", rgb);
+    renderCategoryDetail(cat, rgb, cat.color, cat.colorLight || cat.color);
   }
-
-  function updateMobileArrows() {
-    if (!isMobile()) return;
-    if (leftBtn) leftBtn.disabled = container.scrollLeft <= 2;
-    if (rightBtn) rightBtn.disabled =
-      container.scrollLeft + container.clientWidth >= container.scrollWidth - 2;
-  }
-
-  leftBtn?.addEventListener("click", () => {
-    if (isMobile()) {
-      container.scrollBy({ left: -200, behavior: "smooth" });
-    } else {
-      container.scrollBy({ top: -60, behavior: "smooth" });
-    }
-  });
-
-  rightBtn?.addEventListener("click", () => {
-    if (isMobile()) {
-      container.scrollBy({ left: 200, behavior: "smooth" });
-    } else {
-      container.scrollBy({ top: 60, behavior: "smooth" });
-    }
-  });
-
-  container.addEventListener("scroll", () => {
-    if (isMobile()) updateMobileArrows();
-    else updateDesktopArrows();
-  });
-
-  window.addEventListener("resize", () => {
-    if (isMobile()) {
-      // mobile: reset scroll orizzontale
-      container.style.overflowX = "";
-      updateMobileArrows();
-    } else {
-      updateDesktopArrows();
-    }
-  });
-
-  window.addEventListener("load", () => {
-    updateDesktopArrows();
-    updateMobileArrows();
-  });
-
-  // Prima chiamata
-  setTimeout(() => {
-    updateDesktopArrows();
-    updateMobileArrows();
-  }, 100);
 }
 
-function updateChipUI() {
-  const chips = document.querySelectorAll("#categoryChips .chip");
-  const allChip = document.querySelector(".chip-all");
-  const isAll = state.selectedCategories === null;
+function goHome() {
+  document.getElementById("screenDetail").style.display = "none";
+  document.getElementById("screenHome").style.display = "";
+  document.getElementById("backBtn").style.display = "none";
+  document.getElementById("headerAreaTag").style.display = "none";
 
-  allChip.classList.toggle("active", isAll);
+  const header = document.getElementById("hubHeader");
+  header.style.removeProperty("--hc");
+  header.style.removeProperty("--hr");
 
-  chips.forEach((chip) => {
-    if (chip.classList.contains("chip-all")) return;
-    const idx = chip.dataset.index;
-    const active =
-      state.selectedCategories !== null && state.selectedCategories.has(idx);
-    chip.classList.toggle("active", active);
-    if (active) {
-      chip.style.borderColor = chip.style.getPropertyValue("--chip-color");
-      chip.style.boxShadow = `0 0 0 2px ${chip.style.getPropertyValue("--chip-color")}22, 0 4px 16px ${chip.style.getPropertyValue("--chip-color")}22`;
-      chip.style.color = "#f0f0f8";
-    } else {
-      chip.style.borderColor = "";
-      chip.style.boxShadow = "";
-      chip.style.color = "";
-    }
-  });
+  // Reset search
+  const s = document.getElementById("detailSearch");
+  if (s) { s.value = ""; }
+  document.getElementById("detailSearchClear").classList.remove("visible");
+
+  window.scrollTo({ top: 0 });
 }
 
-// ──────────────────────────────────────────────
-//  SEARCH
-// ──────────────────────────────────────────────
-function initSearch() {
-  const input = document.getElementById("searchInput");
-  const clear = document.getElementById("searchClear");
+// ══════════════════════════════════════════════
+//  DETAIL — CATEGORIA LINK CARDS
+// ══════════════════════════════════════════════
+function renderCategoryDetail(cat, rgb, color, colorLight) {
+  const main = document.getElementById("detailMain");
 
-  input.addEventListener("input", () => {
-    state.searchQuery = input.value.trim();
-    clear.classList.toggle("visible", state.searchQuery.length > 0);
-    updateView();
-    if (state.searchQuery.length > 0) scrollToContent();
-  });
+  function renderCards(query) {
+    const q = (query||"").toLowerCase().trim();
+    const links = q
+      ? cat.links.filter(l => l.title.toLowerCase().includes(q) || l.description.toLowerCase().includes(q))
+      : cat.links;
 
-  clear.addEventListener("click", () => {
-    input.value = "";
-    state.searchQuery = "";
-    clear.classList.remove("visible");
-    updateView();
-    input.focus();
-  });
-}
-
-function initReset() {
-  const btn = document.getElementById("resetBtn");
-  if (!btn) return;
-  btn.addEventListener("click", () => {
-    state.selectedCategories = null;
-    state.searchQuery = "";
-    document.getElementById("searchInput").value = "";
-    document.getElementById("searchClear").classList.remove("visible");
-    updateChipUI();
-    updateView();
-    scrollToContent();
-  });
-}
-
-// ──────────────────────────────────────────────
-//  UPDATE VIEW  (filter + search combined)
-// ──────────────────────────────────────────────
-function updateView() {
-  const sections = document.querySelectorAll(".category-section");
-  const query = state.searchQuery.toLowerCase();
-  const isAll = state.selectedCategories === null;
-  const isNone =
-    state.selectedCategories !== null && state.selectedCategories.size === 0;
-  let anyVisible = false;
-
-  sections.forEach((section) => {
-    const catIdx = section.getAttribute("data-category");
-    const inFilter = isAll || (state.selectedCategories !== null && state.selectedCategories.has(catIdx));
-
-    if (!inFilter) {
-      section.classList.add("hidden");
+    if (!links.length) {
+      main.innerHTML = `<div class="detail-empty"><div class="detail-empty-icon">🔍</div><p>Nessun risultato per "<strong>${query}</strong>"</p></div>`;
       return;
     }
 
-    // search within this section
-    const cards = section.querySelectorAll(".link-card");
-    let sectionHasMatch = false;
+    main.innerHTML = `<div class="detail-links-grid">${links.map(link => {
+      const isWa = link.title.toLowerCase().includes("whatsapp");
+      return `
+        <a href="${link.url}" target="_blank" rel="noopener noreferrer"
+          class="detail-link-card"
+          style="--dc:${color};--dcl:${colorLight};--dcr:${rgb};"
+          ${isWa ? 'onclick="openWhatsApp(event)"':""}>
+          <span class="detail-link-icon">${link.icon}</span>
+          <div class="detail-link-info">
+            <h3>${highlightText(link.title, query)}</h3>
+            <p>${highlightText(link.description, query)}</p>
+          </div>
+          <svg class="detail-link-arrow" width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </a>`;
+    }).join("")}</div>`;
 
-    cards.forEach((card) => {
-      const title = card.querySelector(".link-info h3");
-      const desc = card.querySelector(".link-info p");
-
-      if (!query) {
-        // reset highlights
-        if (title) title.textContent = title.textContent;
-        if (desc) desc.textContent = desc.textContent;
-        card.classList.remove("search-hidden");
-        sectionHasMatch = true;
-      } else {
-        const rawTitle =
-          title?.getAttribute("data-raw") || title?.textContent || "";
-        const rawDesc =
-          desc?.getAttribute("data-raw") || desc?.textContent || "";
-
-        // store original text on first pass
-        if (title && !title.hasAttribute("data-raw"))
-          title.setAttribute("data-raw", title.textContent);
-        if (desc && !desc.hasAttribute("data-raw"))
-          desc.setAttribute("data-raw", desc.textContent);
-
-        const titleMatch = rawTitle.toLowerCase().includes(query);
-        const descMatch = rawDesc.toLowerCase().includes(query);
-
-        if (titleMatch || descMatch) {
-          card.classList.remove("search-hidden");
-          if (title)
-            title.innerHTML = highlightText(rawTitle, state.searchQuery);
-          if (desc) desc.innerHTML = highlightText(rawDesc, state.searchQuery);
-          sectionHasMatch = true;
-        } else {
-          card.classList.add("search-hidden");
-          if (title) title.innerHTML = rawTitle;
-          if (desc) desc.innerHTML = rawDesc;
-        }
-      }
-    });
-
-    // Aggiorna il contatore visibile della sezione
-    const countEl = section.querySelector(".category-count");
-    if (countEl) {
-      const visibleCount = section.querySelectorAll(
-        ".link-card:not(.search-hidden)",
-      ).length;
-      countEl.textContent = visibleCount;
-    }
-
-    if (sectionHasMatch) {
-      section.classList.remove("hidden");
-      anyVisible = true;
-    } else {
-      section.classList.add("hidden");
-    }
-  });
-
-  const noResults = document.getElementById("noResults");
-  const noResultsText = document.querySelector(".no-results-text");
-  const noResultsSub = document.querySelector(".no-results-sub");
-  if (noResults) {
-    if (!anyVisible) {
-      noResults.style.display = "flex";
-      const isNoneCheck =
-        state.selectedCategories !== null &&
-        state.selectedCategories.size === 0;
-      if (isNoneCheck) {
-        if (noResultsText)
-          noResultsText.textContent = "Nessuna categoria selezionata";
-        if (noResultsSub)
-          noResultsSub.textContent =
-            "Clicca su una categoria per visualizzarne i contenuti";
-      } else {
-        if (noResultsText)
-          noResultsText.textContent = "Nessun risultato trovato";
-        if (noResultsSub)
-          noResultsSub.textContent =
-            "Prova con un termine diverso o rimuovi i filtri";
-      }
-    } else {
-      noResults.style.display = "none";
-    }
-  }
-
-  // Aggiorna il contatore servizi visibili nell'header
-  const servicesCountEl = document.getElementById("servicesCount");
-  const servicesLabelEl = document.getElementById("servicesLabel");
-  if (servicesCountEl) {
-    const visibleCards = document.querySelectorAll(
-      ".link-card:not(.search-hidden)",
-    );
-    let visibleCount = 0;
-    visibleCards.forEach((card) => {
-      const section = card.closest(".category-section");
-      if (section && !section.classList.contains("hidden")) visibleCount++;
-    });
-    servicesCountEl.textContent = visibleCount;
-    if (servicesLabelEl) servicesLabelEl.textContent = "Servizi";
-  }
-
-  // Aggiorna il contatore categorie visibili nell'header
-  const categoriesCountEl = document.getElementById("categoriesCount");
-  if (categoriesCountEl) {
-    const visibleCats = document.querySelectorAll(
-      ".category-section:not(.hidden)",
-    ).length;
-    categoriesCountEl.textContent = visibleCats;
-  }
-}
-
-// ──────────────────────────────────────────────
-//  RENDER
-// ──────────────────────────────────────────────
-function renderCategories(categories) {
-  const container = document.getElementById("linksContainer");
-  if (!container) return;
-
-  container.innerHTML = categories
-    .map(
-      (cat, catIndex) => `
-    <section class="category-section" data-category="${catIndex}">
-      <div class="category-header">
-        <span class="category-dot" style="background: linear-gradient(135deg, ${cat.color} 0%, ${cat.colorLight || cat.color} 100%);"></span>
-        <h2 class="category-title">${cat.name}</h2>
-        <span class="category-count">${cat.links.length}</span>
-      </div>
-      <div class="links-grid">
-        ${cat.links
-          .map(
-            (link) => `
-          <a href="${link.url}"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="link-card"
-             ${link.title.toLowerCase().includes("whatsapp") ? 'onclick="openWhatsApp(event); return false;"' : ""}>
-            <span class="link-icon">${link.icon}</span>
-            <div class="link-info">
-              <h3>${link.title}</h3>
-              <p>${link.description}</p>
-            </div>
-            <svg class="link-arrow" width="15" height="15" viewBox="0 0 16 16" fill="none">
-              <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>`,
-          )
-          .join("")}
-      </div>
-    </section>`,
-    )
-    .join("");
-}
-
-function renderBrands(brands) {
-  const container = document.getElementById("brandContainer");
-  if (!container) return;
-
-  // Aggiorna il conteggio dinamico accanto al titolo
-  const countBadge = document.getElementById("brandCount");
-  if (countBadge) {
-    countBadge.textContent = brands?.length ? `${brands.length}` : "";
-  }
-
-  if (!brands?.length) {
-    container.innerHTML = "<p>Nessun marchio disponibile.</p>";
-    return;
-  }
-
-  container.innerHTML = brands
-    .map(
-      (brand) => `
-    <div class="brand-item">
-      <span class="brand-name">${brand.name}</span>
-      <div class="brand-gradient"></div>
-      <div class="brand-socials">
-        ${brand.url ? `<a href="${brand.url}"       target="_blank" rel="noopener noreferrer" class="brand-pill" aria-label="Sito ${brand.name}">${svgGlobe()}</a>` : ""}
-        ${brand.facebook ? `<a href="${brand.facebook}"  target="_blank" rel="noopener noreferrer" class="brand-pill" aria-label="Facebook ${brand.name}">${svgFacebook()}</a>` : ""}
-        ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill" aria-label="Instagram ${brand.name}">${svgInstagram()}</a>` : ""}
-      </div>
-    </div>`,
-    )
-    .join("");
-}
-
-function svgGlobe() {
-  return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`;
-}
-function svgFacebook() {
-  return `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`;
-}
-function svgInstagram() {
-  return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>`;
-}
-
-// ──────────────────────────────────────────────
-//  DYNAMIC COLORS
-// ──────────────────────────────────────────────
-function applyDynamicColors(categories, brands) {
-  categories.forEach((cat, index) => {
-    const color = cat.color || "#ffffff";
-    const colorLight = cat.colorLight || color;
-    const rgb = hexToRgb(color);
-    const soft = `rgba(${rgb}, 0.14)`;
-    const medium = `rgba(${rgb}, 0.28)`;
-    const softBorder = `rgba(${rgb}, 0.20)`;
-
-    const section = document.querySelector(
-      `.category-section[data-category="${index}"]`,
-    );
-    if (!section) return;
-
-    const title = section.querySelector(".category-title");
-    if (title) {
-      title.style.backgroundImage = `linear-gradient(135deg, ${color} 0%, ${colorLight} 100%)`;
-      title.style.webkitBackgroundClip = "text";
-      title.style.backgroundClip = "text";
-      title.style.webkitTextFillColor = "transparent";
-    }
-
-    const cards = section.querySelectorAll(".link-card");
-    cards.forEach((card) => {
-      card.style.borderColor = color;
-
+    main.querySelectorAll(".detail-link-card").forEach(card => {
       card.addEventListener("mouseenter", () => {
-        card.style.boxShadow = `0 8px 32px rgba(${rgb}, 0.25)`;
+        card.style.boxShadow = `0 8px 32px rgba(${rgb},0.25)`;
+        card.style.borderColor = color;
+        const icon = card.querySelector(".detail-link-icon");
+        if (icon) icon.style.boxShadow = `0 0 18px rgba(${rgb},0.35)`;
       });
       card.addEventListener("mouseleave", () => {
         card.style.boxShadow = "";
+        card.style.borderColor = "";
+        const icon = card.querySelector(".detail-link-icon");
+        if (icon) icon.style.boxShadow = "";
       });
     });
+  }
 
-    const icons = section.querySelectorAll(".link-icon");
-    icons.forEach((icon) => {
-      icon.style.background = soft;
-      icon.style.borderColor = softBorder;
+  renderCards("");
+}
 
-      const card = icon.closest(".link-card");
-      if (card) {
-        card.addEventListener("mouseenter", () => {
-          icon.style.background = medium;
-          icon.style.borderColor = color;
-          icon.style.boxShadow = `0 0 20px ${soft}`;
-        });
-        card.addEventListener("mouseleave", () => {
-          icon.style.background = soft;
-          icon.style.borderColor = softBorder;
-          icon.style.boxShadow = "";
-        });
-      }
-    });
 
-    const arrows = section.querySelectorAll(".link-arrow");
-    arrows.forEach((a) => {
-      a.style.color = color;
-    });
-  });
+// ══════════════════════════════════════════════
+//  BRAND PAGE (come sezione precedente, a pagina intera)
+// ══════════════════════════════════════════════
+function renderBrandPage() {
+  const main = document.getElementById("detailMain");
+  const brands = _data.brands;
+  main.innerHTML = `<div class="brand-links">${brands.map(brand => {
+    const bc = brand.color || "#dc2626";
+    const bcl = brand.colorLight || "#f97316";
+    const brgb = hexToRgb(bc);
+    return `
+      <div class="brand-item" style="--bc:${bc};--bcl:${bcl};--bcr:${brgb};">
+        <div class="brand-item-glow"></div>
+        <div class="brand-gradient" style="background:linear-gradient(90deg,transparent,rgba(${brgb},0.3) 15%,${bc} 35%,${bcl} 50%,${bc} 65%,rgba(${brgb},0.3) 85%,transparent)"></div>
+        <span class="brand-name" style="background:linear-gradient(135deg,#fafafa,${bc});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${brand.name}</span>
+        <div class="brand-socials">
+          ${brand.url ? `<a href="${brand.url}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgGlobe()}</a>` : ""}
+          ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgFacebook()}</a>` : ""}
+          ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgInstagram()}</a>` : ""}
+        </div>
+      </div>`;
+  }).join("")}</div>`;
 
-  brands.forEach((brand, index) => {
-    const color = brand.color || "#dc2626";
-    const colorLight = brand.colorLight || "#f97316";
-    const rgb = hexToRgb(color);
-
-    const items = document.querySelectorAll(".brand-item");
-    const item = items[index];
-    if (!item) return;
-
-    item.style.borderColor = `rgba(${rgb}, 0.6)`;
-    item.style.setProperty("--brand-color", color);
-    item.style.setProperty("--brand-color-light", colorLight);
-
-    const gradientBar = item.querySelector(".brand-gradient");
-    if (gradientBar) {
-      gradientBar.style.background = `linear-gradient(90deg, transparent, rgba(${rgb},0.3) 15%, ${color} 35%, ${colorLight} 50%, ${color} 65%, rgba(${rgb},0.3) 85%, transparent)`;
-    }
-
-    const nameEl = item.querySelector(".brand-name");
-    if (nameEl) {
-      nameEl.style.backgroundImage = `linear-gradient(135deg, #fafafa 0%, ${color} 100%)`;
-      nameEl.style.webkitBackgroundClip = "text";
-      nameEl.style.backgroundClip = "text";
-      nameEl.style.webkitTextFillColor = "transparent";
-    }
-
+  main.querySelectorAll(".brand-item").forEach((item, idx) => {
+    const brand = brands[idx];
+    const bc = brand.color || "#dc2626";
+    const brgb = hexToRgb(bc);
+    item.style.borderColor = `rgba(${brgb},0.5)`;
     item.addEventListener("mouseenter", () => {
-      item.style.borderColor = color;
-      item.style.boxShadow = `0 8px 32px rgba(${rgb}, 0.2)`;
-      item.style.transform = "translateY(-3px)";
+      item.style.borderColor = bc;
+      item.style.boxShadow = `0 8px 32px rgba(${brgb},0.2)`;
+      item.style.transform = "translateY(-4px)";
     });
     item.addEventListener("mouseleave", () => {
-      item.style.borderColor = `rgba(${rgb}, 0.6)`;
+      item.style.borderColor = `rgba(${brgb},0.5)`;
       item.style.boxShadow = "";
       item.style.transform = "";
     });
   });
 }
 
-// ──────────────────────────────────────────────
-//  LOGO
-// ──────────────────────────────────────────────
-function handleLogos(logoPath) {
-  if (!logoPath) return;
+// ══════════════════════════════════════════════
+//  BRAND SECTION (come prima)
+// ══════════════════════════════════════════════
+function renderBrands(brands) {
+  const container = document.getElementById("brandContainer");
+  const badge = document.getElementById("brandCount");
+  if (!container) return;
+  if (badge) badge.textContent = brands?.length || "";
+  if (!brands?.length) return;
 
-  const logoArea = document.querySelector(".logo-area");
-  const circle = document.querySelector(".logo-circle");
-  const headerImg = document.createElement("img");
-  headerImg.src = logoPath;
-  headerImg.className = "main-logo";
-  headerImg.alt = "Logo";
-  headerImg.crossOrigin = "anonymous";
-  headerImg.onerror = () => headerImg.remove();
+  container.innerHTML = brands.map(brand => {
+    const bc = brand.color || "#dc2626";
+    const bcl = brand.colorLight || "#f97316";
+    const brgb = hexToRgb(bc);
+    return `
+      <div class="brand-item" style="--bc:${bc};--bcl:${bcl};--bcr:${brgb};">
+        <div class="brand-item-glow"></div>
+        <div class="brand-gradient" style="background:linear-gradient(90deg,transparent,rgba(${brgb},0.3) 15%,${bc} 35%,${bcl} 50%,${bc} 65%,rgba(${brgb},0.3) 85%,transparent)"></div>
+        <span class="brand-name" style="background:linear-gradient(135deg,#fafafa,${bc});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${brand.name}</span>
+        <div class="brand-socials">
+          ${brand.url ? `<a href="${brand.url}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgGlobe()}</a>` : ""}
+          ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgFacebook()}</a>` : ""}
+          ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgInstagram()}</a>` : ""}
+        </div>
+      </div>`;
+  }).join("");
 
-  if (circle) circle.replaceWith(headerImg);
-  else if (logoArea) logoArea.prepend(headerImg);
-
-  const footerCol = document.getElementById("footerCompanyCol");
-  if (footerCol) {
-    const footerImg = document.createElement("img");
-    footerImg.src = logoPath;
-    footerImg.className = "footer-logo";
-    footerImg.alt = "Logo Footer";
-    footerImg.crossOrigin = "anonymous";
-    footerImg.onerror = () => footerImg.remove();
-    footerCol.prepend(footerImg);
-  }
+  // Hover brand items
+  container.querySelectorAll(".brand-item").forEach((item, idx) => {
+    const brand = brands[idx];
+    const bc = brand.color || "#dc2626";
+    const brgb = hexToRgb(bc);
+    item.style.borderColor = `rgba(${brgb},0.5)`;
+    item.addEventListener("mouseenter", () => {
+      item.style.borderColor = bc;
+      item.style.boxShadow = `0 8px 32px rgba(${brgb},0.2)`;
+      item.style.transform = "translateY(-4px)";
+    });
+    item.addEventListener("mouseleave", () => {
+      item.style.borderColor = `rgba(${brgb},0.5)`;
+      item.style.boxShadow = "";
+      item.style.transform = "";
+    });
+  });
 }
 
-// ──────────────────────────────────────────────
+// ══════════════════════════════════════════════
 //  FOOTER
-// ──────────────────────────────────────────────
+// ══════════════════════════════════════════════
 function populateFooter(company) {
-  const companyNameEl = document.getElementById("companyName");
-  if (companyNameEl)
-    companyNameEl.textContent = company.fullName
-      .toLowerCase()
-      .replace(/\b\w/g, (c) => c.toUpperCase());
+  const setEl = (id, fn) => { const el = document.getElementById(id); if (el) fn(el); };
 
-  const addressLink = document.getElementById("fullAddress");
-  if (addressLink) {
+  setEl("companyName", el => el.textContent = company.fullName);
+
+  setEl("fullAddress", el => {
     const full = `${company.address}, ${company.cap} ${company.city} (${company.province})`;
-    addressLink.textContent = full;
-    addressLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(full)}`;
-  }
+    el.textContent = full;
+    el.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(full)}`;
+  });
 
-  const phoneLink = document.getElementById("footerPhone");
-  if (phoneLink) {
-    phoneLink.href = `tel:${company.phone}`;
-    phoneLink.textContent = `Tel: ${formatPhoneNumber(company.phone)}`;
-  }
+  setEl("footerPhone", el => {
+    el.href = `tel:${company.phone}`;
+    el.textContent = `Tel: ${formatPhoneNumber(company.phone)}`;
+  });
 
-  const emailLink = document.getElementById("footerEmail");
-  if (emailLink) {
-    emailLink.href = `mailto:${company.email}`;
-    emailLink.textContent = `Email: ${company.email}`;
-  }
+  setEl("footerEmail", el => {
+    el.href = `mailto:${company.email}`;
+    el.textContent = `Email: ${company.email}`;
+  });
 
-  const waLink = document.getElementById("footerWhatsApp");
-  if (waLink) {
-    const n = company.phone.replace(/\+/g, "").replace(/\s/g, "");
-    waLink.href = `https://wa.me/${n}`;
-    waLink.textContent = `WhatsApp: ${formatPhoneNumber(company.phone)}`;
-  }
+  setEl("footerWhatsApp", el => {
+    const n = company.phone.replace(/\+/g,"").replace(/\s/g,"");
+    el.href = `https://wa.me/${n}`;
+    el.textContent = `WhatsApp: ${formatPhoneNumber(company.phone)}`;
+    el.onclick = openWhatsApp;
+  });
 
-  const pivaEl = document.getElementById("footerPiva");
-  if (pivaEl) pivaEl.textContent = `P.IVA: ${company.piva}`;
+  setEl("footerPiva", el => el.textContent = `P.IVA: ${company.piva}`);
+
+  // Footer logo
+  const footerCol = document.getElementById("footerCompanyCol");
+  if (footerCol && company.logo) {
+    const img = document.createElement("img");
+    img.src = company.logo;
+    img.className = "footer-logo";
+    img.alt = "Logo";
+    img.onerror = () => img.remove();
+    footerCol.prepend(img);
+  }
 }
+
+// ── SVG ──
+function svgGlobe() { return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`; }
+function svgInstagram() { return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>`; }
+function svgFacebook() { return `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>`; }
