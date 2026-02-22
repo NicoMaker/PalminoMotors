@@ -14,8 +14,9 @@
   --success: #22c55e;
   --radius: 12px;
   --radius-lg: 16px;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+  --font-sans:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", monospace;
   --transition: 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -108,24 +109,25 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--text-secondary);
+  color: var(--text);
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 600;
   padding: 10px 16px;
   border-radius: var(--radius);
-  border: 2px solid var(--border);
+  border: 2px solid var(--accent);
   background: var(--bg-card);
   transition: all var(--transition);
   min-width: 80px;
+  box-shadow: 0 0 10px rgba(220, 38, 38, 0.2);
 }
 
 .back-link:hover {
-  color: var(--text);
+  color: #fff !important;
   border-color: var(--accent);
-  background: var(--bg-card-hover);
+  background: rgba(220, 38, 38, 0.12);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(220, 38, 38, 0.2);
+  box-shadow: 0 0 18px rgba(220, 38, 38, 0.35);
 }
 
 .header-center {
@@ -137,7 +139,12 @@ body {
   font-size: 1.4rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, var(--accent) 0%, #f97316 50%, #06b6d4 100%);
+  background: linear-gradient(
+    135deg,
+    var(--accent) 0%,
+    #f97316 50%,
+    #06b6d4 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -177,7 +184,7 @@ body {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   position: relative;
   overflow: visible;
-  background-image: 
+  background-image:
     linear-gradient(var(--bg-card), var(--bg-card)),
     linear-gradient(135deg, var(--accent) 0%, #f97316 50%, #06b6d4 100%);
   background-origin: padding-box, border-box;
@@ -202,7 +209,11 @@ body {
   font-size: 1rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  background: linear-gradient(135deg, var(--text) 0%, var(--text-secondary) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--text) 0%,
+    var(--text-secondary) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -296,7 +307,7 @@ select.form-control option {
 }
 
 .btn-primary::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(135deg, #f97316 0%, var(--accent) 100%);
@@ -331,17 +342,25 @@ select.form-control option {
   border: 2px dashed rgba(220, 38, 38, 0.3);
   border-radius: var(--radius);
   margin-bottom: 20px;
-  background: linear-gradient(135deg, rgba(9, 9, 11, 0.5) 0%, rgba(17, 17, 19, 0.8) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(9, 9, 11, 0.5) 0%,
+    rgba(17, 17, 19, 0.8) 100%
+  );
   transition: all var(--transition);
   position: relative;
   overflow: hidden;
 }
 
 .qr-container::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center, rgba(220, 38, 38, 0.05) 0%, transparent 70%);
+  background: radial-gradient(
+    circle at center,
+    rgba(220, 38, 38, 0.05) 0%,
+    transparent 70%
+  );
   opacity: 0;
   transition: opacity var(--transition);
 }
@@ -354,8 +373,14 @@ select.form-control option {
   border-style: solid;
   border-color: var(--accent);
   padding: 16px;
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
-  box-shadow: 0 0 40px rgba(220, 38, 38, 0.2), inset 0 0 20px rgba(220, 38, 38, 0.1);
+  background: linear-gradient(
+    135deg,
+    rgba(220, 38, 38, 0.05) 0%,
+    rgba(6, 182, 212, 0.05) 100%
+  );
+  box-shadow:
+    0 0 40px rgba(220, 38, 38, 0.2),
+    inset 0 0 20px rgba(220, 38, 38, 0.1);
 }
 
 .placeholder {
@@ -632,8 +657,14 @@ select.form-control option {
 
 /* ===== ANIMATIONS ===== */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ===== RESPONSIVE ===== */
@@ -684,13 +715,9 @@ select.form-control option {
 }
 
 @media (max-width: 480px) {
-  .back-link span {
-    display: none;
-  }
-
   .back-link {
     min-width: auto;
-    padding: 8px;
+    padding: 8px 14px;
   }
 
   .header-spacer {
@@ -722,10 +749,10 @@ select.form-control option {
   border-radius: 4px;
 }
 
-#generate-btn{
+#generate-btn {
   display: none;
 }
 
-a:hover{
-  color:#dc2626 !important;
+a:hover {
+  color: #dc2626 !important;
 }

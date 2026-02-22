@@ -6,6 +6,13 @@ let _data = null;
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("year").textContent = new Date().getFullYear();
   loadData();
+
+  // Cliccando su logo-area (titolo "Palmino Motors Hub Operativo") torna alla home
+  const logoArea = document.querySelector(".logo-area");
+  if (logoArea) {
+    logoArea.style.cursor = "pointer";
+    logoArea.addEventListener("click", goHome);
+  }
 });
 
 // ── UTILS ──────────────────────────────────────
