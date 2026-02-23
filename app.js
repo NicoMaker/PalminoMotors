@@ -3,8 +3,27 @@
 // ══════════════════════════════════════════════
 let _data = null;
 
+// ── AGGIORNAMENTO ANNO AUTOMATICO ──────────────
+function updateYear() {
+  const el = document.getElementById("year");
+  if (el) el.textContent = new Date().getFullYear();
+}
+
+function scheduleYearUpdate() {
+  const now = new Date();
+  const nextYear = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0, 0); // 1° gennaio anno prossimo
+  const msUntilNewYear = nextYear - now;
+
+  setTimeout(() => {
+    updateYear();
+    // Dopo il primo aggiornamento, ripeti ogni anno (365 giorni in ms)
+    setInterval(updateYear, 365.25 * 24 * 60 * 60 * 1000);
+  }, msUntilNewYear);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("year").textContent = new Date().getFullYear();
+  updateYear();
+  scheduleYearUpdate();
   loadData();
 
   // Cliccando su logo-area (titolo "Palmino Motors Hub Operativo") torna alla home

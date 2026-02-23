@@ -70,6 +70,23 @@ class QRGenerator {
     if (yearElement) {
       yearElement.textContent = new Date().getFullYear();
     }
+    this.scheduleYearUpdate();
+  }
+
+  scheduleYearUpdate() {
+    const now = new Date();
+    const nextYear = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0, 0); // 1° gennaio anno prossimo
+    const msUntilNewYear = nextYear - now;
+
+    setTimeout(() => {
+      const yearElement = document.getElementById("year");
+      if (yearElement) yearElement.textContent = new Date().getFullYear();
+      // Ripeti ogni anno
+      setInterval(() => {
+        const el = document.getElementById("year");
+        if (el) el.textContent = new Date().getFullYear();
+      }, 365.25 * 24 * 60 * 60 * 1000);
+    }, msUntilNewYear);
   }
 
   async loadCompanyData() {
