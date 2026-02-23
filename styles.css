@@ -679,11 +679,17 @@ body.header-expanded {
 .brand-item .brand-ref-separator {
   order: 4;
   margin-top: 24px;
+  width: 100%;
 }
 .brand-item .brand-ref-line {
   order: 5;
   margin-top: 0;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
+  width: 100%;
+}
+.brand-item .brand-ref-blocks-wrap {
+  order: 6;
+  width: 100%;
 }
 .brand-item .brand-ref-contacts {
   order: 6;
@@ -1018,9 +1024,45 @@ body.header-expanded {
 .header-right span {
   display: block;
 }
-/* ═══════════════════════════════════════
-   BRAND REFERENTE
-   ═══════════════════════════════════════ */
+/* ── Referenti blocks ── */
+.brand-ref-section-header {
+  margin-top: 28px;
+}
+.brand-ref-blocks-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-top: 8px;
+}
+.brand-ref-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.brand-ref-block:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.brand-ref-name-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bc, #dc2626);
+  opacity: 0.85;
+  text-align: center;
+}
+.brand-ref-name-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  opacity: 0.5;
+}
 .brand-ref-name-big {
   font-size: 1.1rem;
   font-weight: 800;
@@ -1048,11 +1090,11 @@ body.header-expanded {
 }
 
 .brand-ref-sep-label {
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   white-space: nowrap;
   color: var(--bc, #dc2626);
-  opacity: 0.9;
+  opacity: 1;
 }
