@@ -660,39 +660,25 @@ body.header-expanded {
     inset 0 0 24px rgba(var(--bcr), 0.05);
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
-/* Reorder children via order so gradient appears between name and socials */
-.brand-item .brand-item-glow {
-  order: 0;
-}
+/* Brand item children — HTML order is correct, no CSS order needed */
 .brand-item .brand-gradient {
-  order: 2;
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.brand-item .brand-name {
-  order: 1;
-  margin-bottom: 0;
-}
-.brand-item .brand-socials {
-  order: 3;
-}
-.brand-item .brand-ref-separator {
-  order: 4;
-  margin-top: 24px;
+.brand-item .brand-ref-wrap {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .brand-item .brand-ref-line {
-  order: 5;
-  margin-top: 0;
-  margin-bottom: 8px;
   width: 100%;
+  margin-bottom: 0;
 }
 .brand-item .brand-ref-blocks-wrap {
-  order: 6;
   width: 100%;
 }
 .brand-item .brand-ref-contacts {
-  order: 6;
   display: flex;
   gap: 14px;
   align-items: center;
@@ -705,7 +691,12 @@ body.header-expanded {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.6),
+    transparent
+  );
   animation: shimmer 3s infinite;
   display: block;
 }
@@ -1024,6 +1015,26 @@ body.header-expanded {
 .header-right span {
   display: block;
 }
+.brand-ref-empty {
+  order: 4;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 28px;
+}
+.brand-ref-empty-text {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  background: linear-gradient(135deg, var(--bc, #dc2626), var(--bcl, #f97316));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.6;
+}
+
 /* ── Referenti blocks ── */
 .brand-ref-section-header {
   margin-top: 28px;
@@ -1043,7 +1054,7 @@ body.header-expanded {
   align-items: center;
   gap: 10px;
   padding: 14px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 .brand-ref-block:last-child {
   border-bottom: none;
@@ -1086,7 +1097,7 @@ body.header-expanded {
 .brand-ref-sep-line {
   flex: 1;
   height: 1px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .brand-ref-sep-label {

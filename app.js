@@ -288,35 +288,35 @@ function renderCategoryDetail(cat, rgb, color, colorLight) {
 }
 
 // ══════════════════════════════════════════════
-//  BRAND PAGE (come sezione precedente, a pagina intera)
+//  BRAND PAGE
 // ══════════════════════════════════════════════
+function buildBrandItemHTML(brand) {
+  const bc = brand.color || "#dc2626";
+  const bcl = brand.colorLight || "#f97316";
+  const brgb = hexToRgb(bc);
+  const gradBg = `linear-gradient(90deg,transparent,rgba(${brgb},0.3) 15%,${bc} 35%,${bcl} 50%,${bc} 65%,rgba(${brgb},0.3) 85%,transparent)`;
+  return `
+  <div class="brand-item" style="--bc:${bc};--bcl:${bcl};--bcr:${brgb};">
+    <div class="brand-item-glow"></div>
+    <span class="brand-name" style="background:linear-gradient(135deg,#fafafa,${bc});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${brand.name}</span>
+    <div class="brand-gradient" style="background:${gradBg}"></div>
+    <div class="brand-socials">
+      ${brand.url ? `<a href="${brand.url}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgGlobe()}</a>` : ""}
+      ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgFacebook()}</a>` : ""}
+      ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgInstagram()}</a>` : ""}
+    </div>
+    ${buildReferenteHTML(brand, bc)}
+  </div>`;
+}
+
 function renderBrandPage() {
   const main = document.getElementById("detailMain");
   const brands = _data.brands;
 
-  // Costruzione HTML senza Titolo (ora nella sticky bar)
   main.innerHTML = `
     <br>
     <div class="brand-links brand-links-2col">
-      ${brands
-        .map((brand) => {
-          const bc = brand.color || "#dc2626";
-          const bcl = brand.colorLight || "#f97316";
-          const brgb = hexToRgb(bc);
-          return `
-          <div class="brand-item" style="--bc:${bc};--bcl:${bcl};--bcr:${brgb};">
-            <div class="brand-item-glow"></div>
-            <div class="brand-gradient" style="background:linear-gradient(90deg,transparent,rgba(${brgb},0.3) 15%,${bc} 35%,${bcl} 50%,${bc} 65%,rgba(${brgb},0.3) 85%,transparent)"></div>
-            <span class="brand-name" style="background:linear-gradient(135deg,#fafafa,${bc});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${brand.name}</span>
-            <div class="brand-socials">
-              ${brand.url ? `<a href="${brand.url}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgGlobe()}</a>` : ""}
-              ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgFacebook()}</a>` : ""}
-              ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgInstagram()}</a>` : ""}
-            </div>
-            ${buildReferenteHTML(brand, bc)}
-          </div>`;
-        })
-        .join("")}
+      ${brands.map(buildBrandItemHTML).join("")}
     </div>`;
 
   // Listener per l'animazione dei brand
@@ -347,25 +347,7 @@ function renderBrands(brands) {
   if (badge) badge.textContent = brands?.length || "";
   if (!brands?.length) return;
 
-  container.innerHTML = brands
-    .map((brand) => {
-      const bc = brand.color || "#dc2626";
-      const bcl = brand.colorLight || "#f97316";
-      const brgb = hexToRgb(bc);
-      return `
-      <div class="brand-item" style="--bc:${bc};--bcl:${bcl};--bcr:${brgb};">
-        <div class="brand-item-glow"></div>
-        <div class="brand-gradient" style="background:linear-gradient(90deg,transparent,rgba(${brgb},0.3) 15%,${bc} 35%,${bcl} 50%,${bc} 65%,rgba(${brgb},0.3) 85%,transparent)"></div>
-        <span class="brand-name" style="background:linear-gradient(135deg,#fafafa,${bc});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${brand.name}</span>
-        <div class="brand-socials">
-          ${brand.url ? `<a href="${brand.url}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgGlobe()}</a>` : ""}
-          ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgFacebook()}</a>` : ""}
-          ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgInstagram()}</a>` : ""}
-        </div>
-        ${buildReferenteHTML(brand, bc)}
-      </div>`;
-    })
-    .join("");
+  container.innerHTML = brands.map(buildBrandItemHTML).join("");
 
   // Hover brand items
   container.querySelectorAll(".brand-item").forEach((item, idx) => {
@@ -454,47 +436,63 @@ const svgWhatsApp = () =>
 
 function buildReferenteHTML(brand, color) {
   let referenti = brand.referenti || (brand.referente ? [brand.referente] : []);
-  referenti = referenti.filter(r => r && (r.phone || r.whatsapp || r.email));
-  if (!referenti.length) return "";
+  const referentiConDati = referenti.filter(
+    (r) => r && (r.phone || r.whatsapp || r.email),
+  );
 
   const bc = brand.color || "#dc2626";
   const bcl = brand.colorLight || bc;
   const brgb = hexToRgb(bc);
 
-  const shimmerLine = `<div class="brand-ref-line" style="width:100%;height:4px;border-radius:2px;position:relative;overflow:hidden;background:linear-gradient(90deg,transparent,rgba(${brgb},0.3) 15%,${bc} 35%,${bcl} 50%,${bc} 65%,rgba(${brgb},0.3) 85%,transparent)"><span class="brand-ref-shimmer"></span></div>`;
+  const shimmerLine = `<div class="brand-ref-line" style="width:100%;height:4px;border-radius:2px;position:relative;overflow:hidden;background:linear-gradient(90deg,transparent,rgba(${brgb},0.3) 15%,${bc} 35%,${bcl} 50%,${bc} 65%,rgba(${brgb},0.3) 85%,transparent);margin-top:12px;"><span class="brand-ref-shimmer"></span></div>`;
 
-  // Intestazione sezione dopo i social
-  const sectionLabel = referenti.length > 1 ? "REFERENTI" : "REFERENTE";
+  // Nessun referente: solo testo colorato, niente riga animata
+  if (!referentiConDati.length) {
+    return `<div class="brand-ref-empty" style="--bc:${bc};--bcl:${bcl};">
+      <span class="brand-ref-empty-text">Nessun referente</span>
+    </div>`;
+  }
+
+  const refBlocks = referentiConDati
+    .map((r, idx) => {
+      const items = [];
+      if (r.phone)
+        items.push(
+          `<a href="tel:${r.phone}" class="brand-pill" title="${formatPhoneNumber(r.phone)}">${svgPhone()}</a>`,
+        );
+      if (r.whatsapp) {
+        const n = r.whatsapp.replace(/\+/g, "").replace(/\s/g, "");
+        items.push(
+          `<a href="https://wa.me/${n}" target="_blank" rel="noopener noreferrer" class="brand-pill" title="WhatsApp" onclick="openWhatsApp(event)">${svgWhatsApp()}</a>`,
+        );
+      }
+      if (r.email)
+        items.push(
+          `<a href="mailto:${r.email}" class="brand-pill" title="${r.email}">${svgEmail()}</a>`,
+        );
+      if (!items.length) return "";
+
+      const nameLabel = r.name
+        ? `<div class="brand-ref-name-label">${r.name}</div>`
+        : referentiConDati.length > 1
+          ? `<div class="brand-ref-name-label brand-ref-name-num">#${idx + 1}</div>`
+          : "";
+
+      return `
+    <div class="brand-ref-block">
+      ${nameLabel}
+      <div class="brand-ref-contacts">${items.join("")}</div>
+    </div>`;
+    })
+    .join("");
+
+  const sectionLabel = referentiConDati.length > 1 ? "REFERENTI" : "REFERENTE";
   const sectionHeader = `
     <div class="brand-ref-separator" style="margin-top:28px;">
       <span class="brand-ref-sep-line"></span>
       <span class="brand-ref-sep-label">${sectionLabel}</span>
       <span class="brand-ref-sep-line"></span>
-    </div>
-    ${shimmerLine}`;
-
-  const refBlocks = referenti.map((r, idx) => {
-    const items = [];
-    if (r.phone)
-      items.push(`<a href="tel:${r.phone}" class="brand-pill" title="${formatPhoneNumber(r.phone)}">${svgPhone()}</a>`);
-    if (r.whatsapp) {
-      const n = r.whatsapp.replace(/\+/g, "").replace(/\s/g, "");
-      items.push(`<a href="https://wa.me/${n}" target="_blank" rel="noopener noreferrer" class="brand-pill" title="WhatsApp" onclick="openWhatsApp(event)">${svgWhatsApp()}</a>`);
-    }
-    if (r.email)
-      items.push(`<a href="mailto:${r.email}" class="brand-pill" title="${r.email}">${svgEmail()}</a>`);
-    if (!items.length) return "";
-
-    const nameLabel = r.name
-      ? `<div class="brand-ref-name-label">${r.name}</div>`
-      : (referenti.length > 1 ? `<div class="brand-ref-name-label brand-ref-name-num">#${idx + 1}</div>` : "");
-
-    return `
-    <div class="brand-ref-block">
-      ${nameLabel}
-      <div class="brand-ref-contacts">${items.join("")}</div>
     </div>`;
-  }).join("");
 
-  return `${sectionHeader}<div class="brand-ref-blocks-wrap">${refBlocks}</div>`;
+  return `<div class="brand-ref-wrap">${sectionHeader}${shimmerLine}<div class="brand-ref-blocks-wrap">${refBlocks}</div></div>`;
 }
