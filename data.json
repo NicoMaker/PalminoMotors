@@ -214,7 +214,13 @@
       "colorLight": "#7dd3fc",
       "url": "https://www.morbidelli.com/it-it/",
       "instagram": "https://www.instagram.com/morbidelliit/",
-      "facebook": "https://www.facebook.com/Morbidelliglobal"
+      "facebook": "https://www.facebook.com/Morbidelliglobal",
+      "referente": {
+        "name": "",
+        "phone": "",
+        "whatsapp": "",
+        "email": ""
+      }
     },
     {
       "name": "Cyclone",

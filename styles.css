@@ -676,6 +676,33 @@ body.header-expanded {
 .brand-item .brand-socials {
   order: 3;
 }
+.brand-item .brand-ref-separator {
+  order: 4;
+  margin-top: 24px;
+}
+.brand-item .brand-ref-line {
+  order: 5;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+.brand-item .brand-ref-contacts {
+  order: 6;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-ref-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  animation: shimmer 3s infinite;
+  display: block;
+}
 
 .brand-item-glow {
   position: absolute;
@@ -990,4 +1017,42 @@ body.header-expanded {
 
 .header-right span {
   display: block;
+}
+/* ═══════════════════════════════════════
+   BRAND REFERENTE
+   ═══════════════════════════════════════ */
+.brand-ref-name-big {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 6px;
+  margin-bottom: 0;
+  position: relative;
+  z-index: 1;
+}
+/* ── aggiornamento referente separator ── */
+.brand-ref-separator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.brand-ref-sep-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+}
+
+.brand-ref-sep-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--bc, #dc2626);
+  opacity: 0.9;
 }
