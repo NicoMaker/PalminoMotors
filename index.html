@@ -98,15 +98,48 @@
       </section>
     </div>
 
-    <footer class="site-footer" id="siteFooter"></footer>
+    <!-- ══ FOOTER CONDIVISO ══ -->
+    <footer class="site-footer" id="siteFooter">
+      <div class="footer-content">
+        <div class="footer-logo-section" id="footerCompanyCol">
+          <h2 class="footer-company-name" id="companyName">Palmino Motors</h2>
+          <p class="footer-address">
+            <a
+              href="#"
+              id="fullAddress"
+              class="footer-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Caricamento...</a
+            >
+          </p>
+        </div>
+        <div class="footer-grid">
+          <div class="footer-col">
+            <h4>Contatti</h4>
+            <p><a href="#" class="footer-link" id="footerPhone"></a></p>
+            <p><a href="#" class="footer-link" id="footerEmail"></a></p>
+            <p>
+              <a
+                href="#"
+                class="footer-link"
+                id="footerWhatsApp"
+                target="_blank"
+                rel="noopener noreferrer"
+              ></a>
+            </p>
+          </div>
+          <div class="footer-col">
+            <h4>Dati Legali</h4>
+            <p id="footerPiva"></p>
+            <p class="footer-copyright">
+              &copy; <span id="year"></span> Tutti i diritti riservati
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
 
-    <!-- Moduli JS — ordine di caricamento obbligatorio -->
-    <script src="js/data-loader.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/footer.js"></script>
-    <script src="js/home/brands.js"></script>
-    <script src="js/home/home.js"></script>
-    <script src="js/home/navigation.js"></script>
-    <script src="js/Home/app-init.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>
