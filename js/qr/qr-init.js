@@ -1,14 +1,8 @@
 // ══════════════════════════════════════════════
 //  QR-INIT.JS — Entry point di qr.html
-//  Carica data.json (tramite DataLoader condiviso)
-//  e orchestra QRCore, QRCanvas e QRUI.
 // ══════════════════════════════════════════════
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Anno automatico
-  updateYear();
-  scheduleYearUpdate();
-
   // ── Riferimenti DOM form ──────────────────────
   const inputs = {
     text: document.getElementById("qr-text"),
@@ -36,32 +30,36 @@ document.addEventListener("DOMContentLoaded", async () => {
   const typeSelect = document.getElementById("qr-type");
   const sizeSelect = document.getElementById("qr-size");
 
-  // ── Inizializzazione moduli ───────────────────
-  QRCore.init(inputs, typeSelect, sizeSelect);
+  // Inizializzazione moduli
   QRUI.init();
+  QRCore.init(inputs, typeSelect, sizeSelect);
 
-  // ── Caricamento dati aziendali ────────────────
+  // ── Caricamento Dati e Logo Specifico QR ──────
   try {
     const data = await DataLoader.load();
-    QRCanvas.setCompanyData(data.company);
-    QRUI.populateQRFooter(data.company);
 
-    // Precarica il logo per il QR
-    if (data.company.logo_qr) {
+    // Genera il footer unificato
+    renderFooter(data.company);
+
+    // Passa i dati aziendali al canvas
+    QRCanvas.setCompanyData(data.company);
+
+    // Carica il logo specifico per il QR (logo_qr dal JSON)
+    const qrLogoPath = data.company.logo_qr || data.company.logo; // fallback su logo se logo_qr manca
+    if (qrLogoPath) {
       const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.onload = () => QRCanvas.setLogo(img);
-      img.onerror = () => console.warn("⚠️ Logo QR non caricato:", img.src);
-      img.src = data.company.logo_qr;
+      img.src = qrLogoPath;
+      // Imposta il logo nel modulo Canvas
+      QRCanvas.setLogo(img);
     }
 
-    console.log("✅ Dati aziendali caricati da data.json");
-  } catch (err) {
-    console.error("❌ Errore caricamento data.json:", err);
+    console.log("✅ Dati caricati. Logo QR impostato da:", qrLogoPath);
+  } catch (e) {
+    console.error("❌ Errore caricamento:", e);
   }
 
-  // ── Debounce per generazione automatica ───────
-  let generateTimeout = null;
+  // ── Logica Generazione ────────────────────────
+  let generateTimeout;
   function debounceGenerate() {
     clearTimeout(generateTimeout);
     generateTimeout = setTimeout(() => {
@@ -69,50 +67,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     }, 500);
   }
 
-  // ── Generazione QR ────────────────────────────
   async function generateQR() {
     const data = QRCore.getQRData();
     const size = QRCore.getSize();
 
-    if (!data) {
-      QRUI.showToast("Inserisci i dati richiesti", "error");
-      return;
-    }
-
-    if (!DataLoader.getCache()) {
-      QRUI.showToast("Caricamento dati aziendali in corso...", "error");
-      return;
-    }
+    if (!data) return;
 
     try {
       const canvas = await QRCanvas.render(data, size);
       QRUI.showCanvas(canvas, data, size, QRCore.getType());
     } catch (err) {
-      console.error("❌ Errore QR:", err);
-      QRUI.showToast("Errore generazione QR", "error");
+      console.error("❌ Errore generazione QR:", err);
     }
   }
 
-  // ── Event listeners ───────────────────────────
+  // Event Listeners
   typeSelect.addEventListener("change", () =>
-    QRCore.handleTypeChange(inputContainers, QRUI.clearQR)
+    QRCore.handleTypeChange(inputContainers, QRUI.clearQR),
   );
-
-  document.getElementById("generate-btn")
+  document
+    .getElementById("generate-btn")
     ?.addEventListener("click", generateQR);
-
-  document.getElementById("download-btn")
-    ?.addEventListener("click", () => QRUI.downloadQR());
-
-  document.getElementById("copy-btn")
-    ?.addEventListener("click", () => QRUI.copyToClipboard());
-
-  document.getElementById("print-btn")
-    ?.addEventListener("click", () => QRUI.printQR());
 
   Object.values(inputs).forEach((input) => {
     if (input) input.addEventListener("input", debounceGenerate);
   });
-
   sizeSelect.addEventListener("change", debounceGenerate);
 });

@@ -1,29 +1,29 @@
 // ══════════════════════════════════════════════
 //  APP-INIT.JS — Entry point di index.html
-//  Carica data.json (tramite DataLoader condiviso)
-//  e avvia il rendering di tutti i moduli.
 // ══════════════════════════════════════════════
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // Anno automatico
-  updateYear();
-  scheduleYearUpdate();
-
-  // Click sul logo-area nell'header torna alla home
+  // Logo area torna alla home
   const logoArea = document.querySelector(".logo-area");
   if (logoArea) {
     logoArea.style.cursor = "pointer";
-    logoArea.addEventListener("click", goHome);
+    logoArea.addEventListener(
+      "click",
+      () => (window.location.href = "index.html"),
+    );
   }
 
-  // Carica il JSON e avvia il rendering
   try {
     const data = await DataLoader.load();
-    populateFooter(data.company);
-    handleHeaderLogo(data.company.logo);
+
+    // Rendering Footer Unificato
+    renderFooter(data.company);
+
+    // Inizializzazione componenti Home
+    handleHeaderLogo(data.company.logo); // Qui usa il logo normale
     renderBrands(data.brands);
     buildHomeScreen(data);
   } catch (e) {
-    console.error("❌ Impossibile caricare i dati:", e);
+    console.error("❌ Errore inizializzazione Home:", e);
   }
 });

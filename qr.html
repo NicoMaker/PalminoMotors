@@ -21,8 +21,18 @@
       <!-- Header -->
       <header class="qr-header">
         <a href="index.html" class="back-link" aria-label="Torna alla home">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M19 12H5" />
+            <path d="M12 19l-7-7 7-7" />
           </svg>
           <span>Hub</span>
         </a>
@@ -34,8 +44,8 @@
       </header>
 
       <!-- Main Content -->
-       <br>
-       <br>
+      <br />
+      <br />
       <main class="qr-layout">
         <!-- Input Panel -->
         <div class="panel input-panel">
@@ -58,46 +68,88 @@
           <!-- Text Input -->
           <div class="form-group" id="text-input">
             <label for="qr-text">Testo</label>
-            <textarea id="qr-text" class="form-control" placeholder="Scrivi qui il tuo testo..." rows="3"></textarea>
+            <textarea
+              id="qr-text"
+              class="form-control"
+              placeholder="Scrivi qui il tuo testo..."
+              rows="3"
+            ></textarea>
           </div>
 
           <!-- URL Input -->
           <div class="form-group hidden" id="url-input">
             <label for="qr-url">URL</label>
-            <input type="url" id="qr-url" class="form-control" placeholder="https://esempio.com" />
+            <input
+              type="url"
+              id="qr-url"
+              class="form-control"
+              placeholder="https://esempio.com"
+            />
           </div>
 
           <!-- Email Input -->
           <div class="email-inputs hidden" id="email-input">
             <div class="form-group">
               <label for="qr-email">Email destinatario</label>
-              <input type="email" id="qr-email" class="form-control" placeholder="esempio@email.com" />
+              <input
+                type="email"
+                id="qr-email"
+                class="form-control"
+                placeholder="esempio@email.com"
+              />
             </div>
             <div class="form-group">
               <label for="qr-email-subject">Oggetto (opzionale)</label>
-              <input type="text" id="qr-email-subject" class="form-control" placeholder="Oggetto dell'email" />
+              <input
+                type="text"
+                id="qr-email-subject"
+                class="form-control"
+                placeholder="Oggetto dell'email"
+              />
             </div>
             <div class="form-group">
               <label for="qr-email-body">Messaggio (opzionale)</label>
-              <textarea id="qr-email-body" class="form-control" placeholder="Corpo del messaggio..." rows="3"></textarea>
+              <textarea
+                id="qr-email-body"
+                class="form-control"
+                placeholder="Corpo del messaggio..."
+                rows="3"
+              ></textarea>
             </div>
           </div>
 
           <!-- Phone Input -->
           <div class="form-group hidden" id="phone-input">
             <label for="qr-phone">Numero di telefono</label>
-            <input type="tel" id="qr-phone" class="form-control" placeholder="+39 123 456 7890" />
+            <input
+              type="tel"
+              id="qr-phone"
+              class="form-control"
+              placeholder="+39 123 456 7890"
+            />
           </div>
 
           <!-- WhatsApp Input -->
           <div class="hidden" id="whatsapp-input">
             <div class="form-group">
               <label for="qr-whatsapp">Numero WhatsApp</label>
-              <input type="tel" id="qr-whatsapp" class="form-control" placeholder="+39 123 456 7890" />
+              <input
+                type="tel"
+                id="qr-whatsapp"
+                class="form-control"
+                placeholder="+39 123 456 7890"
+              />
             </div>
             <div class="form-group">
-              <label for="qr-whatsapp-message">Messaggio predefinito (opzionale)</label>
-              <textarea id="qr-whatsapp-message" class="form-control" placeholder="Ciao, vorrei informazioni su..." rows="2"></textarea>
+              <label for="qr-whatsapp-message"
+                >Messaggio predefinito (opzionale)</label
+              >
+              <textarea
+                id="qr-whatsapp-message"
+                class="form-control"
+                placeholder="Ciao, vorrei informazioni su..."
+                rows="2"
+              ></textarea>
             </div>
           </div>
 
@@ -105,11 +157,21 @@
           <div class="wifi-inputs hidden" id="wifi-input">
             <div class="form-group">
               <label for="wifi-ssid">Nome rete (SSID)</label>
-              <input type="text" id="wifi-ssid" class="form-control" placeholder="Nome WiFi" />
+              <input
+                type="text"
+                id="wifi-ssid"
+                class="form-control"
+                placeholder="Nome WiFi"
+              />
             </div>
             <div class="form-group">
               <label for="wifi-password">Password</label>
-              <input type="password" id="wifi-password" class="form-control" placeholder="Password WiFi" />
+              <input
+                type="password"
+                id="wifi-password"
+                class="form-control"
+                placeholder="Password WiFi"
+              />
             </div>
             <div class="form-group">
               <label for="wifi-security">Sicurezza</label>
@@ -132,9 +194,7 @@
             </select>
           </div>
 
-          <button id="generate-btn" class="btn-primary">
-            Genera QR Code
-          </button>
+          <button id="generate-btn" class="btn-primary">Genera QR Code</button>
         </div>
 
         <!-- Output Panel -->
@@ -145,8 +205,24 @@
 
           <div class="qr-container" id="qr-container">
             <div class="placeholder">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.3">
-                <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/>
+              <svg
+                width="48"
+                height="48"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                opacity="0.3"
+              >
+                <rect x="3" y="3" width="7" height="7" />
+                <rect x="14" y="3" width="7" height="7" />
+                <rect x="3" y="14" width="7" height="7" />
+                <rect x="14" y="14" width="3" height="3" />
+                <rect x="18" y="14" width="3" height="3" />
+                <rect x="14" y="18" width="3" height="3" />
+                <rect x="18" y="18" width="3" height="3" />
               </svg>
               <p>Il tuo QR Code apparira qui</p>
               <span class="hint">Compila i campi e premi Genera</span>
@@ -155,20 +231,54 @@
 
           <div class="actions hidden" id="download-section">
             <button id="download-btn" class="btn-action btn-download">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
               </svg>
               Scarica
             </button>
             <button id="copy-btn" class="btn-action btn-secondary">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="9" y="9" width="13" height="13" rx="2" />
+                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
               </svg>
               Copia
             </button>
             <button id="print-btn" class="btn-action btn-secondary">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 6 2 18 2 18 9" />
+                <path
+                  d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"
+                />
+                <rect x="6" y="14" width="12" height="8" />
               </svg>
               Stampa
             </button>
@@ -191,7 +301,9 @@
               </div>
               <div class="info-row info-row-full">
                 <span class="info-label">Contenuto</span>
-                <span class="info-value info-content-value" id="info-content">-</span>
+                <span class="info-value info-content-value" id="info-content"
+                  >-</span
+                >
               </div>
             </div>
           </div>
@@ -199,39 +311,23 @@
       </main>
     </div>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-      <div class="footer-content">
-        <div class="footer-logo-section">
-          <img src="img/Logo.png" alt="Palmino Motors Logo" class="footer-logo" id="footerLogo" />
-          <h2 class="footer-company-name">Palmino Motors</h2>
-          <p class="footer-address">
-            <a href="https://www.google.com/maps/search/?api=1&query=Via+Stradalta%2C+27%2C+33032+Bertiolo+%28UD%29"
-               class="footer-link" target="_blank" rel="noopener noreferrer" id="fullAddress">
-              Via Stradalta, 27 - 33032 Bertiolo (UD)
-            </a>
-          </p>
-        </div>
-        <div class="footer-grid">
-          <div class="footer-col">
-            <h4>Contatti</h4>
-            <p><a href="tel:+393490028627" class="footer-link" id="footerPhone">Tel: +393490028627</a></p>
-            <p><a href="/cdn-cgi/l/email-protection#4f262129200f3f2e232226212022203b203d3c612c2022" class="footer-link" id="footerEmail">Email: <span class="__cf_email__" data-cfemail="751c1b131a35051419181c1b1a181a011a07065b161a18">[email&#160;protected]</span></a></p>
-            <p><a href="https://wa.me/393490028627" class="footer-link" target="_blank" rel="noopener noreferrer" id="footerWhatsApp">WhatsApp: +393490028627</a></p>
-          </div>
-          <div class="footer-col">
-            <h4>Dati Legali</h4>
-            <p id="footerPiva">P.IVA: 03141330300</p>
-            <p class="footer-copyright">&copy; <span id="year"></span> Tutti i diritti riservati</p>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <footer class="site-footer" id="siteFooter"></footer>
 
     <!-- Toast -->
     <div class="toast" id="toast">
-      <svg class="toast-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+      <svg
+        class="toast-icon"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+        <polyline points="22 4 12 14.01 9 11.01" />
       </svg>
       <span id="toast-message">QR Code generato!</span>
     </div>
@@ -243,5 +339,6 @@
     <script src="js/qr/qr-canvas.js"></script>
     <script src="js/qr/qr-ui.js"></script>
     <script src="js/qr/qr-init.js"></script>
+    <script src="js/footer.js"></script>
   </body>
 </html>
