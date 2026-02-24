@@ -216,7 +216,7 @@
           <div class="footer-col">
             <h4>Contatti</h4>
             <p><a href="tel:+393490028627" class="footer-link" id="footerPhone">Tel: +393490028627</a></p>
-            <p><a href="mailto:info@palminomotors.com" class="footer-link" id="footerEmail">Email: info@palminomotors.com</a></p>
+            <p><a href="/cdn-cgi/l/email-protection#4f262129200f3f2e232226212022203b203d3c612c2022" class="footer-link" id="footerEmail">Email: <span class="__cf_email__" data-cfemail="751c1b131a35051419181c1b1a181a011a07065b161a18">[email&#160;protected]</span></a></p>
             <p><a href="https://wa.me/393490028627" class="footer-link" target="_blank" rel="noopener noreferrer" id="footerWhatsApp">WhatsApp: +393490028627</a></p>
           </div>
           <div class="footer-col">
@@ -236,6 +236,12 @@
       <span id="toast-message">QR Code generato!</span>
     </div>
 
-    <script src="qr.js"></script>
+    <!-- Moduli JS — ordine di caricamento obbligatorio -->
+    <script src="js/data-loader.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/qr/qr-core.js"></script>
+    <script src="js/qr/qr-canvas.js"></script>
+    <script src="js/qr/qr-ui.js"></script>
+    <script src="js/qr/qr-init.js"></script>
   </body>
 </html>
