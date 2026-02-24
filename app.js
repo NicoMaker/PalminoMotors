@@ -320,9 +320,9 @@ function buildBrandItemHTML(brand) {
     <span class="brand-name" style="background:linear-gradient(135deg,#fafafa,${bc});-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">${brand.name}</span>
     <div class="brand-gradient" style="background:${gradBg}"></div>
     <div class="brand-socials">
-      ${brand.url ? `<a href="${brand.url}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgGlobe()}</a>` : ""}
-      ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgFacebook()}</a>` : ""}
-      ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill">${svgInstagram()}</a>` : ""}
+      ${brand.url ? `<a href="${brand.url}" target="_blank" rel="noopener noreferrer" class="brand-pill" title="Sito Web">${svgGlobe()}</a>` : ""}
+      ${brand.facebook ? `<a href="${brand.facebook}" target="_blank" rel="noopener noreferrer" class="brand-pill" title="Facebook">${svgFacebook()}</a>` : ""}
+      ${brand.instagram ? `<a href="${brand.instagram}" target="_blank" rel="noopener noreferrer" class="brand-pill" title="Instagram">${svgInstagram()}</a>` : ""}
     </div>
     ${buildReferenteHTML(brand, bc)}
   </div>`;
@@ -477,17 +477,17 @@ function buildReferenteHTML(brand, color) {
       const items = [];
       if (r.phone)
         items.push(
-          `<a href="tel:${r.phone}" class="brand-pill" title="${formatPhoneNumber(r.phone)}">${svgPhone()}</a>`,
+          `<a href="tel:${r.phone}" class="brand-pill" title="Cellulare: ${formatPhoneNumber(r.phone)}">${svgPhone()}</a>`,
         );
       if (r.whatsapp) {
         const n = r.whatsapp.replace(/\+/g, "").replace(/\s/g, "");
         items.push(
-          `<a href="https://wa.me/${n}" target="_blank" rel="noopener noreferrer" class="brand-pill" title="WhatsApp" onclick="openWhatsApp(event)">${svgWhatsApp()}</a>`,
+          `<a href="https://wa.me/${n}" target="_blank" rel="noopener noreferrer" class="brand-pill" title="WhatsApp: ${formatPhoneNumber(r.whatsapp)}" onclick="openWhatsApp(event)">${svgWhatsApp()}</a>`,
         );
       }
       if (r.email)
         items.push(
-          `<a href="mailto:${r.email}" class="brand-pill" title="${r.email}">${svgEmail()}</a>`,
+          `<a href="mailto:${r.email}" class="brand-pill" title="Email: ${r.email}">${svgEmail()}</a>`,
         );
       if (!items.length) return "";
 
@@ -508,9 +508,7 @@ function buildReferenteHTML(brand, color) {
   const sectionLabel = referentiConDati.length > 1 ? "REFERENTI" : "REFERENTE";
   const sectionHeader = `
     <div class="brand-ref-separator" style="margin-top:28px;">
-      <span class="brand-ref-sep-line"></span>
       <span class="brand-ref-sep-label">${sectionLabel}</span>
-      <span class="brand-ref-sep-line"></span>
     </div>`;
 
   return `<div class="brand-ref-wrap">${sectionHeader}${shimmerLine}<div class="brand-ref-blocks-wrap">${refBlocks}</div></div>`;
