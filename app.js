@@ -256,12 +256,12 @@ function goHome() {
   // Nasconde il dettaglio (sia link che brand) e mostra la home
   document.getElementById("screenDetail").style.display = "none";
   document.getElementById("screenHome").style.display = "";
-  
+
   // Rimuove le classi e gli stili dell'header espanso
   document.body.classList.remove("header-expanded");
   const sb = document.getElementById("headerSectionTitleRow");
   if (sb) sb.style.display = "none";
-  
+
   document.getElementById("backBtn").style.display = "none";
   document.getElementById("headerAreaTag").style.display = "none";
 
@@ -280,7 +280,7 @@ function goHome() {
   // FORZA LO SCROLL IN ALTO
   window.scrollTo({
     top: 0,
-    behavior: 'instant' // 'instant' evita fastidiosi scivolamenti se la pagina è lunga
+    behavior: "instant", // 'instant' evita fastidiosi scivolamenti se la pagina è lunga
   });
 }
 
@@ -501,7 +501,7 @@ function buildReferenteHTML(brand, color) {
   const bcl = brand.colorLight || bc;
   const brgb = hexToRgb(bc);
 
-  const shimmerLine = `<div class="brand-ref-line" style="width:100%;height:4px;border-radius:2px;position:relative;overflow:hidden;background:linear-gradient(90deg,transparent,rgba(${brgb},0.3) 15%,${bc} 35%,${bcl} 50%,${bc} 65%,rgba(${brgb},0.3) 85%,transparent);margin-top:12px;"><span class="brand-ref-shimmer"></span></div>`;
+  const shimmerLine = `<div class="brand-ref-line" style="width:100%;height:3px;border-radius:2px;background:linear-gradient(90deg,transparent,rgba(${brgb},0.4) 15%,${bc} 35%,${bcl} 50%,${bc} 65%,rgba(${brgb},0.4) 85%,transparent);margin-top:12px;"></div>`;
 
   // Nessun referente: solo testo colorato, niente riga animata
   if (!referentiConDati.length) {

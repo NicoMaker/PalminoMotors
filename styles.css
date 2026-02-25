@@ -616,11 +616,13 @@ body.header-expanded {
   width: 100%;
   max-width: 860px;
   margin: 0 auto;
+  align-items: stretch;
 }
 
 /* Brand page: 2 per riga */
 .brand-links-2col {
   grid-template-columns: repeat(2, 1fr);
+  align-items: stretch;
 }
 
 /* Brand page: 3 per row, separator line after row 1 */
@@ -654,10 +656,9 @@ body.header-expanded {
 .brand-item {
   position: relative;
   overflow: hidden;
-  display: grid;
-  grid-template-rows: auto auto auto 1fr;
-  align-items: start;
-  justify-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 0;
   padding: 38px 28px 32px;
   background: var(--bg-card);
@@ -667,6 +668,8 @@ body.header-expanded {
     0 0 18px rgba(var(--bcr), 0.18),
     inset 0 0 24px rgba(var(--bcr), 0.05);
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+  box-sizing: border-box;
 }
 /* Brand item children — HTML order is correct, no CSS order needed */
 .brand-item .brand-gradient {
@@ -678,7 +681,7 @@ body.header-expanded {
   display: flex;
   flex-direction: column;
   align-items: center;
-  align-self: stretch;
+  flex: 1;
 }
 .brand-item .brand-ref-line {
   width: 100%;
@@ -1026,13 +1029,12 @@ body.header-expanded {
   display: block;
 }
 .brand-ref-empty {
-  order: 4;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 28px;
-  align-self: stretch;
+  flex: 1;
 }
 .brand-ref-empty-text {
   font-size: 0.72rem;
@@ -1065,7 +1067,8 @@ body.header-expanded {
   align-items: center;
   gap: 10px;
   padding: 14px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(var(--bcr), 0.3);
+  position: relative;
 }
 .brand-ref-block:last-child {
   border-bottom: none;
@@ -1090,9 +1093,9 @@ body.header-expanded {
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.75);
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.15);
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 20px;
   padding: 2px 10px;
   margin-top: 2px;
