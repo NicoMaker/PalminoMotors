@@ -253,11 +253,15 @@ function enterArea(index) {
 }
 
 function goHome() {
+  // Nasconde il dettaglio (sia link che brand) e mostra la home
   document.getElementById("screenDetail").style.display = "none";
   document.getElementById("screenHome").style.display = "";
+  
+  // Rimuove le classi e gli stili dell'header espanso
   document.body.classList.remove("header-expanded");
   const sb = document.getElementById("headerSectionTitleRow");
   if (sb) sb.style.display = "none";
+  
   document.getElementById("backBtn").style.display = "none";
   document.getElementById("headerAreaTag").style.display = "none";
 
@@ -265,14 +269,19 @@ function goHome() {
   header.style.removeProperty("--hc");
   header.style.removeProperty("--hr");
 
-  // Reset search
+  // Reset della ricerca
   const s = document.getElementById("detailSearch");
   if (s) {
     s.value = "";
   }
-  document.getElementById("detailSearchClear").classList.remove("visible");
+  const clearBtn = document.getElementById("detailSearchClear");
+  if (clearBtn) clearBtn.classList.remove("visible");
 
-  window.scrollTo({ top: 0 });
+  // FORZA LO SCROLL IN ALTO
+  window.scrollTo({
+    top: 0,
+    behavior: 'instant' // 'instant' evita fastidiosi scivolamenti se la pagina è lunga
+  });
 }
 
 // ══════════════════════════════════════════════
