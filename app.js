@@ -74,11 +74,29 @@ function openWhatsApp(event) {
   }
 }
 
+// ── RISOLUZIONE REFERENTI CONDIVISI ───────────
+// Se un brand ha "referentiRef" (stringa chiave) invece di "referenti" (array),
+// lo risolve cercando in _data.sharedReferenti[chiave].
+// Così scrivi i referenti una sola volta nel JSON e li condividi tra più brand.
+function resolveSharedReferenti(data) {
+  const shared = data.sharedReferenti || {};
+  if (!data.brands) return;
+  data.brands.forEach((brand) => {
+    if (brand.referentiRef && shared[brand.referentiRef]) {
+      // Copia profonda per evitare mutazioni incrociate
+      brand.referenti = JSON.parse(JSON.stringify(shared[brand.referentiRef]));
+    }
+    // Garantisci che referenti sia sempre un array
+    if (!brand.referenti) brand.referenti = [];
+  });
+}
+
 // ── LOAD ──────────────────────────────────────
 async function loadData() {
   try {
     const res = await fetch("data.json");
     _data = await res.json();
+    resolveSharedReferenti(_data);
     populateFooter(_data.company);
     handleHeaderLogo(_data.company.logo);
     renderBrands(_data.brands);
