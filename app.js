@@ -75,16 +75,27 @@ function openWhatsApp(event) {
 }
 
 // ── RISOLUZIONE REFERENTI CONDIVISI ───────────
-// Se un brand ha "referentiRef" (stringa chiave) invece di "referenti" (array),
-// lo risolve cercando in _data.sharedReferenti[chiave].
-// Così scrivi i referenti una sola volta nel JSON e li condividi tra più brand.
+// referentiRef puo essere:
+//   - una stringa:  "keeway_group"           → un solo gruppo
+//   - un array:     ["keeway_group","pippo"]  → piu gruppi uniti insieme
+// I referenti di tutti i gruppi vengono concatenati in brand.referenti.
 function resolveSharedReferenti(data) {
   const shared = data.sharedReferenti || {};
   if (!data.brands) return;
   data.brands.forEach((brand) => {
-    if (brand.referentiRef && shared[brand.referentiRef]) {
-      // Copia profonda per evitare mutazioni incrociate
-      brand.referenti = JSON.parse(JSON.stringify(shared[brand.referentiRef]));
+    if (brand.referentiRef) {
+      // Normalizza sempre in array
+      const refs = Array.isArray(brand.referentiRef)
+        ? brand.referentiRef
+        : [brand.referentiRef];
+      // Concatena i referenti di tutti i gruppi richiesti
+      brand.referenti = [];
+      refs.forEach((key) => {
+        if (shared[key]) {
+          // Copia profonda per evitare mutazioni incrociate
+          brand.referenti.push(...JSON.parse(JSON.stringify(shared[key])));
+        }
+      });
     }
     // Garantisci che referenti sia sempre un array
     if (!brand.referenti) brand.referenti = [];

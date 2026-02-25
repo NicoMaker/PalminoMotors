@@ -254,7 +254,7 @@
       "url": "https://www.morbidelli.com/it-it/",
       "instagram": "https://www.instagram.com/morbidelliit/",
       "facebook": "https://www.facebook.com/Morbidelliglobal",
-      "referentiRef": "keeway_group"
+      "referentiRef": ["keeway_group"]
     },
     {
       "name": "Cyclone",
