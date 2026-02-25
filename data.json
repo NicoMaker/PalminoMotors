@@ -223,6 +223,12 @@
           "description": "Area riservata caricamento annunci Subito",
           "url": "https://motori.multigestionale.com/",
           "icon": "🛒"
+        },
+        {
+          "title":"Rimuovi sfondo alla foto",
+          "description": "Strumento per rimuovere lo sfondo da foto",
+          "url": "https://paginageneralesiti.netlify.app/site/utilities/rimuovi_sfondo/",
+          "icon": "🖼️"
         }
       ]
     },
