@@ -262,7 +262,7 @@
       "colorLight": "#ff6b6b",
       "url": "https://www.cyclonemoto.it/",
       "instagram": "https://www.instagram.com/cyclonemotor_es/",
-      "referentiRef": "keeway_group"
+      "referentiRef": ["keeway_group"]
     },
     {
       "name": "Benda",
@@ -271,7 +271,7 @@
       "url": "https://www.bendakeeway.com/it-it",
       "instagram": "https://www.instagram.com/benda_global/",
       "facebook": "https://www.facebook.com/BendamotorPh",
-      "referentiRef": "keeway_group"
+      "referentiRef": ["keeway_group"]
     },
     {
       "name": "Keeway",
@@ -280,7 +280,7 @@
       "url": "https://italy.keeway.com/",
       "instagram": "https://www.instagram.com/keewayitalia/",
       "facebook": "https://www.facebook.com/KeewayEgypt",
-      "referentiRef": "keeway_group"
+      "referentiRef": ["keeway_group"]
     },
     {
       "name": "SWM",
