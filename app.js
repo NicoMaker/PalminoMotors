@@ -75,30 +75,34 @@ function openWhatsApp(event) {
 }
 
 // ── RISOLUZIONE REFERENTI CONDIVISI ───────────
-// referentiRef puo essere:
-//   - una stringa:  "keeway_group"           → un solo gruppo
-//   - un array:     ["keeway_group","pippo"]  → piu gruppi uniti insieme
-// I referenti di tutti i gruppi vengono concatenati in brand.referenti.
+// Struttura sharedReferenti:
+//   "nome_gruppo": {
+//     "brands": ["Brand1", "Brand2"],
+//     "referenti": [ ... ]
+//   }
+// La logica è centralizzata: si dichiara nel gruppo quali brand
+// devono ricevere quei referenti, senza toccare ogni singolo brand.
 function resolveSharedReferenti(data) {
   const shared = data.sharedReferenti || {};
   if (!data.brands) return;
+
+  // Inizializza referenti vuoto per tutti i brand
   data.brands.forEach((brand) => {
-    if (brand.referentiRef) {
-      // Normalizza sempre in array
-      const refs = Array.isArray(brand.referentiRef)
-        ? brand.referentiRef
-        : [brand.referentiRef];
-      // Concatena i referenti di tutti i gruppi richiesti
-      brand.referenti = [];
-      refs.forEach((key) => {
-        if (shared[key]) {
-          // Copia profonda per evitare mutazioni incrociate
-          brand.referenti.push(...JSON.parse(JSON.stringify(shared[key])));
-        }
-      });
-    }
-    // Garantisci che referenti sia sempre un array
-    if (!brand.referenti) brand.referenti = [];
+    brand.referenti = [];
+  });
+
+  // Per ogni gruppo, assegna i referenti ai brand dichiarati
+  Object.values(shared).forEach((group) => {
+    const brandNames = group.brands || [];
+    const referenti = group.referenti || [];
+    brandNames.forEach((brandName) => {
+      const brand = data.brands.find(
+        (b) => b.name.toLowerCase() === brandName.toLowerCase(),
+      );
+      if (brand) {
+        brand.referenti.push(...JSON.parse(JSON.stringify(referenti)));
+      }
+    });
   });
 }
 

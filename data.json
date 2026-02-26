@@ -13,43 +13,41 @@
     "website": "https://www.palminomotors.com"
   },
   "sharedReferenti": {
-    "keeway_group": [
-      {
-        "name": "Valentina Auditore",
-        "description": "Backoffice — Supporto commerciale e COC",
-        "phone": "0510220658",
-        "whatsapp": "",
-        "email": "valentina.auditore@keeway.it"
-      },
-      {
-        "name": "Giuliana Adamo",
-        "description": "Backoffice — Supporto commerciale e COC",
-        "phone": "0510220656",
-        "whatsapp": "",
-        "email": "giuliana.adamo@keeway.it"
-      },
-      {
-        "name": "Alessandro D'Aliesio",
-        "description": "Post-vendita e ricambi",
-        "phone": "0519988950",
-        "whatsapp": "",
-        "email": "ricambi@keeway.it"
-      },
-      {
-        "name": "Andrea Bianchi",
-        "description": "Ispettore tecnico",
-        "phone": "0510220650",
-        "whatsapp": "",
-        "email": "andrea.bianchi@keeway.it"
-      },
-      {
-        "name": "Pierfranco Carosella",
-        "description": "Supporto tecnico",
-        "phone": "0510220664",
-        "whatsapp": "",
-        "email": "pierftanco.carosella@keeway.it"
-      }
-    ]
+    "keeway_group": {
+      "brands": ["Morbidelli", "Cyclone", "Benda", "Keeway"],
+      "referenti": [
+        {
+          "name": "Valentina Auditore",
+          "description": "Backoffice — Supporto commerciale e COC",
+          "phone": "0510220658",
+          "email": "valentina.auditore@keeway.it"
+        },
+        {
+          "name": "Giuliana Adamo",
+          "description": "Backoffice — Supporto commerciale e COC",
+          "phone": "0510220656",
+          "email": "giuliana.adamo@keeway.it"
+        },
+        {
+          "name": "Alessandro D'Aliesio",
+          "description": "Post-vendita e ricambi",
+          "phone": "0519988950",
+          "email": "ricambi@keeway.it"
+        },
+        {
+          "name": "Andrea Bianchi",
+          "description": "Ispettore tecnico",
+          "phone": "0510220650",
+          "email": "andrea.bianchi@keeway.it"
+        },
+        {
+          "name": "Pierfranco Carosella",
+          "description": "Supporto tecnico",
+          "phone": "0510220664",
+          "email": "pierftanco.carosella@keeway.it"
+        }
+      ]
+    }
   },
   "categories": [
     {
@@ -225,7 +223,7 @@
           "icon": "🛒"
         },
         {
-          "title":"Rimuovi sfondo alla foto",
+          "title": "Rimuovi sfondo alla foto",
           "description": "Strumento per rimuovere lo sfondo da foto",
           "url": "https://paginageneralesiti.netlify.app/site/utilities/rimuovi_sfondo/",
           "icon": "🖼️"
@@ -259,16 +257,14 @@
       "colorLight": "#7dd3fc",
       "url": "https://www.morbidelli.com/it-it/",
       "instagram": "https://www.instagram.com/morbidelliit/",
-      "facebook": "https://www.facebook.com/Morbidelliglobal",
-      "referentiRef": ["keeway_group"]
+      "facebook": "https://www.facebook.com/Morbidelliglobal"
     },
     {
       "name": "Cyclone",
       "color": "#ff2d2d",
       "colorLight": "#ff6b6b",
       "url": "https://www.cyclonemoto.it/",
-      "instagram": "https://www.instagram.com/cyclonemotor_es/",
-      "referentiRef": ["keeway_group"]
+      "instagram": "https://www.instagram.com/cyclonemotor_es/"
     },
     {
       "name": "Benda",
@@ -276,8 +272,7 @@
       "colorLight": "#a1a1c0",
       "url": "https://www.bendakeeway.com/it-it",
       "instagram": "https://www.instagram.com/benda_global/",
-      "facebook": "https://www.facebook.com/BendamotorPh",
-      "referentiRef": ["keeway_group"]
+      "facebook": "https://www.facebook.com/BendamotorPh"
     },
     {
       "name": "Keeway",
@@ -285,8 +280,7 @@
       "colorLight": "#fbbf24",
       "url": "https://italy.keeway.com/",
       "instagram": "https://www.instagram.com/keewayitalia/",
-      "facebook": "https://www.facebook.com/KeewayEgypt",
-      "referentiRef": ["keeway_group"]
+      "facebook": "https://www.facebook.com/KeewayEgypt"
     },
     {
       "name": "SWM",
@@ -294,8 +288,7 @@
       "colorLight": "#f87171",
       "url": "https://www.swm-motorcycles.it/",
       "instagram": "https://www.instagram.com/swmmotorcyclesofficial/",
-      "facebook": "https://www.facebook.com/swmmotorde",
-      "referenti": []
+      "facebook": "https://www.facebook.com/swmmotorde"
     },
     {
       "name": "Brixton",
@@ -303,8 +296,7 @@
       "colorLight": "#fef08a",
       "url": "https://www.brixton-motorcycles.com/it/",
       "instagram": "https://www.instagram.com/brixton_motorcycles/",
-      "facebook": "https://www.facebook.com/brixtonmoto",
-      "referenti": []
+      "facebook": "https://www.facebook.com/brixtonmoto"
     }
   ]
 }
