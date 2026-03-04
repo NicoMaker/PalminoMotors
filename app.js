@@ -489,6 +489,9 @@ const svgFacebook = () =>
 const svgPhone = () =>
   `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.54a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 16z"/></svg>`;
 
+const svgSms = () =>
+  `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="10" x2="8" y2="10"/><line x1="12" y1="10" x2="12" y2="10"/><line x1="16" y1="10" x2="16" y2="10"/></svg>`;
+
 const svgEmail = () =>
   `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`;
 
@@ -519,7 +522,11 @@ function buildReferenteHTML(brand, color) {
       const items = [];
       if (r.phone)
         items.push(
-          `<a href="tel:${r.phone}" class="brand-pill" title="Cellulare: ${formatPhoneNumber(r.phone)}">${svgPhone()}</a>`,
+          `<a href="tel:${r.phone}" class="brand-pill" title="Chiama: ${formatPhoneNumber(r.phone)}">${svgPhone()}</a>`,
+        );
+      if (r.phone)
+        items.push(
+          `<a href="sms:${r.phone}" class="brand-pill" title="SMS: ${formatPhoneNumber(r.phone)}">${svgSms()}</a>`,
         );
       if (r.whatsapp) {
         const n = r.whatsapp.replace(/\+/g, "").replace(/\s/g, "");
