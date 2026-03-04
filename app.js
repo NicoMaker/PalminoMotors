@@ -76,13 +76,7 @@ function openWhatsApp(event) {
 
 function openMail(event) {
   event.preventDefault();
-  const isApple = /iPhone|iPad|iPod|Macintosh/i.test(navigator.userAgent) &&
-    !(window.MSStream);
-  if (isApple) {
-    window.location.href = "mailto:";
-  } else {
-    window.open("https://mail.google.com", "_blank");
-  }
+  window.open("https://mail.google.com", "_blank");
 }
 
 // ── RISOLUZIONE REFERENTI CONDIVISI ───────────
@@ -465,7 +459,9 @@ function populateFooter(company) {
   });
 
   setEl("footerEmail", (el) => {
-    el.href = `mailto:${company.email}`;
+    el.href = "https://mail.google.com";
+    el.target = "_blank";
+    el.rel = "noopener noreferrer";
     el.textContent = `Email: ${company.email}`;
   });
 
