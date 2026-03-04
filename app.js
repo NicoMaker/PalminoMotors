@@ -62,14 +62,24 @@ function highlightText(text, term) {
 
 function openWhatsApp(event) {
   event.preventDefault();
-  const webUrl = "https://web.whatsapp.com/";
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  if (isMobile) {
-    setTimeout(() => {
-      if (document.visibilityState !== "hidden") window.open(webUrl, "_blank");
-    }, 2000);
+  
+  // Recupera il numero dal href del link cliccato
+  const href = event.currentTarget?.href || "";
+  const match = href.match(/wa\.me\/(\d+)/);
+  const number = match ? match[1] : null;
+
+  if (isMobile && number) {
+    // Apre direttamente l'app WhatsApp con il numero
+    window.location.href = `whatsapp://send?phone=${number}`;
+  } else if (isMobile) {
+    // Fallback senza numero: prova ad aprire l'app generica
     window.location.href = "whatsapp://";
   } else {
+    // Desktop: apre WhatsApp Web con il numero se disponibile
+    const webUrl = number
+      ? `https://web.whatsapp.com/send?phone=${number}`
+      : "https://web.whatsapp.com/";
     window.open(webUrl, "_blank");
   }
 }
