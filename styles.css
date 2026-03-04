@@ -239,12 +239,34 @@ body.header-expanded {
    HEADER TITLE ROW (seconda riga, solo in detail)
    ═══════════════════════════════════════ */
 .header-section-title-row {
-  max-width: 960px;
-  margin: 10px auto 0;
-  padding: 10px 0 2px;
+  max-width: 100%;
+  margin: 0;
+  padding: 22px 0 12px;
   text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: none;
+  position: relative;
 }
+
+/* Riga sopra il testo — statica */
+.header-section-title-row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent) 20%,
+    #f97316 40%,
+    #10b981 60%,
+    #06b6d4 80%,
+    transparent
+  );
+}
+
+
 
 .header-section-title-text {
   font-family: var(--font-sans);
@@ -253,6 +275,8 @@ body.header-expanded {
   text-transform: uppercase;
   letter-spacing: 4px;
   color: var(--hc, var(--accent));
+  display: inline-block;
+  margin-top: 4px;
 }
 
 /* ═══════════════════════════════════════
