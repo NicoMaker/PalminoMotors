@@ -74,6 +74,17 @@ function openWhatsApp(event) {
   }
 }
 
+function openMail(event) {
+  event.preventDefault();
+  const isApple = /iPhone|iPad|iPod|Macintosh/i.test(navigator.userAgent) &&
+    !(window.MSStream);
+  if (isApple) {
+    window.location.href = "mailto:";
+  } else {
+    window.open("https://mail.google.com", "_blank");
+  }
+}
+
 // ── RISOLUZIONE REFERENTI CONDIVISI ───────────
 // Struttura sharedReferenti:
 //   "nome_gruppo": {
@@ -315,11 +326,13 @@ function renderCategoryDetail(cat, rgb, color, colorLight) {
         ${links
           .map((link) => {
             const isWa = link.title.toLowerCase().includes("whatsapp");
+            const isGmail = link.title.toLowerCase().includes("gmail");
             return `
             <a href="${link.url}" target="_blank" rel="noopener noreferrer"
               class="detail-link-card"
               style="--dc:${color};--dcl:${colorLight};--dcr:${rgb};"
-              ${isWa ? 'onclick="openWhatsApp(event)"' : ""}>
+              ${isWa ? 'onclick="openWhatsApp(event)"' : ""}
+              ${isGmail ? 'onclick="openMail(event)"' : ""}>
               <span class="detail-link-icon">${link.icon}</span>
               <div class="detail-link-info">
                 <h3>${highlightText(link.title, query)}</h3>
