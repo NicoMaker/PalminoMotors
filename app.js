@@ -109,7 +109,49 @@ function openWhatsApp(event) {
 
 function openMail(event) {
   event.preventDefault();
-  window.open("https://mail.google.com", "_blank");
+
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  if (isAndroid) {
+    // Android: prova ad aprire l'app Gmail via intent
+    let appOpened = false;
+    const onBlur = () => { appOpened = true; };
+    window.addEventListener("blur", onBlur);
+
+    const a = document.createElement("a");
+    a.href = "intent://compose#Intent;scheme=googlegmail;package=com.google.android.gm;end";
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    setTimeout(() => {
+      window.removeEventListener("blur", onBlur);
+      if (!appOpened) {
+        window.open("https://mail.google.com", "_blank");
+      }
+    }, 1200);
+
+  } else if (isIOS) {
+    // iOS: prova URL scheme Gmail
+    let appOpened = false;
+    const onBlur = () => { appOpened = true; };
+    window.addEventListener("blur", onBlur);
+
+    window.location.href = "googlegmail://";
+
+    setTimeout(() => {
+      window.removeEventListener("blur", onBlur);
+      if (!appOpened) {
+        window.open("https://mail.google.com", "_blank");
+      }
+    }, 1200);
+
+  } else {
+    // Desktop: apre Gmail Web
+    window.open("https://mail.google.com", "_blank");
+  }
 }
 
 // ── RISOLUZIONE REFERENTI CONDIVISI ───────────
