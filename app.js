@@ -62,26 +62,49 @@ function highlightText(text, term) {
 
 function openWhatsApp(event) {
   event.preventDefault();
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  
-  // Recupera il numero dal href del link cliccato
+
   const href = event.currentTarget?.href || "";
   const match = href.match(/wa\.me\/(\d+)/);
   const number = match ? match[1] : null;
 
-  if (isMobile && number) {
-    // Apre direttamente l'app WhatsApp con il numero
-    window.location.href = `whatsapp://send?phone=${number}`;
-  } else if (isMobile) {
-    // Fallback senza numero: prova ad aprire l'app generica
-    window.location.href = "whatsapp://";
-  } else {
-    // Desktop: apre WhatsApp Web con il numero se disponibile
-    const webUrl = number
-      ? `https://web.whatsapp.com/send?phone=${number}`
-      : "https://web.whatsapp.com/";
-    window.open(webUrl, "_blank");
+  const webUrl = number
+    ? `https://web.whatsapp.com/send?phone=${number}`
+    : "https://web.whatsapp.com/";
+
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    // Mobile: prova app, se non installata il browser gestisce da solo
+    window.location.href = number
+      ? `whatsapp://send?phone=${number}`
+      : "whatsapp://";
+    return;
   }
+
+  // Desktop: tenta apertura app, fallback su WhatsApp Web
+  let appOpened = false;
+  const start = Date.now();
+
+  const onBlur = () => { appOpened = true; };
+  window.addEventListener("blur", onBlur);
+
+  // Usa un link nascosto invece di iframe (più compatibile)
+  const a = document.createElement("a");
+  a.href = number ? `whatsapp://send?phone=${number}` : "whatsapp://";
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  setTimeout(() => {
+    window.removeEventListener("blur", onBlur);
+
+    // Controlla sia blur che tempo trascorso (app aperta = pagina "congelata" brevemente)
+    const elapsed = Date.now() - start;
+    if (!appOpened && elapsed < 1500) {
+      window.open(webUrl, "_blank");
+    }
+  }, 1200);
 }
 
 function openMail(event) {
