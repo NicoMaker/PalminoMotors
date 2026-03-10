@@ -1,5 +1,6 @@
 // ══════════════════════════════════════════════
 //  QR INIT — Classe QRGenerator e avvio
+//  I dati aziendali vengono da PM (js/common.js)
 // ══════════════════════════════════════════════
 
 class QRGenerator {
@@ -8,10 +9,19 @@ class QRGenerator {
     this.bindEvents();
     this.currentQR = null;
     this.logoImage = null;
-    this.companyData = null;
     this.generateTimeout = null;
-    this.loadCompanyData();
-    this.setCurrentYear();
+
+    // Se common.js ha già caricato i dati, usali subito;
+    // altrimenti aspetta il callback PM.onDataLoaded
+    if (PM.company) {
+      this._onReady(PM.company);
+    } else {
+      PM.onDataLoaded = (data) => this._onReady(data.company);
+    }
+  }
+
+  _onReady(company) {
+    loadQRLogo(company, (img) => { this.logoImage = img; });
   }
 
   initializeElements() {
@@ -66,52 +76,10 @@ class QRGenerator {
     this.printBtn.addEventListener("click", () =>
       printQR(this.currentQR, (msg, t) => this._showToast(msg, t)),
     );
-
     Object.values(this.inputs).forEach((input) => {
       if (input) input.addEventListener("input", () => this.debounceGenerate());
     });
-
     this.sizeSelect.addEventListener("change", () => this.debounceGenerate());
-  }
-
-  setCurrentYear() {
-    const el = document.getElementById("year");
-    if (el) el.textContent = new Date().getFullYear();
-
-    const now = new Date();
-    const nextYear = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0, 0);
-    setTimeout(() => {
-      const e = document.getElementById("year");
-      if (e) e.textContent = new Date().getFullYear();
-      setInterval(() => {
-        const e2 = document.getElementById("year");
-        if (e2) e2.textContent = new Date().getFullYear();
-      }, 365.25 * 24 * 60 * 60 * 1000);
-    }, nextYear - now);
-  }
-
-  async loadCompanyData() {
-    try {
-      const response = await fetch("data.json");
-      const data = await response.json();
-      this.companyData = data.company;
-      updateQRFooter(this.companyData, (p) => this._formatPhone(p));
-      loadQRLogo(this.companyData, (img) => { this.logoImage = img; });
-    } catch (error) {
-      console.error("❌ Errore caricamento data.json:", error);
-      this.companyData = {};
-      updateQRFooter(this.companyData, (p) => this._formatPhone(p));
-    }
-  }
-
-  _formatPhone(phone) {
-    if (!phone) return phone;
-    let c = phone.replace(/\s+/g, "");
-    if (c.startsWith("+39")) return c.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
-    if (c.startsWith("+")) return c.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
-    if (c.length === 10) return c.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
-    if (c.length > 6) return c.replace(/(\d{3})(?=\d)/g, "$1 ");
-    return phone;
   }
 
   debounceGenerate() {
@@ -145,19 +113,22 @@ class QRGenerator {
   }
 
   async generateQR() {
+    const company = PM.company;
+    if (!company) { this._showToast("Caricamento dati aziendali in corso...", "error"); return; }
+
     const data = getQRData(this.inputs, this.typeSelect);
     const size = parseInt(this.sizeSelect.value, 10);
 
     if (!data) { this._showToast("Inserisci i dati richiesti", "error"); return; }
-    if (!this.companyData) { this._showToast("Caricamento dati aziendali in corso...", "error"); return; }
 
     try {
-      if (!this.logoImage && this.companyData.logo_qr) {
+      if (!this.logoImage && company.logo_qr) {
         await this.waitForLogo(5000);
       }
 
       const finalCanvas = buildQRCanvas(
-        data, size, this.logoImage, this.companyData, (p) => this._formatPhone(p),
+        data, size, this.logoImage, company,
+        (p) => PM.formatPhoneNumber(p),
       );
 
       this.qrContainer.innerHTML = "";

@@ -1,16 +1,19 @@
 // ══════════════════════════════════════════════
-//  DATA — Caricamento dati e risoluzione referenti
+//  DATA — Risoluzione referenti condivisi
+//  Il caricamento di data.json è gestito da js/common.js
 // ══════════════════════════════════════════════
 
-let _data = null;
+// Alias locale per compatibilità con navigation.js e brands.js
+Object.defineProperty(window, "_data", {
+  get: () => PM.data,
+  configurable: true,
+});
 
 function resolveSharedReferenti(data) {
   const shared = data.sharedReferenti || {};
   if (!data.brands) return;
 
-  data.brands.forEach((brand) => {
-    brand.referenti = [];
-  });
+  data.brands.forEach((brand) => { brand.referenti = []; });
 
   Object.values(shared).forEach((group) => {
     const brandNames = group.brands || [];
@@ -26,16 +29,10 @@ function resolveSharedReferenti(data) {
   });
 }
 
-async function loadData() {
-  try {
-    const res = await fetch("data.json");
-    _data = await res.json();
-    resolveSharedReferenti(_data);
-    populateFooter(_data.company);
-    handleHeaderLogo(_data.company.logo);
-    renderBrands(_data.brands);
-    buildHomeScreen(_data);
-  } catch (e) {
-    console.error("Errore:", e);
-  }
-}
+// Chiamato da common.js dopo il fetch di data.json
+PM.onDataLoaded = function (data) {
+  resolveSharedReferenti(data);
+  handleHeaderLogo(data.company.logo);
+  renderBrands(data.brands);
+  buildHomeScreen(data);
+};

@@ -1,22 +1,9 @@
 // ══════════════════════════════════════════════
-//  UTILS — Funzioni di supporto generali
+//  UTILS — Alias locali (logica in js/common.js)
 // ══════════════════════════════════════════════
 
-function hexToRgb(hex) {
-  const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return r
-    ? `${parseInt(r[1], 16)}, ${parseInt(r[2], 16)}, ${parseInt(r[3], 16)}`
-    : "255,255,255";
-}
-
-function formatPhoneNumber(phone) {
-  if (!phone) return phone;
-  let c = phone.replace(/\s+/g, "");
-  if (c.startsWith("+39"))
-    return c.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
-  return phone;
-}
-
+const hexToRgb = (hex) => PM.hexToRgb(hex);
+const formatPhoneNumber = (phone) => PM.formatPhoneNumber(phone);
 const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 function highlightText(text, term) {
