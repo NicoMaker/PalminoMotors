@@ -4,14 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QR Code Generator - Palmino Motors</title>
-    <link rel="stylesheet" href="qr.css" />
+    <link rel="stylesheet" href="../css/qr.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="icon" type="image/x-icon" href="img/Logo2.png" />
+    <link rel="icon" type="image/x-icon" href="../img/Logo2.png" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
   </head>
   <body>
@@ -20,7 +20,7 @@
     <div class="main-wrapper">
       <!-- Header -->
       <header class="qr-header">
-        <a href="index.html" class="back-link" aria-label="Torna alla home">
+        <a href="../index.html" class="back-link" aria-label="Torna alla home">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
           </svg>
@@ -148,7 +148,7 @@
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.3">
                 <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/><rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/>
               </svg>
-              <p>Il tuo QR Code apparira qui</p>
+              <p>Il tuo QR Code apparirà qui</p>
               <span class="hint">Compila i campi e premi Genera</span>
             </div>
           </div>
@@ -203,7 +203,7 @@
     <footer class="site-footer">
       <div class="footer-content">
         <div class="footer-logo-section">
-          <img src="img/Logo.png" alt="Palmino Motors Logo" class="footer-logo" id="footerLogo" />
+          <img src="../img/Logo.png" alt="Palmino Motors Logo" class="footer-logo" id="footerLogo" />
           <h2 class="footer-company-name" id="companyName">Palmino Motors</h2>
           <p class="footer-address">
             <a href="https://www.google.com/maps/search/?api=1&query=Via+Stradalta%2C+27%2C+33032+Bertiolo+%28UD%29"
@@ -237,14 +237,15 @@
     </div>
 
     <!-- ══ SCRIPTS ══ -->
-    <!-- Comune: legge data.json, popola footer, anno, utils, WhatsApp/Mail -->
-    <script src="JS/common.js"></script>
-    <!-- Specifici pagina QR -->
-    <script src="JS/qr/qr-data.js"></script>
-    <script src="JS/qr/qr-canvas.js"></script>
-    <script src="JS/qr/qr-actions.js"></script>
-    <script src="JS/qr/qr-ui.js"></script>
-    <script src="JS/qr/qr-footer.js"></script>
-    <script src="JS/qr/qr-init.js"></script>
+    <script src="../JS/common.js"></script>
+    <!-- Fix per caricamento logo nel footer -->
+    <script src="../JS/qr/qr-footer-fix.js"></script>
+    <!-- Specifici pagina QR - CORRETTI: sono nella cartella qr/ -->
+    <script src="../JS/qr/qr-data.js"></script>
+    <script src="../JS/qr/qr-canvas.js"></script>
+    <script src="../JS/qr/qr-actions.js"></script>
+    <script src="../JS/qr/qr-ui.js"></script>
+    <script src="../JS/qr/qr-footer.js"></script>
+    <script src="../JS/qr/qr-init.js"></script>
   </body>
 </html>
