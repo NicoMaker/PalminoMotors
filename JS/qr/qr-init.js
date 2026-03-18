@@ -21,7 +21,9 @@ class QRGenerator {
   }
 
   _onReady(company) {
-    loadQRLogo(company, (img) => { this.logoImage = img; });
+    loadQRLogo(company, (img) => {
+      this.logoImage = img;
+    });
   }
 
   initializeElements() {
@@ -66,10 +68,14 @@ class QRGenerator {
 
   bindEvents() {
     this.typeSelect.addEventListener("change", () =>
-      handleTypeChange(this.typeSelect, this.inputContainers, () => this._clearQR()),
+      handleTypeChange(this.typeSelect, this.inputContainers, () =>
+        this._clearQR(),
+      ),
     );
     this.generateBtn.addEventListener("click", () => this.generateQR());
-    this.downloadBtn.addEventListener("click", () => downloadQR(this.currentQR));
+    this.downloadBtn.addEventListener("click", () =>
+      downloadQR(this.currentQR),
+    );
     this.copyBtn.addEventListener("click", () =>
       copyToClipboard(this.currentQR, (msg, t) => this._showToast(msg, t)),
     );
@@ -100,11 +106,13 @@ class QRGenerator {
   async waitForLogo(maxWait = 5000) {
     return new Promise((resolve) => {
       if (this.logoImage?.complete && this.logoImage.naturalWidth > 0) {
-        resolve(true); return;
+        resolve(true);
+        return;
       }
       const start = Date.now();
       const check = () => {
-        if (this.logoImage?.complete && this.logoImage.naturalWidth > 0) resolve(true);
+        if (this.logoImage?.complete && this.logoImage.naturalWidth > 0)
+          resolve(true);
         else if (Date.now() - start > maxWait) resolve(false);
         else setTimeout(check, 100);
       };
@@ -114,12 +122,18 @@ class QRGenerator {
 
   async generateQR() {
     const company = PM.company;
-    if (!company) { this._showToast("Caricamento dati aziendali in corso...", "error"); return; }
+    if (!company) {
+      this._showToast("Caricamento dati aziendali in corso...", "error");
+      return;
+    }
 
     const data = getQRData(this.inputs, this.typeSelect);
     const size = parseInt(this.sizeSelect.value, 10);
 
-    if (!data) { this._showToast("Inserisci i dati richiesti", "error"); return; }
+    if (!data) {
+      this._showToast("Inserisci i dati richiesti", "error");
+      return;
+    }
 
     try {
       if (!this.logoImage && company.logo_qr) {
@@ -127,7 +141,10 @@ class QRGenerator {
       }
 
       const finalCanvas = buildQRCanvas(
-        data, size, this.logoImage, company,
+        data,
+        size,
+        this.logoImage,
+        company,
         (p) => PM.formatPhoneNumber(p),
       );
 
@@ -137,10 +154,18 @@ class QRGenerator {
       this.qrContainer.classList.add("has-qr");
       this.downloadSection.classList.remove("hidden");
 
-      this.currentQR = { canvas: finalCanvas, data, size, type: this.typeSelect.value };
+      this.currentQR = {
+        canvas: finalCanvas,
+        data,
+        size,
+        type: this.typeSelect.value,
+      };
       updateInfoSection(
         this.currentQR,
-        this.infoType, this.infoSize, this.infoLogo, this.infoContent,
+        this.infoType,
+        this.infoSize,
+        this.infoLogo,
+        this.infoContent,
       );
     } catch (error) {
       console.error("❌ Errore QR:", error);
@@ -149,7 +174,13 @@ class QRGenerator {
   }
 
   _clearQR() {
-    clearQR(this.qrContainer, this.downloadSection, this.infoType, this.infoSize, this.infoContent);
+    clearQR(
+      this.qrContainer,
+      this.downloadSection,
+      this.infoType,
+      this.infoSize,
+      this.infoContent,
+    );
     this.currentQR = null;
   }
 

@@ -13,7 +13,9 @@ function resolveSharedReferenti(data) {
   const shared = data.sharedReferenti || {};
   if (!data.brands) return;
 
-  data.brands.forEach((brand) => { brand.referenti = []; });
+  data.brands.forEach((brand) => {
+    brand.referenti = [];
+  });
 
   Object.values(shared).forEach((group) => {
     const brandNames = group.brands || [];

@@ -72,7 +72,12 @@ function buildQRCanvas(data, size, logoImage, companyData, formatPhoneNumber) {
   ctx.lineTo(finalCanvas.width, footerY);
   ctx.stroke();
 
-  const gradient = ctx.createLinearGradient(0, footerY, 0, footerY + footerHeight);
+  const gradient = ctx.createLinearGradient(
+    0,
+    footerY,
+    0,
+    footerY + footerHeight,
+  );
   gradient.addColorStop(0, "#ffffff");
   gradient.addColorStop(1, "#f8f9fa");
   ctx.fillStyle = gradient;
@@ -83,7 +88,11 @@ function buildQRCanvas(data, size, logoImage, companyData, formatPhoneNumber) {
   ctx.font = `italic bold ${titleFontSize}px Georgia, serif`;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText("Palmino Motors", finalCanvas.width / 2, footerY + footerHeight * 0.12);
+  ctx.fillText(
+    "Palmino Motors",
+    finalCanvas.width / 2,
+    footerY + footerHeight * 0.12,
+  );
 
   const textFontSize = Math.max(10, size * 0.022);
   ctx.font = `${textFontSize}px Calibri, Arial, sans-serif`;
@@ -91,7 +100,11 @@ function buildQRCanvas(data, size, logoImage, companyData, formatPhoneNumber) {
   ctx.textBaseline = "middle";
 
   const fullAddress = `${companyData.address}, ${companyData.cap} ${companyData.city} (${companyData.province})`;
-  ctx.fillText(fullAddress, finalCanvas.width / 2, footerY + footerHeight * 0.28);
+  ctx.fillText(
+    fullAddress,
+    finalCanvas.width / 2,
+    footerY + footerHeight * 0.28,
+  );
 
   const smallTextSize = Math.max(9, size * 0.02);
   ctx.font = `${smallTextSize}px Calibri, Arial, sans-serif`;
@@ -102,7 +115,11 @@ function buildQRCanvas(data, size, logoImage, companyData, formatPhoneNumber) {
   );
 
   ctx.fillStyle = "#495057";
-  ctx.fillText(companyData.email, finalCanvas.width / 2, footerY + footerHeight * 0.6);
+  ctx.fillText(
+    companyData.email,
+    finalCanvas.width / 2,
+    footerY + footerHeight * 0.6,
+  );
 
   const website = companyData.website || "www.palminomotors.com";
   const websiteSize = Math.max(9, size * 0.02);
@@ -113,7 +130,11 @@ function buildQRCanvas(data, size, logoImage, companyData, formatPhoneNumber) {
   const pivaSize = Math.max(8, size * 0.018);
   ctx.font = `${pivaSize}px Calibri, Arial, sans-serif`;
   ctx.fillStyle = "#6c757d";
-  ctx.fillText(`P.IVA: ${companyData.piva}`, finalCanvas.width / 2, footerY + footerHeight * 0.9);
+  ctx.fillText(
+    `P.IVA: ${companyData.piva}`,
+    finalCanvas.width / 2,
+    footerY + footerHeight * 0.9,
+  );
 
   return finalCanvas;
 }

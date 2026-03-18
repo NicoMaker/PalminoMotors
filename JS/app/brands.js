@@ -49,7 +49,9 @@ function buildReferenteHTML(brand) {
         nameLabel =
           '<div class="brand-ref-name-label">' +
           r.name +
-          (desc ? '<span class="brand-ref-name-desc">' + desc + "</span>" : "") +
+          (desc
+            ? '<span class="brand-ref-name-desc">' + desc + "</span>"
+            : "") +
           "</div>";
       } else if (referentiConDati.length > 1) {
         nameLabel = `<div class="brand-ref-name-label brand-ref-name-num">#${idx + 1}</div>`;

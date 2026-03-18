@@ -16,7 +16,13 @@ function showToast(toastEl, toastMessage, msg, type = "success") {
   setTimeout(() => toastEl.classList.remove("show"), 3000);
 }
 
-function updateInfoSection(currentQR, infoType, infoSize, infoLogo, infoContent) {
+function updateInfoSection(
+  currentQR,
+  infoType,
+  infoSize,
+  infoLogo,
+  infoContent,
+) {
   if (!currentQR) return;
   const typeMap = {
     text: "Testo",
@@ -36,7 +42,13 @@ function updateInfoSection(currentQR, infoType, infoSize, infoLogo, infoContent)
   infoContent.textContent = contentText;
 }
 
-function clearQR(qrContainer, downloadSection, infoType, infoSize, infoContent) {
+function clearQR(
+  qrContainer,
+  downloadSection,
+  infoType,
+  infoSize,
+  infoContent,
+) {
   qrContainer.innerHTML = `
     <div class="placeholder">
       <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity="0.3">

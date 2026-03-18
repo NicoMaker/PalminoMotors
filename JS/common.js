@@ -21,10 +21,8 @@ PM.formatPhoneNumber = function (phone) {
     return c.replace(/(\+39)(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
   if (c.startsWith("+"))
     return c.replace(/(\+\d{1,3})(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
-  if (c.length === 10)
-    return c.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
-  if (c.length > 6)
-    return c.replace(/(\d{3})(?=\d)/g, "$1 ");
+  if (c.length === 10) return c.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
+  if (c.length > 6) return c.replace(/(\d{3})(?=\d)/g, "$1 ");
   return phone;
 };
 
@@ -113,13 +111,17 @@ PM.openWhatsApp = function (event) {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   if (isMobile) {
-    window.location.href = number ? `whatsapp://send?phone=${number}` : "whatsapp://";
+    window.location.href = number
+      ? `whatsapp://send?phone=${number}`
+      : "whatsapp://";
     return;
   }
 
   let appOpened = false;
   const start = Date.now();
-  const onBlur = () => { appOpened = true; };
+  const onBlur = () => {
+    appOpened = true;
+  };
   window.addEventListener("blur", onBlur);
 
   const a = document.createElement("a");
@@ -142,7 +144,9 @@ PM.openMail = function (event) {
 
   const tryApp = (appHref, fallback) => {
     let appOpened = false;
-    const onBlur = () => { appOpened = true; };
+    const onBlur = () => {
+      appOpened = true;
+    };
     window.addEventListener("blur", onBlur);
     const a = document.createElement("a");
     a.href = appHref;
@@ -159,7 +163,7 @@ PM.openMail = function (event) {
   if (isAndroid) {
     tryApp(
       "intent://compose#Intent;scheme=googlegmail;package=com.google.android.gm;end",
-      "https://mail.google.com"
+      "https://mail.google.com",
     );
   } else if (isIOS) {
     window.location.href = "googlegmail://";
@@ -174,10 +178,10 @@ PM.openMail = function (event) {
 PM.loadData = async function () {
   try {
     // Rileva il percorso dinamico: se siamo in qr/, carica da ../data.json
-    const dataPath = window.location.pathname.includes('/qr/') 
-      ? '../data.json' 
-      : 'data.json';
-    
+    const dataPath = window.location.pathname.includes("/qr/")
+      ? "../data.json"
+      : "data.json";
+
     const res = await fetch(dataPath);
     const data = await res.json();
     PM.data = data;

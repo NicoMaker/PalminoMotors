@@ -7,7 +7,11 @@ function downloadQR(currentQR) {
   const link = document.createElement("a");
   link.href = currentQR.canvas.toDataURL("image/png");
   const now = new Date();
-  const timestamp = now.toISOString().slice(0, 19).replace(/:/g, "-").replace("T", "_");
+  const timestamp = now
+    .toISOString()
+    .slice(0, 19)
+    .replace(/:/g, "-")
+    .replace("T", "_");
   link.download = `PalminoMotors_QR_${currentQR.type}_${timestamp}.png`;
   link.click();
 }
