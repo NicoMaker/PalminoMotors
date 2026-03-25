@@ -1,0 +1,20 @@
+{
+  "databases": [
+    {
+      "id": "magazzino",
+      "name": "magazzino.db",
+      "tag": "Magazzino",
+      "url": "http://89.36.210.147:3000/Backend/db/magazzino.db",
+      "type": "blue",
+      "icon": "🗄️"
+    },
+    {
+      "id": "preventivi",
+      "name": "preventivi.db",
+      "tag": "Preventivi",
+      "url": "http://89.36.210.147:3001/backend/db/preventivi.db",
+      "type": "green",
+      "icon": "📋"
+    }
+  ]
+}
