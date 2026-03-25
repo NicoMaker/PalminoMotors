@@ -22,7 +22,6 @@ function setupFooterLogo() {
       return;
     }
 
-    // Carica il logo da data.json
     const logoPath = "../" + PM.company.logo;
     console.log("📸 Caricando logo da:", logoPath);
 

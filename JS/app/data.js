@@ -31,7 +31,6 @@ function resolveSharedReferenti(data) {
   });
 }
 
-// Chiamato da common.js dopo il fetch di data.json
 PM.onDataLoaded = function (data) {
   resolveSharedReferenti(data);
   handleHeaderLogo(data.company.logo);

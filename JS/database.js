@@ -7,7 +7,7 @@ async function initApp() {
   const container = document.getElementById('db-container');
   
   try {
-    const response = await fetch('data.json');
+    const response = await fetch('../JSON/Database.json');
     if (!response.ok) throw new Error("Impossibile caricare data.json");
     
     const data = await response.json();

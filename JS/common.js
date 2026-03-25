@@ -1,5 +1,4 @@
 // ══════════════════════════════════════════════
-//  COMMON — Dati condivisi da data.json
 //  Usato sia da index.html che da qr.html
 //  [VERSIONE CON PERCORSI DINAMICI PER QR/]
 // ══════════════════════════════════════════════
@@ -173,14 +172,11 @@ PM.openMail = function (event) {
   }
 };
 
-// ── CARICAMENTO data.json ────────────────────
-// ✅ AUTO-RILEVA PERCORSO: data.json da root o ../data.json da qr/
 PM.loadData = async function () {
   try {
-    // Rileva il percorso dinamico: se siamo in qr/, carica da ../data.json
     const dataPath = window.location.pathname.includes("/qr/")
-      ? "../data.json"
-      : "data.json";
+      ? "../JSON/dati.json"
+      : "JSON/dati.json";
 
     const res = await fetch(dataPath);
     const data = await res.json();
