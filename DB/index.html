@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Backup Database · Palmino Motors</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Background FX -->
+  <div class="noise-overlay"></div>
+  <div class="top-glow"></div>
+  <div class="orb orb-left"></div>
+  <div class="orb orb-right"></div>
+
+  <!-- HEADER -->
+  <header class="hub-header">
+    <div class="header-inner">
+      <div class="logo-area">
+        <div class="logo-badge">
+          <img src="../img/Logo.png" alt="Palmino Motors" />
+        </div>
+        <div class="header-text">
+          <h1 class="main-title">Palmino Motors</h1>
+          <p class="subtitle">Console backup database</p>
+        </div>
+      </div>
+      <a class="chip-button" href="../index.html">
+        <span class="chip-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M19 12H5M12 5l-7 7 7 7" />
+          </svg>
+        </span>
+        <span>Indietro</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <section class="shell">
+      <header class="shell-header">
+        <p class="page-eyebrow">// backup</p>
+        <div class="title-row">
+          <h2 class="page-title">Download Database</h2>
+          <span class="badge badge-soft">.db export</span>
+        </div>
+        <p class="page-subtitle">
+          Scarica in locale le copie dei database direttamente dal server di Palmino Motors.
+        </p>
+      </header>
+
+      <div class="stack">
+        <!-- Magazzino -->
+        <article class="db-card">
+          <div class="db-main">
+            <div class="db-icon db-icon-blue">
+              <span>🗄️</span>
+            </div>
+            <div class="db-info">
+              <div class="db-title-row">
+                <h3 class="db-name">magazzino.db</h3>
+                <span class="db-tag">Magazzino</span>
+              </div>
+              <p class="db-url">
+                http://89.36.210.147:3000/Backend/db/magazzino.db
+              </p>
+              <p class="status idle" id="status-magazzino">In attesa…</p>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="downloadFile('magazzino')">
+            <span class="btn-label">Scarica</span>
+          </button>
+        </article>
+
+        <!-- Preventivi -->
+        <article class="db-card">
+          <div class="db-main">
+            <div class="db-icon db-icon-green">
+              <span>📋</span>
+            </div>
+            <div class="db-info">
+              <div class="db-title-row">
+                <h3 class="db-name">preventivi.db</h3>
+                <span class="db-tag db-tag-green">Preventivi</span>
+              </div>
+              <p class="db-url">
+                http://89.36.210.147:3001/backend/db/preventivi.db
+              </p>
+              <p class="status idle" id="status-preventivi">In attesa…</p>
+            </div>
+          </div>
+          <button class="btn btn-success" onclick="downloadFile('preventivi')">
+            <span class="btn-label">Scarica</span>
+          </button>
+        </article>
+      </div>
+
+      <div class="shell-footer">
+        <button class="btn btn-ghost-full" onclick="downloadAll()">
+          <span class="btn-pill-icon">⬇️</span>
+          <span class="btn-label-strong">Scarica entrambi</span>
+        </button>
+        <p class="note">
+          I file vengono scaricati direttamente dal browser. Verifica che il server sia online prima di procedere.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-logo-section">
+        <h2 class="footer-company-name" id="companyName">Palmino Motors</h2>
+        <p class="footer-address">
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=Via+Stradalta%2C+27%2C+33032+Bertiolo+%28UD%29"
+            class="footer-link"
+            target="_blank"
+            rel="noopener noreferrer"
+            id="fullAddress"
+          >
+            Via Stradalta, 27 – 33032 Bertiolo (UD)
+          </a>
+        </p>
+      </div>
+
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Contatti</h4>
+          <p>
+            <a href="tel:+393490028627" class="footer-link" id="footerPhone">
+              Tel: +39 349 002 8627
+            </a>
+          </p>
+          <p>
+            <a
+              href="mailto:info@palminomotors.com"
+              class="footer-link"
+              id="footerEmail"
+            >
+              Email: info@palminomotors.com
+            </a>
+          </p>
+          <p>
+            <a
+              href="https://wa.me/393490028627"
+              class="footer-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              id="footerWhatsApp"
+            >
+              WhatsApp: +39 349 002 8627
+            </a>
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Dati Legali</h4>
+          <p id="footerPiva">P.IVA: 01788600300</p>
+          <p class="footer-copyright">
+            &copy; <span id="year"></span> Tutti i diritti riservati
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

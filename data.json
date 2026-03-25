@@ -227,6 +227,12 @@
           "description": "Strumento per rimuovere lo sfondo da foto",
           "url": "https://paginageneralesiti.netlify.app/site/utilities/rimuovi_sfondo/",
           "icon": "🖼️"
+        },
+        {
+          "title": "Backup Database",
+          "description": "Strumento che scarica i database in locale",
+          "url": "DB/index.html",
+          "icon": "💾"
         }
       ]
     },
