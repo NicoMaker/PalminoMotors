@@ -37,18 +37,19 @@ function updateYear() {
 }
 
 function scheduleYearUpdate() {
-  const updateYearAtMidnight = () => {
-    updateYear();  // Aggiorna l'anno
-    // Riprogramma per il prossimo Capodanno (1 anno esatto da ora)
+  const scheduleNext = () => {
     const now = new Date();
-    const nextYearMidnight = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0, 0);
-    setTimeout(updateYearAtMidnight, nextYearMidnight - now);
+    // Prossimo 1° gennaio a mezzanotte
+    const nextNewYear = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0, 0);
+    const msUntilNewYear = nextNewYear - now;
+
+    setTimeout(() => {
+      updateYear(); // Aggiorna l'anno nel DOM
+      scheduleNext(); // Riprogramma per il Capodanno successivo
+    }, msUntilNewYear);
   };
 
-  // Prima esecuzione alla prossima mezzanotte di Capodanno
-  const now = new Date();
-  const nextYearMidnight = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0, 0);
-  setTimeout(updateYearAtMidnight, nextYearMidnight - now);
+  scheduleNext();
 }
 
 // ── FOOTER ─────────────────────────────────────
@@ -123,7 +124,9 @@ function openWhatsApp(event) {
 
   let appOpened = false;
   const start = Date.now();
-  const onBlur = () => { appOpened = true; };
+  const onBlur = () => {
+    appOpened = true;
+  };
   window.addEventListener("blur", onBlur);
 
   const a = document.createElement("a");
@@ -146,7 +149,9 @@ function openMail(event) {
 
   const tryApp = (appHref, fallback) => {
     let appOpened = false;
-    const onBlur = () => { appOpened = true; };
+    const onBlur = () => {
+      appOpened = true;
+    };
     window.addEventListener("blur", onBlur);
     const a = document.createElement("a");
     a.href = appHref;
