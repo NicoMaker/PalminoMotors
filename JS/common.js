@@ -1,19 +1,21 @@
 // ══════════════════════════════════════════════
-//  Usato sia da index.html che da qr.html
+//  COMMON — Usato sia da index.html che da qr.html
 //  [VERSIONE CON PERCORSI DINAMICI PER QR/]
 // ══════════════════════════════════════════════
 
-window.PM = window.PM || {};
+// Oggetto globale dati (accessibile da tutti i file)
+window.companyData = null;
+window.appData = null;
 
 // ── UTILS ──────────────────────────────────────
-PM.hexToRgb = function (hex) {
+function hexToRgb(hex) {
   const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return r
     ? `${parseInt(r[1], 16)}, ${parseInt(r[2], 16)}, ${parseInt(r[3], 16)}`
     : "255,255,255";
-};
+}
 
-PM.formatPhoneNumber = function (phone) {
+function formatPhoneNumber(phone) {
   if (!phone) return phone;
   let c = phone.replace(/\s+/g, "");
   if (c.startsWith("+39"))
@@ -23,29 +25,28 @@ PM.formatPhoneNumber = function (phone) {
   if (c.length === 10) return c.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
   if (c.length > 6) return c.replace(/(\d{3})(?=\d)/g, "$1 ");
   return phone;
-};
+}
 
 // ── ANNO AUTOMATICO ────────────────────────────
-PM.updateYear = function () {
+function updateYear() {
   document.querySelectorAll("[data-year]").forEach((el) => {
     el.textContent = new Date().getFullYear();
   });
-  // compatibilità con id="year"
   const el = document.getElementById("year");
   if (el) el.textContent = new Date().getFullYear();
-};
+}
 
-PM.scheduleYearUpdate = function () {
+function scheduleYearUpdate() {
   const now = new Date();
   const nextYear = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0, 0);
   setTimeout(() => {
-    PM.updateYear();
-    setInterval(PM.updateYear, 365.25 * 24 * 60 * 60 * 1000);
+    updateYear();
+    setInterval(updateYear, 365.25 * 24 * 60 * 60 * 1000);
   }, nextYear - now);
-};
+}
 
 // ── FOOTER ─────────────────────────────────────
-PM.populateFooter = function (company) {
+function populateFooter(company) {
   const s = (id, fn) => {
     const el = document.getElementById(id);
     if (el) fn(el);
@@ -61,7 +62,7 @@ PM.populateFooter = function (company) {
 
   s("footerPhone", (el) => {
     el.href = `tel:${company.phone}`;
-    el.textContent = `Tel: ${PM.formatPhoneNumber(company.phone)}`;
+    el.textContent = `Tel: ${formatPhoneNumber(company.phone)}`;
   });
 
   s("footerEmail", (el) => {
@@ -74,19 +75,17 @@ PM.populateFooter = function (company) {
   s("footerWhatsApp", (el) => {
     const n = company.phone.replace(/\+/g, "").replace(/\s/g, "");
     el.href = `https://wa.me/${n}`;
-    el.textContent = `WhatsApp: ${PM.formatPhoneNumber(company.phone)}`;
-    el.onclick = PM.openWhatsApp;
+    el.textContent = `WhatsApp: ${formatPhoneNumber(company.phone)}`;
+    el.onclick = openWhatsApp;
   });
 
   s("footerPiva", (el) => (el.textContent = `P.IVA: ${company.piva}`));
 
-  // Logo footer
   const footerLogo = document.getElementById("footerLogo");
   if (footerLogo && company.logo) {
     footerLogo.src = company.logo;
   }
 
-  // Logo footer col (index.html — aggiunge img dinamicamente)
   const footerCol = document.getElementById("footerCompanyCol");
   if (footerCol && company.logo && !footerLogo) {
     const img = document.createElement("img");
@@ -96,10 +95,10 @@ PM.populateFooter = function (company) {
     img.onerror = () => img.remove();
     footerCol.prepend(img);
   }
-};
+}
 
 // ── WHATSAPP / MAIL ────────────────────────────
-PM.openWhatsApp = function (event) {
+function openWhatsApp(event) {
   event.preventDefault();
   const href = event.currentTarget?.href || "";
   const match = href.match(/wa\.me\/(\d+)/);
@@ -118,9 +117,7 @@ PM.openWhatsApp = function (event) {
 
   let appOpened = false;
   const start = Date.now();
-  const onBlur = () => {
-    appOpened = true;
-  };
+  const onBlur = () => { appOpened = true; };
   window.addEventListener("blur", onBlur);
 
   const a = document.createElement("a");
@@ -134,18 +131,16 @@ PM.openWhatsApp = function (event) {
     window.removeEventListener("blur", onBlur);
     if (!appOpened && Date.now() - start < 1500) window.open(webUrl, "_blank");
   }, 1200);
-};
+}
 
-PM.openMail = function (event) {
+function openMail(event) {
   event.preventDefault();
   const isAndroid = /Android/i.test(navigator.userAgent);
   const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
   const tryApp = (appHref, fallback) => {
     let appOpened = false;
-    const onBlur = () => {
-      appOpened = true;
-    };
+    const onBlur = () => { appOpened = true; };
     window.addEventListener("blur", onBlur);
     const a = document.createElement("a");
     a.href = appHref;
@@ -170,9 +165,13 @@ PM.openMail = function (event) {
   } else {
     window.open("https://mail.google.com", "_blank");
   }
-};
+}
 
-PM.loadData = async function () {
+// ── CARICAMENTO DATI ───────────────────────────
+// Callback opzionale — ogni pagina può sovrascriverlo prima del DOMContentLoaded
+window.onDataLoaded = null;
+
+async function loadData() {
   try {
     const dataPath = window.location.pathname.includes("/qr/")
       ? "../JSON/dati.json"
@@ -180,23 +179,22 @@ PM.loadData = async function () {
 
     const res = await fetch(dataPath);
     const data = await res.json();
-    PM.data = data;
-    PM.company = data.company;
 
-    PM.updateYear();
-    PM.scheduleYearUpdate();
-    PM.populateFooter(data.company);
+    window.appData = data;
+    window.companyData = data.company;
 
-    // Callback opzionale per la pagina specifica
-    if (typeof PM.onDataLoaded === "function") {
-      PM.onDataLoaded(data);
+    updateYear();
+    scheduleYearUpdate();
+    populateFooter(data.company);
+
+    if (typeof window.onDataLoaded === "function") {
+      window.onDataLoaded(data);
     }
   } catch (e) {
-    console.error("❌ Errore caricamento data.json:", e);
+    console.error("❌ Errore caricamento dati.json:", e);
   }
-};
+}
 
-// Avvio automatico al DOMContentLoaded
 document.addEventListener("DOMContentLoaded", () => {
-  PM.loadData();
+  loadData();
 });

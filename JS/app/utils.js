@@ -1,9 +1,7 @@
 // ══════════════════════════════════════════════
-//  UTILS — Alias locali (logica in js/common.js)
+//  UTILS — Funzioni di utilità (logica in js/common.js)
 // ══════════════════════════════════════════════
 
-const hexToRgb = (hex) => PM.hexToRgb(hex);
-const formatPhoneNumber = (phone) => PM.formatPhoneNumber(phone);
 const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 function highlightText(text, term) {

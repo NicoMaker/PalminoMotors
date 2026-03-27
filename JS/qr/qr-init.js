@@ -1,6 +1,6 @@
 // ══════════════════════════════════════════════
 //  QR INIT — Classe QRGenerator e avvio
-//  I dati aziendali vengono da PM (js/common.js)
+//  I dati aziendali vengono da js/common.js
 // ══════════════════════════════════════════════
 
 class QRGenerator {
@@ -12,11 +12,11 @@ class QRGenerator {
     this.generateTimeout = null;
 
     // Se common.js ha già caricato i dati, usali subito;
-    // altrimenti aspetta il callback PM.onDataLoaded
-    if (PM.company) {
-      this._onReady(PM.company);
+    // altrimenti aspetta il callback onDataLoaded
+    if (window.companyData) {
+      this._onReady(window.companyData);
     } else {
-      PM.onDataLoaded = (data) => this._onReady(data.company);
+      window.onDataLoaded = (data) => this._onReady(data.company);
     }
   }
 
@@ -121,7 +121,7 @@ class QRGenerator {
   }
 
   async generateQR() {
-    const company = PM.company;
+    const company = window.companyData;
     if (!company) {
       this._showToast("Caricamento dati aziendali in corso...", "error");
       return;
@@ -145,7 +145,7 @@ class QRGenerator {
         size,
         this.logoImage,
         company,
-        (p) => PM.formatPhoneNumber(p),
+        (p) => formatPhoneNumber(p),
       );
 
       this.qrContainer.innerHTML = "";

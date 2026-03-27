@@ -4,7 +4,6 @@
 
 function showToast(toastEl, toastMessage, msg, type = "success") {
   toastMessage.textContent = msg;
-  const icon = toastEl.querySelector("svg");
 
   if (type === "error") {
     toastEl.style.borderColor = "rgba(220,38,38,0.4)";

@@ -1,11 +1,11 @@
 // ══════════════════════════════════════════════
 //  DATA — Risoluzione referenti condivisi
-//  Il caricamento di data.json è gestito da js/common.js
+//  Il caricamento di dati.json è gestito da js/common.js
 // ══════════════════════════════════════════════
 
-// Alias locale per compatibilità con navigation.js e brands.js
+// Alias globale per compatibilità con navigation.js e brands.js
 Object.defineProperty(window, "_data", {
-  get: () => PM.data,
+  get: () => window.appData,
   configurable: true,
 });
 
@@ -31,7 +31,7 @@ function resolveSharedReferenti(data) {
   });
 }
 
-PM.onDataLoaded = function (data) {
+window.onDataLoaded = function (data) {
   resolveSharedReferenti(data);
   handleHeaderLogo(data.company.logo);
   renderBrands(data.brands);

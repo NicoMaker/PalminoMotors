@@ -1,20 +1,16 @@
 // ══════════════════════════════════════════════════════════════════════════════
-//  QR FOOTER FIX — Carica il logo quando data.json è disponibile
+//  QR FOOTER FIX — Carica il logo nel footer della pagina QR
 // ══════════════════════════════════════════════════════════════════════════════
 
-/**
- * Quando PM.company è disponibile, carica il logo nel footer
- */
 function setupFooterLogo() {
-  // Attendi che PM.company sia disponibile
   const checkAndLoad = () => {
-    if (!window.PM || !PM.company) {
-      console.log("⏳ Aspettando PM.company...");
+    if (!window.companyData) {
+      console.log("⏳ Aspettando companyData...");
       setTimeout(checkAndLoad, 100);
       return;
     }
 
-    console.log("✅ PM.company trovato");
+    console.log("✅ companyData trovato");
 
     const footerLogoEl = document.getElementById("footerLogo");
     if (!footerLogoEl) {
@@ -22,7 +18,7 @@ function setupFooterLogo() {
       return;
     }
 
-    const logoPath = "../" + PM.company.logo;
+    const logoPath = "../" + window.companyData.logo;
     console.log("📸 Caricando logo da:", logoPath);
 
     footerLogoEl.src = logoPath;
@@ -33,7 +29,6 @@ function setupFooterLogo() {
 
     footerLogoEl.onerror = () => {
       console.error("❌ Errore caricamento logo da:", logoPath);
-      // Fallback: mostra uno sfondo
       footerLogoEl.style.backgroundColor = "#dc2626";
       footerLogoEl.style.display = "flex";
       footerLogoEl.style.alignItems = "center";
@@ -46,7 +41,6 @@ function setupFooterLogo() {
   checkAndLoad();
 }
 
-// Avvia quando il DOM è pronto
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", setupFooterLogo);
 } else {
