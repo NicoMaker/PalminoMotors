@@ -37,12 +37,18 @@ function updateYear() {
 }
 
 function scheduleYearUpdate() {
+  const updateYearAtMidnight = () => {
+    updateYear();  // Aggiorna l'anno
+    // Riprogramma per il prossimo Capodanno (1 anno esatto da ora)
+    const now = new Date();
+    const nextYearMidnight = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0, 0);
+    setTimeout(updateYearAtMidnight, nextYearMidnight - now);
+  };
+
+  // Prima esecuzione alla prossima mezzanotte di Capodanno
   const now = new Date();
-  const nextYear = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0, 0);
-  setTimeout(() => {
-    updateYear();
-    setInterval(updateYear, 365.25 * 24 * 60 * 60 * 1000);
-  }, nextYear - now);
+  const nextYearMidnight = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0, 0);
+  setTimeout(updateYearAtMidnight, nextYearMidnight - now);
 }
 
 // ── FOOTER ─────────────────────────────────────
