@@ -10,11 +10,17 @@
     "phone": "+393490028627",
     "logo": "img/Logo.png",
     "logo_qr": "img/Logo2.png",
-    "website": "https://www.palminomotors.com"
+    "website": "https://www.palminomotors.com",
+    "mapsUrl": "https://maps.app.goo.gl/HwaViLy4AL9JxTW6A"
   },
   "sharedReferenti": {
     "keeway_group": {
-      "brands": ["Morbidelli", "Cyclone", "Benda", "Keeway"],
+      "brands": [
+        "Morbidelli",
+        "Cyclone",
+        "Benda",
+        "Keeway"
+      ],
       "referenti": [
         {
           "name": "Valentina Auditore",

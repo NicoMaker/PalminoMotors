@@ -64,7 +64,7 @@ function populateFooter(company) {
   s("fullAddress", (el) => {
     const full = `${company.address}, ${company.cap} ${company.city} (${company.province})`;
     el.textContent = full;
-    el.href = company.mapsUrl || "https://maps.app.goo.gl/YoAfvjHpHRBYbn938";
+    el.href = company.mapsUrl || "https://maps.app.goo.gl/HwaViLy4AL9JxTW6A";
     el.onclick = openMaps;
   });
 
