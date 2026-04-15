@@ -64,7 +64,8 @@ function populateFooter(company) {
   s("fullAddress", (el) => {
     const full = `${company.address}, ${company.cap} ${company.city} (${company.province})`;
     el.textContent = full;
-    el.href = "https://maps.app.goo.gl/4dbdxDydMQEFdnAK8";
+    el.href = company.mapsUrl || "https://maps.app.goo.gl/YoAfvjHpHRBYbn938";
+    el.onclick = openMaps;
   });
 
   s("footerPhone", (el) => {
@@ -175,6 +176,36 @@ function openMail(event) {
     setTimeout(() => window.open("https://mail.google.com", "_blank"), 1200);
   } else {
     window.open("https://mail.google.com", "_blank");
+  }
+}
+
+function openMaps(event) {
+  event.preventDefault();
+  const href = event.currentTarget?.href || "";
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    let appOpened = false;
+    const onBlur = () => { appOpened = true; };
+    window.addEventListener("blur", onBlur);
+
+    const a = document.createElement("a");
+    // Su iOS prova comgooglemaps://, su Android usa il link diretto (gestisce l'app)
+    a.href = isIOS
+      ? href.replace("https://maps.app.goo.gl", "comgooglemaps://")
+      : href;
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    setTimeout(() => {
+      window.removeEventListener("blur", onBlur);
+      if (!appOpened) window.open(href, "_blank");
+    }, 1200);
+  } else {
+    window.open(href, "_blank");
   }
 }
 
