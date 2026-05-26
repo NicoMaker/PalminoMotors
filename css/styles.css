@@ -173,7 +173,8 @@ body.header-expanded {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.subtitle {
+.subtitle,
+.subtitle_home {
   font-size: 0.62rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -183,6 +184,11 @@ body.header-expanded {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.subtitle_home {
+    font-size: 1rem;
+    color: var(--accent);
 }
 
 .header-right {
