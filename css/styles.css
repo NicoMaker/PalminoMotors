@@ -168,7 +168,7 @@ body.header-expanded {
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 1.1;
-  background: linear-gradient(135deg, #fff 0%, #c8c8e0 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #ffcccc 50%, #dc2626 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -343,7 +343,7 @@ body.header-expanded {
   font-weight: 800;
   letter-spacing: -0.03em;
   text-align: center;
-  background: linear-gradient(135deg, #fff 0%, #c8c8e0 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #ffcccc 50%, #dc2626 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -884,10 +884,11 @@ body.header-expanded {
   font-size: 1rem;
   font-weight: 800;
   margin-bottom: 6px;
-  background: linear-gradient(135deg, var(--text), var(--text-secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  background: linear-gradient(135deg, #ffffff 0%, #ffcccc 50%, #dc2626 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
 }
 .footer-address {
   font-size: 0.83rem;
@@ -1163,4 +1164,16 @@ body.header-expanded {
   white-space: nowrap;
   color: var(--bc, #dc2626);
   opacity: 1;
+}
+
+/* ── Palmino Motors: sfumatura bianco→rosso ovunque ── */
+#companyName,
+.footer-company-name,
+#homeCompanyName,
+.home-company-name {
+  background: linear-gradient(135deg, #ffffff 0%, #ffcccc 50%, #dc2626 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
 }
