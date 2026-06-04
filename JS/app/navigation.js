@@ -19,6 +19,8 @@ function enterArea(index) {
   const stickyTitle = document.getElementById("headerSectionTitleText");
   stickyBar.style.display = "";
   document.body.classList.add("header-expanded");
+  const headerSubtitle = document.getElementById("headerSubtitle");
+  if (headerSubtitle) headerSubtitle.style.display = "none";
 
   if (index === "brands") {
     dot.style.background = "linear-gradient(135deg,#dc2626,#f97316)";
@@ -46,6 +48,8 @@ function goHome() {
   document.getElementById("screenHome").style.display = "";
 
   document.body.classList.remove("header-expanded");
+  const headerSubtitle = document.getElementById("headerSubtitle");
+  if (headerSubtitle) headerSubtitle.style.display = "";
   const sb = document.getElementById("headerSectionTitleRow");
   if (sb) sb.style.display = "none";
 
