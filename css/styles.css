@@ -180,13 +180,19 @@ body.header-expanded .hub-header .subtitle {
   display: none;
 }
 
+/* Sottotitolo header — stesso schema fluido del titolo, ma più piccolo */
+.hub-header .subtitle {
+  font-size: clamp(0.58rem, 0.28rem + 1.55vw, 0.72rem);
+  letter-spacing: clamp(1.5px, 0.25vw + 1px, 2.5px);
+  margin-top: clamp(2px, 0.4vw, 4px);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
 .subtitle,
 .subtitle_home {
-  font-size: 0.62rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 3px;
-  margin-top: 2px;
   background: linear-gradient(90deg, var(--accent), #f97316);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -194,8 +200,10 @@ body.header-expanded .hub-header .subtitle {
 }
 
 .subtitle_home {
-    font-size: 1rem;
-    color: var(--accent);
+  font-size: 1rem;
+  letter-spacing: 3px;
+  margin-top: 2px;
+  color: var(--accent);
 }
 
 .header-right {
