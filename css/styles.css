@@ -163,15 +163,21 @@ body.header-expanded {
   display: flex;
   flex-direction: column;
 }
+/* Testo brand sfumato (header, home, footer) */
+.brand-gradient-text,
 .main-title {
-  font-size: 1.3rem;
+  display: inline-block;
   font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 1.1;
-  background: linear-gradient(135deg, #ffffff 0%, #ffcccc 50%, #dc2626 100%);
+  background-image: linear-gradient(135deg, #ffffff 0%, #ffcccc 50%, #dc2626 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent;
+}
+.main-title {
+  font-size: 1.3rem;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
 }
 .subtitle,
 .subtitle_home {
@@ -346,13 +352,8 @@ body.header-expanded {
 
 .home-company-name {
   font-size: 1.8rem;
-  font-weight: 800;
   letter-spacing: -0.03em;
   text-align: center;
-  background: linear-gradient(135deg, #ffffff 0%, #ffcccc 50%, #dc2626 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   margin-bottom: 8px;
 }
 
@@ -873,28 +874,34 @@ body.header-expanded {
 }
 
 .footer-logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   margin-bottom: 28px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--border);
 }
 .footer-logo {
-  width: 60px;
-  height: 60px;
-  border-radius: 12px;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 200px;
+  max-height: 88px;
+  border-radius: 0;
   object-fit: contain;
-  background: var(--bg);
-  padding: 5px;
+  background: transparent;
+  padding: 0;
   margin-bottom: 10px;
 }
-.footer-company-name {
+.footer-logo-section .footer-company-name {
+  display: block;
   font-size: 1rem;
-  font-weight: 800;
+  letter-spacing: -0.04em;
   margin-bottom: 6px;
-  background: linear-gradient(135deg, #ffffff 0%, #ffcccc 50%, #dc2626 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
-  color: transparent !important;
+}
+.footer-logo-section .footer-address {
+  display: block;
+  width: 100%;
 }
 .footer-address {
   font-size: 0.83rem;
@@ -1172,14 +1179,24 @@ body.header-expanded {
   opacity: 1;
 }
 
-/* ── Palmino Motors: sfumatura bianco→rosso ovunque ── */
-#companyName,
-.footer-company-name,
+/* Footer: gradiente come header, layout a colonna sotto il logo */
+.footer-logo-section .footer-company-name,
+.footer-logo-section #companyName {
+  display: block;
+  background-image: linear-gradient(135deg, #ffffff 0%, #ffcccc 50%, #dc2626 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Home: gradiente centrato */
 #homeCompanyName,
 .home-company-name {
-  background: linear-gradient(135deg, #ffffff 0%, #ffcccc 50%, #dc2626 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
-  color: transparent !important;
+  display: inline-block;
+  background-image: linear-gradient(135deg, #ffffff 0%, #ffcccc 50%, #dc2626 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
 }

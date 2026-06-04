@@ -91,13 +91,15 @@ function populateFooter(company) {
 
   const footerLogo = document.getElementById("footerLogo");
   if (footerLogo && company.logo) {
-    footerLogo.src = company.logo;
+    const base = window.location.pathname.includes("/qr/") ? "../" : "";
+    footerLogo.src = base + company.logo;
   }
 
   const footerCol = document.getElementById("footerCompanyCol");
   if (footerCol && company.logo && !footerLogo) {
     const img = document.createElement("img");
-    img.src = company.logo;
+    const base = window.location.pathname.includes("/qr/") ? "../" : "";
+    img.src = base + company.logo;
     img.className = "footer-logo";
     img.alt = "Logo";
     img.onerror = () => img.remove();
