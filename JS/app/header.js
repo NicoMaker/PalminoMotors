@@ -9,7 +9,7 @@ function handleHeaderLogo(logoPath) {
 
   const img = document.createElement("img");
   img.src = logoPath;
-  img.className = "header-logo-img";
+  img.className = "header-logo-img brand-header-logo";
   img.alt = "Logo";
   img.style.cursor = "pointer";
   img.onclick = goHome;
