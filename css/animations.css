@@ -120,7 +120,9 @@
   opacity: 0;
   transform: translateY(26px) scale(0.97);
   animation: staggerIn 0.55s var(--smooth) forwards;
-  animation-delay: calc(var(--stagger-i, 0) * 30ms); /* prima 60ms → più veloce */
+  animation-delay: calc(
+    var(--stagger-i, 0) * 30ms
+  ); /* prima 60ms → più veloce */
 }
 @keyframes staggerIn {
   to {
@@ -411,7 +413,8 @@
   }
 }
 
-/* ── HOVER solo dove ha senso (niente sticky-hover touch) ─ */@media (hover: none) {
+/* ── HOVER solo dove ha senso (niente sticky-hover touch) ─ */
+@media (hover: none) {
   .area-card::after,
   .detail-link-card::before {
     display: none;
@@ -560,7 +563,9 @@ html:not(.no-intro) body:not(.booted) .hub-header {
 }
 .pre-reveal.stagger-in {
   animation: staggerIn 0.55s var(--smooth) forwards;
-  animation-delay: calc(var(--stagger-i, 0) * 30ms); /* allineato con .stagger-in */
+  animation-delay: calc(
+    var(--stagger-i, 0) * 30ms
+  ); /* allineato con .stagger-in */
 }
 
 /* ── HEADER "scrolled": più presenza scendendo ──────────── */
@@ -581,7 +586,9 @@ html:not(.no-intro) body:not(.booted) .hub-header {
    PAGINA QR — modernizzazione
    ═══════════════════════════════════════════ */
 .qr-header {
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 .page-title.brand-gradient-text {
   background-image: linear-gradient(
@@ -671,8 +678,13 @@ html:not(.no-intro) body:not(.booted) .hub-header {
   animation: placeholderBreath 3.2s ease-in-out infinite;
 }
 @keyframes placeholderBreath {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 0.9; }
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.9;
+  }
 }
 
 /* ── REDUCED MOTION (v2) ────────────────────────────────── */
@@ -707,13 +719,15 @@ html:not(.no-intro) body:not(.booted) .hub-header {
   align-items: center;
   text-decoration: none;
   border-radius: 10px;
-  transition: transform 0.25s var(--spring), filter 0.25s ease;
+  transition:
+    transform 0.25s var(--spring),
+    filter 0.25s ease;
 }
 .qr-header-logo {
   display: block;
   width: auto;
-  height: 64px;          /* più grande */
-  max-width: 180px;      /* più grande */
+  height: 64px; /* più grande */
+  max-width: 180px; /* più grande */
   object-fit: contain;
   filter: drop-shadow(0 2px 10px rgba(220, 38, 38, 0.25));
 }
@@ -740,7 +754,7 @@ html:not(.no-intro) body:not(.booted) .hub-header {
     gap: 8px;
   }
   .qr-header-logo {
-    height: 44px;        /* più piccolo su mobile ma comunque leggibile */
+    height: 44px; /* più piccolo su mobile ma comunque leggibile */
     max-width: 130px;
   }
 }

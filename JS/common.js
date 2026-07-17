@@ -189,7 +189,9 @@ function openMaps(event) {
 
   if (isMobile) {
     let appOpened = false;
-    const onBlur = () => { appOpened = true; };
+    const onBlur = () => {
+      appOpened = true;
+    };
     window.addEventListener("blur", onBlur);
 
     const a = document.createElement("a");

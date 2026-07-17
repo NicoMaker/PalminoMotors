@@ -15,12 +15,7 @@
   },
   "sharedReferenti": {
     "keeway_group": {
-      "brands": [
-        "Morbidelli",
-        "Cyclone",
-        "Benda",
-        "Keeway"
-      ],
+      "brands": ["Morbidelli", "Cyclone", "Benda", "Keeway"],
       "referenti": [
         {
           "name": "Valentina Auditore",
