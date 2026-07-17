@@ -13,58 +13,31 @@
   //  (la SPA non ricarica: tornare alla home
   //   da una sezione non ritriggera nulla)
   // ═══════════════════════════════════════════
+  //  L'intro è 100% CSS (parte sempre da sola).
+  //  Qui: solo pulizia del nodo e classe .booted per la SPA.
   function runBootIntro() {
     const splash = $("introSplash");
+    const skipped = document.documentElement.classList.contains("no-intro");
 
-    // Intro SOLO al primo avvio della sessione:
-    // tornando da qr/ (o da altre pagine) non si ripete
-    let alreadySeen = false;
-    try {
-      alreadySeen = sessionStorage.getItem("pm_intro_done") === "1";
-    } catch (e) {
-      alreadySeen = false;
-    }
-    if (alreadySeen) {
-      if (splash) splash.remove();
-      document.body.classList.add("booted");
-      return;
-    }
-    try {
-      sessionStorage.setItem("pm_intro_done", "1");
-    } catch (e) {}
-
-    document.body.classList.add("boot");
-
-    const endBoot = () => {
-      document.body.classList.remove("boot");
-      document.body.classList.add("booted");
+    const removeSplash = () => {
+      if (splash && document.body.contains(splash)) splash.remove();
     };
 
-    if (!splash || reduced) {
-      if (splash) splash.remove();
-      // lascia comunque girare le animazioni hero al primo paint
-      setTimeout(endBoot, reduced ? 0 : 1400);
+    if (!splash || skipped || reduced) {
+      removeSplash();
+      document.body.classList.add("booted");
       return;
     }
 
-    // Sequenza: logo grande → shrink+fade → rivela la pagina
-    requestAnimationFrame(() => splash.classList.add("intro-in"));
-    setTimeout(() => {
-      splash.classList.add("intro-out");
-      splash.addEventListener(
-        "transitionend",
-        () => {
-          splash.remove();
-          endBoot();
-        },
-        { once: true },
-      );
-      // fallback di sicurezza
-      setTimeout(() => {
-        if (document.body.contains(splash)) splash.remove();
-        endBoot();
-      }, 1200);
-    }, 950);
+    // Rimuovi lo splash quando la sua animazione di uscita finisce
+    splash.addEventListener("animationend", (e) => {
+      if (e.target === splash) removeSplash();
+    });
+    setTimeout(removeSplash, 3200); // fallback
+
+    // .booted DOPO che anche le animazioni hero sono terminate,
+    // così non vengono interrotte a metà
+    setTimeout(() => document.body.classList.add("booted"), 2800);
   }
 
   // ═══════════════════════════════════════════
@@ -257,7 +230,21 @@
     fio.observe(footer);
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  // Sulla pagina QR: i link verso l'hub disattivano l'intro al ritorno
+  function initSkipIntroLinks() {
+    document
+      .querySelectorAll(".back-link, .qr-header-logo-link")
+      .forEach((a) => {
+        a.addEventListener("click", () => {
+          try {
+            sessionStorage.setItem("pm_skip_intro", "1");
+          } catch (e) {}
+        });
+      });
+  }
+
+  function start() {
+    initSkipIntroLinks();
     runBootIntro();
     initScrollFX();
     observeDynamic();
@@ -265,5 +252,11 @@
     wrapNavigation();
     initRipple();
     initFooterReveal();
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start);
+  } else {
+    start();
+  }
 })();

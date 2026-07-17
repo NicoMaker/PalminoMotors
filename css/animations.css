@@ -446,7 +446,10 @@
    V2 — INTRO SPLASH, SCROLL REVEAL, QR MODERNA
    ═══════════════════════════════════════════════════════════ */
 
-/* ── INTRO SPLASH: logo grande solo all'avvio ───────────── */
+/* ── INTRO SPLASH: logo grande solo all'avvio ─────────────
+   100% CSS: parte SEMPRE al caricamento, nessun JS richiesto.
+   Sequenza: logo fade-in → pausa → fade 100→0 → splash sparisce.
+   html.no-intro (ritorno da QR) la disattiva prima del render. ── */
 .intro-splash {
   position: fixed;
   inset: 0;
@@ -455,20 +458,18 @@
   align-items: center;
   justify-content: center;
   background: radial-gradient(ellipse at 50% 40%, #12121f 0%, #080810 70%);
-  transition:
-    opacity 0.5s var(--smooth),
-    visibility 0.5s;
+  pointer-events: none;
+  animation: splashHide 0.55s var(--smooth) 1.75s forwards;
+}
+html.no-intro .intro-splash {
+  display: none;
 }
 .intro-splash-logo {
   width: min(46vw, 300px);
   max-height: 40vh;
   object-fit: contain;
-  opacity: 0;
-  transform: scale(0.7);
   filter: drop-shadow(0 0 40px rgba(220, 38, 38, 0.35));
-  transition:
-    opacity 0.55s var(--smooth),
-    transform 0.7s var(--spring);
+  animation: splashLogo 1.9s var(--smooth) forwards;
 }
 .intro-splash-ring {
   position: absolute;
@@ -476,36 +477,49 @@
   height: min(62vw, 420px);
   border-radius: 50%;
   border: 1px solid rgba(220, 38, 38, 0.25);
-  opacity: 0;
-  transform: scale(0.6);
-  transition:
-    opacity 0.6s ease 0.15s,
-    transform 0.9s var(--smooth) 0.15s;
+  animation: splashRing 1.9s var(--smooth) forwards;
 }
-.intro-splash.intro-in .intro-splash-logo {
-  opacity: 1;
-  transform: scale(1);
+@keyframes splashLogo {
+  0% {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  28% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  72% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
 }
-.intro-splash.intro-in .intro-splash-ring {
-  opacity: 1;
-  transform: scale(1);
-  animation: ringPulse 1.6s ease-in-out infinite 0.6s;
+@keyframes splashRing {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  32% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.12);
+  }
 }
-@keyframes ringPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.18); }
-  50% { box-shadow: 0 0 0 24px rgba(220, 38, 38, 0); }
-}
-.intro-splash.intro-out {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-.intro-splash.intro-out .intro-splash-logo {
-  opacity: 0;
-  transform: scale(1.04);
-  transition:
-    opacity 0.7s var(--smooth),
-    transform 0.7s var(--smooth);
+@keyframes splashHide {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 /* ── HERO ANIMATO SOLO AL BOOT (non tornando alla home) ─── */
@@ -514,20 +528,20 @@
 .subtitle_home {
   animation: none;
 }
-body.boot .home-logo-hero {
-  animation: heroPop 0.9s var(--spring) 0.85s both;
+/* Al boot: hero entra mentre lo splash sfuma (tutto CSS).
+   body.booted (aggiunto dal JS dopo l'avvio) le spegne, così
+   tornare alla home dalle sezioni non le fa ripartire. */
+html:not(.no-intro) body:not(.booted) .home-logo-hero {
+  animation: heroPop 0.9s var(--spring) 1.55s both;
 }
-body.boot .home-company-name {
-  animation: fadeUp 0.7s var(--smooth) 1.05s both;
+html:not(.no-intro) body:not(.booted) .home-company-name {
+  animation: fadeUp 0.7s var(--smooth) 1.75s both;
 }
-body.boot .subtitle_home {
-  animation: fadeUp 0.7s var(--smooth) 1.2s both;
+html:not(.no-intro) body:not(.booted) .subtitle_home {
+  animation: fadeUp 0.7s var(--smooth) 1.9s both;
 }
-body.boot .hub-header {
-  animation: headerDrop 0.6s var(--smooth) 0.95s both;
-}
-body.booted .hub-header {
-  animation: none;
+html:not(.no-intro) body:not(.booted) .hub-header {
+  animation: headerDrop 0.6s var(--smooth) 1.65s both;
 }
 
 /* Logo hero: pronto a ridursi con lo scroll (via JS) */
