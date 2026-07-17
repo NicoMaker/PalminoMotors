@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QR Code Generator - Palmino Motors</title>
     <link rel="stylesheet" href="../css/qr.css" />
+    <link rel="stylesheet" href="../css/animations.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,28 +17,50 @@
   </head>
   <body>
     <div class="noise-overlay"></div>
+    <div class="ambient-orbs" aria-hidden="true">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+    </div>
 
     <div class="main-wrapper">
       <!-- Header -->
       <header class="qr-header">
-        <a href="../index.html" class="back-link" aria-label="Torna alla home">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+        <div class="header-left">
+          <a
+            href="../index.html"
+            class="back-link"
+            aria-label="Torna alla home"
           >
-            <path d="M19 12H5" />
-            <path d="M12 19l-7-7 7-7" />
-          </svg>
-          <span>Hub</span>
-        </a>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M19 12H5" />
+              <path d="M12 19l-7-7 7-7" />
+            </svg>
+            <span>Hub</span>
+          </a>
+          <a
+            href="../index.html"
+            class="qr-header-logo-link"
+            aria-label="Palmino Motors — Home"
+          >
+            <img
+              src="../img/Logo.png"
+              alt="Palmino Motors"
+              class="qr-header-logo"
+              onerror="this.parentElement.remove()"
+            />
+          </a>
+        </div>
         <div class="header-center">
-          <h1 class="page-title">QR Code Generator</h1>
+          <h1 class="page-title brand-gradient-text">QR Code Generator</h1>
           <p class="page-subtitle">Genera QR Code personalizzati</p>
         </div>
         <div class="header-spacer"></div>
@@ -407,5 +430,6 @@
     <script src="../JS/qr/ui.js"></script>
     <script src="../JS/qr/footer.js"></script>
     <script src="../JS/qr/init.js"></script>
+    <script src="../JS/app/animations.js"></script>
   </body>
 </html>

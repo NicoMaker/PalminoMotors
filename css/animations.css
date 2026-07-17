@@ -304,7 +304,7 @@
 
 /* ── HEADER: sottile respiro del glow ───────────────────── */
 .hub-header {
-  animation: headerDrop 0.6s var(--smooth) both;
+  /* animazione gestita da body.boot (solo all'avvio) */
 }
 @keyframes headerDrop {
   from {
@@ -439,5 +439,299 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   V2 — INTRO SPLASH, SCROLL REVEAL, QR MODERNA
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── INTRO SPLASH: logo grande solo all'avvio ───────────── */
+.intro-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 50% 40%, #12121f 0%, #080810 70%);
+  transition:
+    opacity 0.5s var(--smooth),
+    visibility 0.5s;
+}
+.intro-splash-logo {
+  width: min(46vw, 300px);
+  max-height: 40vh;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(0.7);
+  filter: drop-shadow(0 0 40px rgba(220, 38, 38, 0.35));
+  transition:
+    opacity 0.55s var(--smooth),
+    transform 0.7s var(--spring);
+}
+.intro-splash-ring {
+  position: absolute;
+  width: min(62vw, 420px);
+  height: min(62vw, 420px);
+  border-radius: 50%;
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 0.6s ease 0.15s,
+    transform 0.9s var(--smooth) 0.15s;
+}
+.intro-splash.intro-in .intro-splash-logo {
+  opacity: 1;
+  transform: scale(1);
+}
+.intro-splash.intro-in .intro-splash-ring {
+  opacity: 1;
+  transform: scale(1);
+  animation: ringPulse 1.6s ease-in-out infinite 0.6s;
+}
+@keyframes ringPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.18); }
+  50% { box-shadow: 0 0 0 24px rgba(220, 38, 38, 0); }
+}
+.intro-splash.intro-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.intro-splash.intro-out .intro-splash-logo {
+  opacity: 0;
+  transform: scale(1.04);
+  transition:
+    opacity 0.7s var(--smooth),
+    transform 0.7s var(--smooth);
+}
+
+/* ── HERO ANIMATO SOLO AL BOOT (non tornando alla home) ─── */
+.home-logo-hero,
+.home-company-name,
+.subtitle_home {
+  animation: none;
+}
+body.boot .home-logo-hero {
+  animation: heroPop 0.9s var(--spring) 0.85s both;
+}
+body.boot .home-company-name {
+  animation: fadeUp 0.7s var(--smooth) 1.05s both;
+}
+body.boot .subtitle_home {
+  animation: fadeUp 0.7s var(--smooth) 1.2s both;
+}
+body.boot .hub-header {
+  animation: headerDrop 0.6s var(--smooth) 0.95s both;
+}
+body.booted .hub-header {
+  animation: none;
+}
+
+/* Logo hero: pronto a ridursi con lo scroll (via JS) */
+.home-logo-hero {
+  transform-origin: center top;
+  transition:
+    transform 0.15s linear,
+    opacity 0.15s linear;
+  will-change: transform, opacity;
+}
+
+/* ── PRE-REVEAL: nascosto finché non entra in viewport ──── */
+.pre-reveal {
+  opacity: 0;
+  transform: translateY(26px) scale(0.97);
+}
+.pre-reveal.stagger-in {
+  animation: staggerIn 0.55s var(--smooth) forwards;
+  animation-delay: calc(var(--stagger-i, 0) * 60ms);
+}
+
+/* ── HEADER "scrolled": più presenza scendendo ──────────── */
+.hub-header.scrolled,
+.qr-header.scrolled {
+  box-shadow:
+    0 1px 0 rgba(var(--hr, 220, 38, 38), 0.3),
+    0 10px 40px rgba(0, 0, 0, 0.65);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ── ORBS: aggancio parallax scroll ─────────────────────── */
+.ambient-orbs .orb {
+  translate: 0 var(--scrollY, 0);
+}
+
+/* ═══════════════════════════════════════════
+   PAGINA QR — modernizzazione
+   ═══════════════════════════════════════════ */
+.qr-header {
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.page-title.brand-gradient-text {
+  background-image: linear-gradient(
+    110deg,
+    #fafafa 0%,
+    #dc2626 35%,
+    #f97316 55%,
+    #dc2626 75%,
+    #fafafa 100%
+  );
+  background-size: 220% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientSlide 6s linear infinite;
+}
+
+.panel {
+  transition:
+    transform 0.3s var(--smooth),
+    box-shadow 0.3s var(--smooth),
+    border-color 0.3s ease;
+}
+.panel:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.45);
+  border-color: rgba(220, 38, 38, 0.35);
+}
+
+.form-control {
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+.form-control:focus {
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.15);
+}
+.form-group label {
+  transition: color 0.2s ease;
+}
+.form-group:focus-within label {
+  color: #f87171;
+}
+
+.btn-primary,
+.btn-secondary {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.22s var(--spring),
+    box-shadow 0.25s ease,
+    background 0.2s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4);
+}
+.btn-primary:active,
+.btn-secondary:active {
+  transform: scale(0.97);
+}
+
+.qr-container {
+  transition:
+    transform 0.3s var(--smooth),
+    box-shadow 0.3s ease;
+}
+.qr-container:hover {
+  transform: scale(1.015);
+}
+#qr-canvas,
+.qr-container canvas {
+  animation: qrAppear 0.5s var(--spring) both;
+}
+@keyframes qrAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.85) rotate(-2deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+.placeholder {
+  animation: placeholderBreath 3.2s ease-in-out infinite;
+}
+@keyframes placeholderBreath {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.9; }
+}
+
+/* ── REDUCED MOTION (v2) ────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .intro-splash {
+    display: none;
+  }
+  .pre-reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .home-logo-hero {
+    transition: none;
+  }
+  .placeholder,
+  #qr-canvas,
+  .qr-container canvas,
+  .page-title.brand-gradient-text {
+    animation: none !important;
+  }
+}
+
+/* ── QR HEADER: logo accanto a "Torna a Hub" ────────────── */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 80px;
+}
+.qr-header-logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: transform 0.25s var(--spring), filter 0.25s ease;
+}
+.qr-header-logo {
+  display: block;
+  width: auto;
+  height: 44px;
+  max-width: 130px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 10px rgba(220, 38, 38, 0.25));
+}
+.qr-header-logo-link:hover {
+  transform: scale(1.07) rotate(-2deg);
+  filter: drop-shadow(0 4px 16px rgba(220, 38, 38, 0.4));
+}
+.qr-header-logo-link:active {
+  transform: scale(0.96);
+}
+.qr-header-logo-link:focus-visible {
+  outline: 2px solid #f97316;
+  outline-offset: 3px;
+}
+
+/* Bilancia lo spacer a destra per tenere il titolo centrato */
+.qr-header .header-spacer {
+  min-width: 80px;
+  flex-shrink: 1;
+}
+
+@media (max-width: 640px) {
+  .header-left {
+    gap: 8px;
+  }
+  .qr-header-logo {
+    height: 34px;
+    max-width: 92px;
+  }
+}
+@media (max-width: 420px) {
+  .qr-header-logo-link {
+    display: none;
   }
 }
