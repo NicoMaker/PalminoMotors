@@ -1,116 +1,4 @@
 <!doctype html>
-<!--
-  PAGINA IN MANUTENZIONE
-
-  Il codice originale non e' stato cancellato: e' commentato in fondo a
-  questo file (fra ORIGINALE-INIZIO e ORIGINALE-FINE) e nella cronologia git.
-  Non esiste nessun file di backup, quindi non e' scaricabile da URL.
-
-  Per ripristinare:   git checkout <hash> -- qr/index.html
-  (l'hash si trova con: git log --oneline -- qr/index.html)
--->
-
-<html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="robots" content="noindex, nofollow" />
-    <title>Palmino Motors - Sito in manutenzione</title>
-    <link rel="icon" type="image/x-icon" href="../img/Logo2.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      body {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 28px;
-        padding: 40px 24px;
-        text-align: center;
-
-        background: #080810;
-        color: #ffffff;
-        font-family: "Sora", -apple-system, BlinkMacSystemFont, sans-serif;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      .logo {
-        width: 96px;
-        height: auto;
-      }
-
-      h1 {
-        font-size: 34px;
-        font-weight: 700;
-        line-height: 1.25;
-      }
-
-      p {
-        font-size: 18px;
-        line-height: 1.65;
-        font-weight: 400;
-        color: #c4c4d4;
-        max-width: 30ch;
-      }
-
-      .rule {
-        width: 56px;
-        height: 3px;
-        border-radius: 3px;
-        background: #dc2626;
-      }
-
-      small {
-        font-size: 14px;
-        color: #7c7c94;
-      }
-
-      @media (max-width: 480px) {
-        h1 {
-          font-size: 27px;
-        }
-        p {
-          font-size: 16.5px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <img
-      class="logo"
-      src="../img/Logo.png"
-      alt="Palmino Motors"
-      onerror="this.remove()"
-    />
-
-    <div class="rule"></div>
-
-    <h1>Sito in manutenzione</h1>
-
-    <p>Stiamo aggiornando il sito. Torniamo online a breve.</p>
-
-    <small>Palmino Motors</small>
-  </body>
-</html>
-
-<!-- CODICE ORIGINALE DI qr/index.html — DISATTIVATO, NON CANCELLATO
-     I commenti HTML non si annidano, quindi qui sotto i marcatori interni
-     sono neutralizzati:  apertura -> <!~~   chiusura -> ~~>
-     Rimettendo quelle due sequenze si riottiene il file identico. -->
-<!-- ORIGINALE-INIZIO
-<!doctype html>
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
@@ -135,7 +23,7 @@
     </div>
 
     <div class="main-wrapper">
-      <!~~ Header ~~>
+      <!-- Header -->
       <header class="qr-header">
         <div class="header-left">
           <a
@@ -178,11 +66,11 @@
         <div class="header-spacer"></div>
       </header>
 
-      <!~~ Main Content ~~>
+      <!-- Main Content -->
       <br />
       <br />
       <main class="qr-layout">
-        <!~~ Input Panel ~~>
+        <!-- Input Panel -->
         <div class="panel input-panel">
           <div class="panel-header">
             <h2 class="panel-title">Configurazione</h2>
@@ -200,7 +88,7 @@
             </select>
           </div>
 
-          <!~~ Text Input ~~>
+          <!-- Text Input -->
           <div class="form-group" id="text-input">
             <label for="qr-text">Testo</label>
             <textarea
@@ -211,7 +99,7 @@
             ></textarea>
           </div>
 
-          <!~~ URL Input ~~>
+          <!-- URL Input -->
           <div class="form-group hidden" id="url-input">
             <label for="qr-url">URL</label>
             <input
@@ -222,7 +110,7 @@
             />
           </div>
 
-          <!~~ Email Input ~~>
+          <!-- Email Input -->
           <div class="email-inputs hidden" id="email-input">
             <div class="form-group">
               <label for="qr-email">Email destinatario</label>
@@ -253,7 +141,7 @@
             </div>
           </div>
 
-          <!~~ Phone Input ~~>
+          <!-- Phone Input -->
           <div class="form-group hidden" id="phone-input">
             <label for="qr-phone">Numero di telefono</label>
             <input
@@ -264,7 +152,7 @@
             />
           </div>
 
-          <!~~ WhatsApp Input ~~>
+          <!-- WhatsApp Input -->
           <div class="hidden" id="whatsapp-input">
             <div class="form-group">
               <label for="qr-whatsapp">Numero WhatsApp</label>
@@ -288,7 +176,7 @@
             </div>
           </div>
 
-          <!~~ WiFi Input ~~>
+          <!-- WiFi Input -->
           <div class="wifi-inputs hidden" id="wifi-input">
             <div class="form-group">
               <label for="wifi-ssid">Nome rete (SSID)</label>
@@ -318,7 +206,7 @@
             </div>
           </div>
 
-          <!~~ Size ~~>
+          <!-- Size -->
           <div class="divider"></div>
           <div class="form-group">
             <label for="qr-size">Dimensione</label>
@@ -332,7 +220,7 @@
           <button id="generate-btn" class="btn-primary">Genera QR Code</button>
         </div>
 
-        <!~~ Output Panel ~~>
+        <!-- Output Panel -->
         <div class="panel output-panel">
           <div class="panel-header">
             <h2 class="panel-title">Anteprima</h2>
@@ -446,7 +334,7 @@
       </main>
     </div>
 
-    <!~~ Footer ~~>
+    <!-- Footer -->
     <footer class="site-footer">
       <div class="footer-content">
         <div class="footer-logo-section">
@@ -517,7 +405,7 @@
       </div>
     </footer>
 
-    <!~~ Toast ~~>
+    <!-- Toast -->
     <div class="toast" id="toast">
       <svg
         class="toast-icon"
@@ -536,11 +424,11 @@
       <span id="toast-message">QR Code generato!</span>
     </div>
 
-    <!~~ ══ SCRIPTS ══ ~~>
+    <!-- ══ SCRIPTS ══ -->
     <script src="../JS/common.js"></script>
-    <!~~ Fix per caricamento logo nel footer ~~>
+    <!-- Fix per caricamento logo nel footer -->
     <script src="../JS/qr/footer-fix.js"></script>
-    <!~~ Specifici pagina QR - CORRETTI: sono nella cartella qr/ ~~>
+    <!-- Specifici pagina QR - CORRETTI: sono nella cartella qr/ -->
     <script src="../JS/qr/data.js"></script>
     <script src="../JS/qr/canvas.js"></script>
     <script src="../JS/qr/actions.js"></script>
@@ -550,4 +438,3 @@
     <script src="../JS/app/animations.js"></script>
   </body>
 </html>
-ORIGINALE-FINE -->
