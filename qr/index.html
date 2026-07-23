@@ -1,22 +1,13 @@
 <!doctype html>
 <!--
-  ═══════════════════════════════════════════════════════════════════════
-  PALMINO MOTORS — PAGINA IN MANUTENZIONE
-  ═══════════════════════════════════════════════════════════════════════
-  Il codice originale di questa pagina NON è stato cancellato: si trova
-  commentato in fondo a questo file, fra ORIGINALE-INIZIO e ORIGINALE-FINE.
-  Non esiste nessun file di backup separato, così non è raggiungibile
-  da URL (niente /index.bak, /index.original, ecc.).
+  PAGINA IN MANUTENZIONE
 
-  PER RIPRISTINARE, dalla cartella del progetto:
-      git checkout HEAD~0 -- qr/index.html
-  oppure, più semplice:
-      git log --oneline -- qr/index.html      (trova l'ultimo commit buono)
-      git checkout <hash> -- qr/index.html
-  In alternativa: copia il blocco commentato qui sotto, sostituisci
-  <!~~ con la sequenza di apertura commento e ~~> con quella di chiusura,
-  e incolla tutto al posto di questo file.
-  ═══════════════════════════════════════════════════════════════════════
+  Il codice originale non e' stato cancellato: e' commentato in fondo a
+  questo file (fra ORIGINALE-INIZIO e ORIGINALE-FINE) e nella cronologia git.
+  Non esiste nessun file di backup, quindi non e' scaricabile da URL.
+
+  Per ripristinare:   git checkout <hash> -- qr/index.html
+  (l'hash si trova con: git log --oneline -- qr/index.html)
 -->
 
 <html lang="it">
@@ -24,369 +15,100 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>QR Code Generator - In manutenzione | Palmino Motors</title>
+    <title>Palmino Motors - Sito in manutenzione</title>
     <link rel="icon" type="image/x-icon" href="../img/Logo2.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
-      :root {
-        --bg: #080810;
-        --bg-card: #10101c;
-        --border: rgba(255, 255, 255, 0.07);
-        --text: #f0f0f8;
-        --text-secondary: #c8c8d8;
-        --text-muted: #8888a8;
-        --accent: #dc2626;
-        --accent-soft: rgba(220, 38, 38, 0.12);
-        --radius: 12px;
-        --font-sans: "Sora", -apple-system, BlinkMacSystemFont, sans-serif;
-        --font-mono: "JetBrains Mono", "SF Mono", monospace;
-      }
-      *,
-      *::before,
-      *::after {
+      * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
-      html {
-        -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
-      }
+
       body {
-        font-family: var(--font-sans);
-        background: var(--bg);
-        color: var(--text);
         min-height: 100vh;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        padding: 28px 20px;
-        position: relative;
-        overflow-x: hidden;
-      }
-
-      /* ── Sfondo ── */
-      .orb {
-        position: fixed;
-        border-radius: 50%;
-        filter: blur(90px);
-        pointer-events: none;
-        z-index: 0;
-        opacity: 0.5;
-      }
-      .orb-1 {
-        width: 480px;
-        height: 480px;
-        background: var(--accent-soft);
-        top: -180px;
-        left: -140px;
-        animation: float 18s ease-in-out infinite;
-      }
-      .orb-2 {
-        width: 400px;
-        height: 400px;
-        background: rgba(220, 38, 38, 0.08);
-        bottom: -160px;
-        right: -120px;
-        animation: float 22s ease-in-out infinite reverse;
-      }
-      @keyframes float {
-        0%,
-        100% {
-          transform: translate(0, 0);
-        }
-        50% {
-          transform: translate(40px, -30px);
-        }
-      }
-      .noise-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 1;
-        pointer-events: none;
-        opacity: 0.025;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-        background-size: 256px 256px;
-      }
-
-      /* ── Card ── */
-      .card {
-        position: relative;
-        z-index: 2;
-        width: 100%;
-        max-width: 540px;
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        padding: 48px 36px 40px;
+        gap: 28px;
+        padding: 40px 24px;
         text-align: center;
-        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.55);
-        animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-      }
-      @keyframes rise {
-        from {
-          opacity: 0;
-          transform: translateY(18px);
-        }
-        to {
-          opacity: 1;
-          transform: none;
-        }
+
+        background: #080810;
+        color: #ffffff;
+        font-family: "Sora", -apple-system, BlinkMacSystemFont, sans-serif;
+        -webkit-font-smoothing: antialiased;
       }
 
-      .logo-wrap {
-        width: 92px;
-        height: 92px;
-        margin: 0 auto 26px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid var(--border);
-        position: relative;
-      }
-      .logo-wrap::after {
-        content: "";
-        position: absolute;
-        inset: -8px;
-        border-radius: 50%;
-        border: 1px solid var(--accent);
-        opacity: 0.25;
-        animation: pulse 2.6s ease-out infinite;
-      }
-      @keyframes pulse {
-        0% {
-          transform: scale(0.92);
-          opacity: 0.35;
-        }
-        70% {
-          transform: scale(1.12);
-          opacity: 0;
-        }
-        100% {
-          opacity: 0;
-        }
-      }
-      .logo-wrap img {
-        max-width: 62px;
-        max-height: 62px;
-        object-fit: contain;
-      }
-      .logo-fallback {
-        font-weight: 800;
-        font-size: 26px;
-        letter-spacing: 1px;
-        color: var(--accent);
+      .logo {
+        width: 96px;
+        height: auto;
       }
 
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 6px 14px;
-        border-radius: 999px;
-        background: var(--accent-soft);
-        border: 1px solid rgba(220, 38, 38, 0.25);
-        color: #ff8080;
-        font-family: var(--font-mono);
-        font-size: 11px;
-        letter-spacing: 1.4px;
-        text-transform: uppercase;
-        margin-bottom: 20px;
-      }
-      .dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: var(--accent);
-        animation: blink 1.5s ease-in-out infinite;
-      }
-      @keyframes blink {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.25;
-        }
+      h1 {
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1.25;
       }
 
-      .brand {
-        font-size: clamp(26px, 6vw, 34px);
-        font-weight: 800;
-        letter-spacing: -0.5px;
-        background: linear-gradient(135deg, #fff 20%, var(--accent) 130%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 6px;
-      }
-      .page-label {
-        font-family: var(--font-mono);
-        font-size: 12px;
-        color: var(--text-muted);
-        letter-spacing: 1px;
-        margin-bottom: 26px;
+      p {
+        font-size: 18px;
+        line-height: 1.65;
+        font-weight: 400;
+        color: #c4c4d4;
+        max-width: 30ch;
       }
 
-      h2 {
-        font-size: clamp(19px, 4.5vw, 23px);
-        font-weight: 600;
-        margin-bottom: 12px;
+      .rule {
+        width: 56px;
+        height: 3px;
+        border-radius: 3px;
+        background: #dc2626;
       }
-      p.msg {
-        color: var(--text-secondary);
-        font-size: 15px;
-        line-height: 1.7;
-        max-width: 400px;
-        margin: 0 auto;
-      }
-      p.msg + p.msg {
-        margin-top: 12px;
-        color: var(--text-muted);
+
+      small {
         font-size: 14px;
+        color: #7c7c94;
       }
 
-      .bar {
-        height: 4px;
-        width: 100%;
-        max-width: 260px;
-        margin: 30px auto 0;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.06);
-        overflow: hidden;
-      }
-      .bar span {
-        display: block;
-        height: 100%;
-        width: 40%;
-        border-radius: 999px;
-        background: linear-gradient(90deg, transparent, var(--accent), transparent);
-        animation: slide 1.9s ease-in-out infinite;
-      }
-      @keyframes slide {
-        0% {
-          transform: translateX(-110%);
-        }
-        100% {
-          transform: translateX(320%);
-        }
-      }
-
-      .divider {
-        height: 1px;
-        background: var(--border);
-        margin: 32px 0 22px;
-      }
-      .contacts {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        justify-content: center;
-      }
-      .contacts a {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 9px 16px;
-        border-radius: 10px;
-        border: 1px solid var(--border);
-        background: rgba(255, 255, 255, 0.02);
-        color: var(--text-secondary);
-        text-decoration: none;
-        font-size: 13.5px;
-        transition: 180ms cubic-bezier(0.4, 0, 0.2, 1);
-      }
-      .contacts a:hover {
-        border-color: rgba(220, 38, 38, 0.4);
-        color: var(--text);
-        background: var(--accent-soft);
-        transform: translateY(-2px);
-      }
-      .foot {
-        margin-top: 26px;
-        font-family: var(--font-mono);
-        font-size: 11px;
-        color: var(--text-muted);
-        letter-spacing: 0.6px;
-      }
       @media (max-width: 480px) {
-        .card {
-          padding: 38px 22px 32px;
+        h1 {
+          font-size: 27px;
         }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        * {
-          animation: none !important;
+        p {
+          font-size: 16.5px;
         }
       }
     </style>
   </head>
   <body>
-    <div class="noise-overlay"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
+    <img
+      class="logo"
+      src="../img/Logo.png"
+      alt="Palmino Motors"
+      onerror="this.remove()"
+    />
 
-    <main class="card">
-      <div class="logo-wrap">
-        <img
-          src="../img/Logo.png"
-          alt="Palmino Motors"
-          onerror="this.outerHTML='<span class=\'logo-fallback\'>PM</span>'"
-        />
-      </div>
+    <div class="rule"></div>
 
-      <span class="badge"><span class="dot"></span> Manutenzione</span>
+    <h1>Sito in manutenzione</h1>
 
-      <div class="brand">Palmino Motors</div>
-      <div class="page-label">QR Code Generator</div>
+    <p>Stiamo aggiornando il sito. Torniamo online a breve.</p>
 
-      <h2>Stiamo lavorando ai motori</h2>
-      <p class="msg">
-        Il generatore di QR Code è temporaneamente offline per un aggiornamento tecnico. Il servizio sarà ripristinato al più presto.
-      </p>
-      <p class="msg">Grazie per la pazienza, torniamo online a breve.</p>
-
-      <div class="bar"><span></span></div>
-
-      <div class="divider"></div>
-
-      <div class="contacts">
-        <a href="tel:+393490028627"
-          ><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-          Telefono</a
-        >
-        <a href="mailto:info@palminomotors.com"
-          ><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="m22 6-10 7L2 6"/></svg>
-          Email</a
-        >
-      </div>
-
-      <div class="foot">&copy; <span id="year"></span> Palmino Motors</div>
-    </main>
-
-    <script>
-      document.getElementById("year").textContent = new Date().getFullYear();
-    </script>
+    <small>Palmino Motors</small>
   </body>
 </html>
 
-<!-- ═══════════════════════════════════════════════════════════════════════
-     CODICE ORIGINALE DI qr/index.html — DISATTIVATO, NON CANCELLATO
-
-     NOTA: i commenti HTML non possono essere annidati, quindi qui sotto i
-     marcatori dei commenti interni sono stati neutralizzati:
-        apertura commento  ->  <!~~
-        chiusura commento  ->  ~~>
-     Ripristinando quelle due sequenze si riottiene il file identico
-     all'originale (verificato byte per byte).
-     ═══════════════════════════════════════════════════════════════════════ -->
+<!-- CODICE ORIGINALE DI qr/index.html — DISATTIVATO, NON CANCELLATO
+     I commenti HTML non si annidano, quindi qui sotto i marcatori interni
+     sono neutralizzati:  apertura -> <!~~   chiusura -> ~~>
+     Rimettendo quelle due sequenze si riottiene il file identico. -->
 <!-- ORIGINALE-INIZIO
 <!doctype html>
 <html lang="it">

@@ -1,3 +1,15 @@
+<!-- ═══════════════════════════════════════════════════════════════════
+     PALMINO MOTORS — COPIA DEL CODICE ORIGINALE DI index.html
+     Il file e' INTERAMENTE commentato: aperto nel browser non mostra nulla.
+     Serve solo come copia di sicurezza leggibile.
+
+     PER RIPRISTINARE IL SITO:
+       1. copia il blocco qui sotto (fra ORIGINALE-INIZIO e ORIGINALE-FINE)
+       2. sostituisci  <!~~  con l'apertura di commento  e  ~~>  con la chiusura
+       3. incolla tutto dentro index.html al posto della pagina di manutenzione
+     Piu' rapido con git:  git checkout <hash> -- index.html
+     ═══════════════════════════════════════════════════════════════════ -->
+<!-- ORIGINALE-INIZIO
 <!doctype html>
 <html lang="it">
   <head>
@@ -23,7 +35,7 @@
     </div>
 
     <div class="main-wrapper">
-      <!-- Header -->
+      <!~~ Header ~~>
       <header class="qr-header">
         <div class="header-left">
           <a
@@ -66,11 +78,11 @@
         <div class="header-spacer"></div>
       </header>
 
-      <!-- Main Content -->
+      <!~~ Main Content ~~>
       <br />
       <br />
       <main class="qr-layout">
-        <!-- Input Panel -->
+        <!~~ Input Panel ~~>
         <div class="panel input-panel">
           <div class="panel-header">
             <h2 class="panel-title">Configurazione</h2>
@@ -88,7 +100,7 @@
             </select>
           </div>
 
-          <!-- Text Input -->
+          <!~~ Text Input ~~>
           <div class="form-group" id="text-input">
             <label for="qr-text">Testo</label>
             <textarea
@@ -99,7 +111,7 @@
             ></textarea>
           </div>
 
-          <!-- URL Input -->
+          <!~~ URL Input ~~>
           <div class="form-group hidden" id="url-input">
             <label for="qr-url">URL</label>
             <input
@@ -110,7 +122,7 @@
             />
           </div>
 
-          <!-- Email Input -->
+          <!~~ Email Input ~~>
           <div class="email-inputs hidden" id="email-input">
             <div class="form-group">
               <label for="qr-email">Email destinatario</label>
@@ -141,7 +153,7 @@
             </div>
           </div>
 
-          <!-- Phone Input -->
+          <!~~ Phone Input ~~>
           <div class="form-group hidden" id="phone-input">
             <label for="qr-phone">Numero di telefono</label>
             <input
@@ -152,7 +164,7 @@
             />
           </div>
 
-          <!-- WhatsApp Input -->
+          <!~~ WhatsApp Input ~~>
           <div class="hidden" id="whatsapp-input">
             <div class="form-group">
               <label for="qr-whatsapp">Numero WhatsApp</label>
@@ -176,7 +188,7 @@
             </div>
           </div>
 
-          <!-- WiFi Input -->
+          <!~~ WiFi Input ~~>
           <div class="wifi-inputs hidden" id="wifi-input">
             <div class="form-group">
               <label for="wifi-ssid">Nome rete (SSID)</label>
@@ -206,7 +218,7 @@
             </div>
           </div>
 
-          <!-- Size -->
+          <!~~ Size ~~>
           <div class="divider"></div>
           <div class="form-group">
             <label for="qr-size">Dimensione</label>
@@ -220,7 +232,7 @@
           <button id="generate-btn" class="btn-primary">Genera QR Code</button>
         </div>
 
-        <!-- Output Panel -->
+        <!~~ Output Panel ~~>
         <div class="panel output-panel">
           <div class="panel-header">
             <h2 class="panel-title">Anteprima</h2>
@@ -334,7 +346,7 @@
       </main>
     </div>
 
-    <!-- Footer -->
+    <!~~ Footer ~~>
     <footer class="site-footer">
       <div class="footer-content">
         <div class="footer-logo-section">
@@ -405,7 +417,7 @@
       </div>
     </footer>
 
-    <!-- Toast -->
+    <!~~ Toast ~~>
     <div class="toast" id="toast">
       <svg
         class="toast-icon"
@@ -424,11 +436,11 @@
       <span id="toast-message">QR Code generato!</span>
     </div>
 
-    <!-- ══ SCRIPTS ══ -->
+    <!~~ ══ SCRIPTS ══ ~~>
     <script src="../JS/common.js"></script>
-    <!-- Fix per caricamento logo nel footer -->
+    <!~~ Fix per caricamento logo nel footer ~~>
     <script src="../JS/qr/footer-fix.js"></script>
-    <!-- Specifici pagina QR - CORRETTI: sono nella cartella qr/ -->
+    <!~~ Specifici pagina QR - CORRETTI: sono nella cartella qr/ ~~>
     <script src="../JS/qr/data.js"></script>
     <script src="../JS/qr/canvas.js"></script>
     <script src="../JS/qr/actions.js"></script>
@@ -438,3 +450,4 @@
     <script src="../JS/app/animations.js"></script>
   </body>
 </html>
+ORIGINALE-FINE -->
