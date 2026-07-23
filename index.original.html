@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Palmino Motors - Hub Operativo</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="img/Logo2.png" />
+    <script>
+      // Decide PRIMA del render se saltare l'intro (ritorno da QR)
+      try {
+        if (sessionStorage.getItem("pm_skip_intro") === "1") {
+          sessionStorage.removeItem("pm_skip_intro");
+          document.documentElement.classList.add("no-intro");
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <!-- ══ INTRO SPLASH (solo all'avvio) ══ -->
+    <div class="intro-splash" id="introSplash" aria-hidden="true">
+      <div class="intro-splash-ring"></div>
+      <img
+        src="img/Logo.png"
+        alt=""
+        class="intro-splash-logo"
+        onerror="this.parentElement.remove()"
+      />
+    </div>
+
+    <div class="noise-overlay"></div>
+    <div class="top-glow"></div>
+    <div class="ambient-orbs" aria-hidden="true">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <!-- ══ HEADER CONDIVISO ══ -->
+    <header class="hub-header" id="hubHeader">
+      <div class="header-inner">
+        <div class="logo-area">
+          <div class="logo-circle" id="headerLogoWrap">PM</div>
+          <div class="header-text">
+            <h1 class="main-title brand-gradient-text">Palmino Motors</h1>
+            <p class="subtitle" id="headerSubtitle">Hub Operativo</p>
+          </div>
+        </div>
+        <div class="header-right">
+          <!-- Tasto back (solo in detail) -->
+          <button
+            class="back-btn"
+            id="backBtn"
+            style="display: none"
+            onclick="goHome()"
+          >
+            <svg
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            >
+              <path d="M19 12H5M12 5l-7 7 7 7" />
+            </svg>
+            <span>Indietro</span>
+          </button>
+          <!-- Nome area corrente (solo in detail) -->
+          <div class="header-area-tag" id="headerAreaTag" style="display: none">
+            <span class="header-area-dot" id="headerAreaDot"></span>
+            <span class="header-area-name" id="headerAreaName"></span>
+          </div>
+        </div>
+      </div>
+      <!-- Riga titolo sezione (solo in detail) -->
+      <div
+        class="header-section-title-row"
+        id="headerSectionTitleRow"
+        style="display: none"
+      >
+        <span
+          class="header-section-title-text"
+          id="headerSectionTitleText"
+        ></span>
+      </div>
+    </header>
+
+    <!-- ══ SCHERMATA HOME: selezione area ══ -->
+    <div id="screenHome" class="page page-home">
+      <div class="home-content">
+        <div class="home-logo-hero" id="homeLogoHero">
+          <div class="home-logo-circle-big">PM</div>
+        </div>
+        <h2 class="home-company-name brand-gradient-text" id="homeCompanyName">
+          Palmino Motors
+        </h2>
+        <p class="subtitle_home">Hub Operativo</p>
+        <br />
+        <div class="area-grid" id="areaGrid"></div>
+      </div>
+    </div>
+
+    <!-- ══ SCHERMATA DETAIL: vista area ══ -->
+    <div id="screenDetail" class="page page-detail" style="display: none">
+      <!-- Link cards -->
+      <main class="detail-main" id="detailMain"></main>
+      <!-- Brand section (come prima, in fondo) -->
+      <section class="brand-section" id="brandSection" style="display: none">
+        <h3 class="brand-section-title">
+          <span class="title-line"></span>
+          <span
+            >Brand Ufficiali
+            <span id="brandCount" class="brand-count-badge"></span
+          ></span>
+          <span class="title-line"></span>
+        </h3>
+        <div class="brand-links" id="brandContainer"></div>
+      </section>
+    </div>
+
+    <!-- ══ FOOTER CONDIVISO ══ -->
+    <footer class="site-footer" id="siteFooter">
+      <div class="footer-content">
+        <div class="footer-logo-section" id="footerCompanyCol">
+          <h2
+            class="footer-company-name main-title brand-gradient-text"
+            id="companyName"
+          >
+            Palmino Motors
+          </h2>
+          <p class="footer-address">
+            <a
+              href="#"
+              id="fullAddress"
+              class="footer-link"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Caricamento...</a
+            >
+          </p>
+        </div>
+        <div class="footer-grid">
+          <div class="footer-col">
+            <h4>Contatti</h4>
+            <p><a href="#" class="footer-link" id="footerPhone"></a></p>
+            <p><a href="#" class="footer-link" id="footerEmail"></a></p>
+            <p>
+              <a
+                href="#"
+                class="footer-link"
+                id="footerWhatsApp"
+                target="_blank"
+                rel="noopener noreferrer"
+              ></a>
+            </p>
+          </div>
+          <div class="footer-col">
+            <h4>Dati Legali</h4>
+            <p id="footerPiva"></p>
+            <p class="footer-copyright">
+              &copy; <span id="year"></span> Tutti i diritti riservati
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- ══ SCRIPTS ══ -->
+    <script src="JS/common.js"></script>
+    <!-- Specifici pagina hub -->
+    <script src="JS/app/utils.js"></script>
+    <script src="JS/app/svg-icons.js"></script>
+    <script src="JS/app/header.js"></script>
+    <script src="JS/app/home.js"></script>
+    <script src="JS/app/navigation.js"></script>
+    <script src="JS/app/category-detail.js"></script>
+    <script src="JS/app/brands.js"></script>
+    <script src="JS/app/data.js"></script>
+    <script src="JS/app/init.js"></script>
+    <script src="JS/app/animations.js"></script>
+  </body>
+</html>
