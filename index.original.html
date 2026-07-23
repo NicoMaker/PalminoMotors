@@ -1,15 +1,3 @@
-<!-- ═══════════════════════════════════════════════════════════════════
-     PALMINO MOTORS — COPIA DEL CODICE ORIGINALE DI index.html
-     Il file e' INTERAMENTE commentato: aperto nel browser non mostra nulla.
-     Serve solo come copia di sicurezza leggibile.
-
-     PER RIPRISTINARE IL SITO:
-       1. copia il blocco qui sotto (fra ORIGINALE-INIZIO e ORIGINALE-FINE)
-       2. sostituisci  <!~~  con l'apertura di commento  e  ~~>  con la chiusura
-       3. incolla tutto dentro index.html al posto della pagina di manutenzione
-     Piu' rapido con git:  git checkout <hash> -- index.html
-     ═══════════════════════════════════════════════════════════════════ -->
-<!-- ORIGINALE-INIZIO
 <!doctype html>
 <html lang="it">
   <head>
@@ -26,17 +14,10 @@
     />
     <link rel="icon" type="image/x-icon" href="img/Logo2.png" />
     <script>
-      // Decide PRIMA del render se saltare l'intro (ritorno da QR)
-      try {
-        if (sessionStorage.getItem("pm_skip_intro") === "1") {
-          sessionStorage.removeItem("pm_skip_intro");
-          document.documentElement.classList.add("no-intro");
-        }
-      } catch (e) {}
     </script>
   </head>
   <body>
-    <!~~ ══ INTRO SPLASH (solo all'avvio) ══ ~~>
+    <!-- ══ INTRO SPLASH (solo all'avvio) ══ -->
     <div class="intro-splash" id="introSplash" aria-hidden="true">
       <div class="intro-splash-ring"></div>
       <img
@@ -55,7 +36,7 @@
       <div class="orb orb-3"></div>
     </div>
 
-    <!~~ ══ HEADER CONDIVISO ══ ~~>
+    <!-- ══ HEADER CONDIVISO ══ -->
     <header class="hub-header" id="hubHeader">
       <div class="header-inner">
         <div class="logo-area">
@@ -66,7 +47,7 @@
           </div>
         </div>
         <div class="header-right">
-          <!~~ Tasto back (solo in detail) ~~>
+          <!-- Tasto back (solo in detail) -->
           <button
             class="back-btn"
             id="backBtn"
@@ -86,14 +67,14 @@
             </svg>
             <span>Indietro</span>
           </button>
-          <!~~ Nome area corrente (solo in detail) ~~>
+          <!-- Nome area corrente (solo in detail) -->
           <div class="header-area-tag" id="headerAreaTag" style="display: none">
             <span class="header-area-dot" id="headerAreaDot"></span>
             <span class="header-area-name" id="headerAreaName"></span>
           </div>
         </div>
       </div>
-      <!~~ Riga titolo sezione (solo in detail) ~~>
+      <!-- Riga titolo sezione (solo in detail) -->
       <div
         class="header-section-title-row"
         id="headerSectionTitleRow"
@@ -106,7 +87,7 @@
       </div>
     </header>
 
-    <!~~ ══ SCHERMATA HOME: selezione area ══ ~~>
+    <!-- ══ SCHERMATA HOME: selezione area ══ -->
     <div id="screenHome" class="page page-home">
       <div class="home-content">
         <div class="home-logo-hero" id="homeLogoHero">
@@ -121,11 +102,11 @@
       </div>
     </div>
 
-    <!~~ ══ SCHERMATA DETAIL: vista area ══ ~~>
+    <!-- ══ SCHERMATA DETAIL: vista area ══ -->
     <div id="screenDetail" class="page page-detail" style="display: none">
-      <!~~ Link cards ~~>
+      <!-- Link cards -->
       <main class="detail-main" id="detailMain"></main>
-      <!~~ Brand section (come prima, in fondo) ~~>
+      <!-- Brand section (come prima, in fondo) -->
       <section class="brand-section" id="brandSection" style="display: none">
         <h3 class="brand-section-title">
           <span class="title-line"></span>
@@ -139,7 +120,7 @@
       </section>
     </div>
 
-    <!~~ ══ FOOTER CONDIVISO ══ ~~>
+    <!-- ══ FOOTER CONDIVISO ══ -->
     <footer class="site-footer" id="siteFooter">
       <div class="footer-content">
         <div class="footer-logo-section" id="footerCompanyCol">
@@ -186,9 +167,9 @@
       </div>
     </footer>
 
-    <!~~ ══ SCRIPTS ══ ~~>
+    <!-- ══ SCRIPTS ══ -->
     <script src="JS/common.js"></script>
-    <!~~ Specifici pagina hub ~~>
+    <!-- Specifici pagina hub -->
     <script src="JS/app/utils.js"></script>
     <script src="JS/app/svg-icons.js"></script>
     <script src="JS/app/header.js"></script>
@@ -199,6 +180,6 @@
     <script src="JS/app/data.js"></script>
     <script src="JS/app/init.js"></script>
     <script src="JS/app/animations.js"></script>
+    <script src="JS/app/animations_intro.js"></script>
   </body>
 </html>
-ORIGINALE-FINE -->
